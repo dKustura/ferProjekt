@@ -1,0 +1,25 @@
+{
+  "name": "fer-projekt",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node_modules/.bin/nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dKustura/ferProjekt.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dKustura/ferProjekt/issues"
+  },
+  "homepage": "https://github.com/dKustura/ferProjekt#readme",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
