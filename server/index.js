@@ -4,7 +4,7 @@ const dbconfig = require('./config');
 const mongoose = require('mongoose');
 
 const app = express();
-const DB = 'mongodb://' + config.databaseUsername + ':' + config.databasePassword + '@ds011664.mlab.com:11664/projektbaza';
+const DB = 'mongodb://' + dbconfig.databaseUsername + ':' + dbconfig.databasePassword + '@ds011664.mlab.com:11664/projektbaza';
 
 mongoose.connect(DB);
 
