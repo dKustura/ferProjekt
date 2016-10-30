@@ -19,9 +19,9 @@ const photoSchema = new Schema({
         required: [true, 'Photo URL is required']
     },
 
-    likes: [{
+    userLikes: [{
         type: ObjectId,
-        ref: 'Like'
+        ref: 'User'
     }],
 
     comments: [{
