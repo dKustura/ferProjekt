@@ -3,16 +3,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const messageSchema = new Schema({
+const MAX_LENGTH = 20000;
 
-    title: {
-        type: String,
-        required: [true, 'Message title is required']
-    },
+const messageSchema = new Schema({
 
     content: {
         type: String,
-        required: [true, 'Message content is required']
+        required: [true, 'Message content is required'],
+        max: [maxLen, 'Message must not be longer than ${MAX_LENGTH} characters']
     },
 
     sentAt: {
