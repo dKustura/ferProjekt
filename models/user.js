@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import {validateName, validateEmail, validateDate} from '../services/validators';
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -7,7 +8,7 @@ const userSchema = new Schema({
     firstname: {
         type: String,
         validate: {
-            validator: nameValidator,
+            validator: validateName,
             message: 'Firstname is not valid'
         },
         required: [true, 'First name is required']
@@ -16,7 +17,7 @@ const userSchema = new Schema({
     lastname: {
         type: String,
         validate: {
-            validator: nameValidator,
+            validator: validateName,
             message: 'Lastname is not valid'
         },
         required: [true, 'Last name is required']
@@ -39,7 +40,7 @@ const userSchema = new Schema({
     dateOfBirth: {
         type: Date,
         validate: {
-            validator: dateValidator,
+            validator: validateDate,
             message: 'Date of birth is not valid'
         }
     },
