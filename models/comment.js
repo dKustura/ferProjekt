@@ -3,12 +3,13 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const maxLen = 300;
+const MAX_LENGTH = 8000;
 
 const commentSchema = Schema({
     content: {
         type: String,
-        max: [maxLen, `Comment must not be longer than ${maxLen} characters`]
+        max: [MAX_LENGTH, `Comment must not be longer than ${MAX_LENGTH} characters`],
+        required: [true, 'Comment content is required']
     },
 
     user: {
@@ -16,10 +17,16 @@ const commentSchema = Schema({
         ref: 'User'
     },
 
-    userLikes: [{
+    likes: [{
         type: ObjectId,
         ref: 'User'
-    }]
+    }],
+
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+
 });
 
 module.exports = mongoose.model('Comment', commentSchema);

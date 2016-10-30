@@ -19,7 +19,7 @@ const photoSchema = new Schema({
         required: [true, 'Photo URL is required']
     },
 
-    userLikes: [{
+    likes: [{
         type: ObjectId,
         ref: 'User'
     }],
@@ -30,6 +30,11 @@ const photoSchema = new Schema({
     }],
 
     description: String,
+
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 
     photoAlbum: {
         type: ObjectId,

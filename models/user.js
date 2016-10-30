@@ -32,6 +32,7 @@ const userSchema = new Schema({
         required: [true, 'User email is required'],
         unique: [true, 'Email is already in use']
     },
+    
     password: {
         type: String,
         required: [true, 'User password is required']
