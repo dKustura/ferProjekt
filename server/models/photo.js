@@ -38,7 +38,7 @@ const photoSchema = new Schema({
 
   photoAlbum: {
     type: ObjectId,
-    ref: 'Photo-Album'
+    ref: 'Album'
   }
 });
 
