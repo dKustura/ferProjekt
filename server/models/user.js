@@ -53,7 +53,7 @@ const userSchema = new Schema({
 
   photoAlbums: [{
     type: ObjectId,
-    ref: 'Photo-Album'
+    ref: 'Album'
   }],
 
   photos: [{
