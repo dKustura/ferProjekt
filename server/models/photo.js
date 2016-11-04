@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import {validateURL} from '../services/validators';
+const mongoose = require('mongoose');
+const validateURL = require('../services/validators').validateURL
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;

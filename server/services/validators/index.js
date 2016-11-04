@@ -1,4 +1,4 @@
-import validator from 'validator';
+const validator = require('validator');
 
 var validateEmail = function(value) {
     return validator.isEmail(value);

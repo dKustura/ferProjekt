@@ -1,7 +1,7 @@
-import express from 'express';
-import path from 'path';
-import dbconfig from './config';
-import mongoose from 'mongoose';
+const express = require('express');
+const path = require('path');
+const config = require('./config');
+const mongoose = require('mongoose');
 
 const app = express();
 const DB = `mongodb://${config.databaseUsername}:${config.databasePassword}@ds011664.mlab.com:11664/projektbaza`;

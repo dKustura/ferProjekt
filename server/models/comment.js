@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -25,8 +25,7 @@ const commentSchema = Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
-
+  
 });
 
 module.exports = mongoose.model('Comment', commentSchema);
