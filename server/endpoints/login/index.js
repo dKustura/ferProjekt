@@ -4,6 +4,8 @@ const accepts = require('accepts');
 const getHtml = require('./get/html');
 const getJson = require('./get/json');
 
+const postJson = require('./post/json');
+
 const router = new express.Router();
 
 router.get('/login', function(req, res) {
@@ -16,6 +18,10 @@ router.get('/login', function(req, res) {
     getHtml(req, res);
     break
   }
+});
+
+router.get('/login', function(req, res) {
+  postJson(req, res);
 });
 
 module.exports = router;

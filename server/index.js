@@ -26,7 +26,7 @@ app.set('view engine', '.hbs');
 app.set('views', 'server/views/');
 
 // serve static files from /public folder
-const pathToPublicFolder = path.resolve(__dirname + '/public');
+const pathToPublicFolder = path.resolve(__dirname, '../public');
 app.use('/public', express.static(pathToPublicFolder));
 
 app.use(endpoints);
