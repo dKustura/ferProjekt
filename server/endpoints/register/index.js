@@ -8,7 +8,7 @@ const postJson = require('./post/json');
 
 const router = new express.Router();
 
-router.get('/login', function(req, res) {
+router.get('/register', function(req, res) {
   const accept = accepts(req);
   switch(accept.type(['json', 'html'])) {
   case 'json':
@@ -20,7 +20,7 @@ router.get('/login', function(req, res) {
   }
 });
 
-router.post('/login', function(req, res) {
+router.post('/register', function(req, res) {
   postJson(req, res);
 });
 

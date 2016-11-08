@@ -10,8 +10,9 @@ var validateName = function(value) {
 }
 
 var validateDateOfBirth = function(value) {
-    var limitDate = new Date().setFullYear(new Date().getFullYear() - 18);
-    return validator.isDate(value) && validator.isBefore(limitDate);
+   var maxlimitDate = new Date().setFullYear(new Date().getFullYear() - 18);
+	 var minlimitDate = new Date().setFullYear(new Date().getFullYear() - 100);
+	 return value > minlimitDate && value < maxlimitDate;
 }
 
 var validateURL = function(value) {
@@ -21,6 +22,6 @@ var validateURL = function(value) {
 module.exports = {
     validateEmail: validateEmail,
     validateName: validateName,
-    validateDate: validateDate,
+    validateDate: validateDateOfBirth,   
     validateURL: validateURL
 };

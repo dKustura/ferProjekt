@@ -1,6 +1,12 @@
-<h1>Hello World</h1>
+<h1>Welcome, please login</h1>
 
-<input type="text" />
-<input type="password" />
+<form action="/login" class="js-login-form" method="post">
+	<input type="text" placeholder = "Email address" class="js-email" name = "email"/>
+	<input type="password" placeholder = "Password" class="js-password" name="password"/>
+	<input type="submit"/>
+</form>
 
-<input type="submit" />
+<form action="/register" method="get">
+   <input type="submit" value="Register" name="Submit" id="" />
+</form>
+	

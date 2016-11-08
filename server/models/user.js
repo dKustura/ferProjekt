@@ -1,24 +1,25 @@
 const mongoose = require('mongoose');
 const validator = require('../services/validators');
+const bcrypt = require ('bcryptjs');
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = new Schema({
-  firstname: {
+  firstName: {
     type: String,
     validate: {
       validator: validator.validateName,
-      message: 'Firstname is not valid'
+      message: 'First name is not valid'
     },
     required: [true, 'First name is required']
   },
 
-  lastname: {
+  lastName: {
     type: String,
     validate: {
       validator: validator.validateName,
-      message: 'Lastname is not valid'
+      message: 'Last name is not valid'
     },
     required: [true, 'Last name is required']
   },
@@ -77,5 +78,13 @@ const userSchema = new Schema({
   }]
 
 });
+
+userSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+userSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 module.exports = mongoose.model('User', userSchema);;
