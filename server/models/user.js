@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
 const validator = require('../services/validators');
 
 const Schema = mongoose.Schema;
@@ -75,6 +76,15 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Message'
   }]
+
+  userSchema.methods.generateHash = function(password) {
+    var salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt, null);
+  };
+
+  userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+  };
 
 });
 
