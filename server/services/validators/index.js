@@ -1,16 +1,25 @@
 const validator = require('validator');
 
 var validateEmail = function(value) {
-    return validator.isEmail(value);
+  return validator.isEmail(value);
 }
 
 var validateName = function(value) {
-    return !validator.isEmpty(value) && validator.isAlpha(value);
+  return !validator.isEmpty(value) &&
+    validator.isAlpha(value) &&
+    validator.isLength(value, {
+      min: 0,
+      max: 20
+    });
 }
 
-// dodati 18+ requirement (moment.js?)
 var validateDateOfBirth = function(value) {
-    return validator.isDate(value) && validator.isBefore(Date.now);
+  var limitDate = new Date().setFullYear(new Date().getFullYear() - 18);
+  return validator.isDate(value) && validator.isBefore(limitDate);
+}
+
+var validateURL = function(value) {
+  return validator.isURL(value);
 }
 
 var validatePassword = function(value){
@@ -21,8 +30,9 @@ var validatePassword = function(value){
 }
 
 module.exports = {
-    validateEmail: validateEmail,
-    validateName: validateName,
-    validateDate: validateDate,
+  validateEmail: validateEmail,
+  validateName: validateName,
+  validateDate: validateDate,
+  validateURL: validateURL
 	validatePassword : validatePaswword
 };

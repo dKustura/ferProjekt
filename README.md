@@ -9,3 +9,4 @@ Make sure you have installed:
 To install all packages run `npm install`
 
 To start the server run `npm start`
+To start webpack watcher run `npm run build`
