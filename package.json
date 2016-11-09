@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node_modules/.bin/nodemon index.js",
-    "build": "node_modules/.bin/webpack --progress --colors --watch -d"
+    "build": "node_modules/.bin/webpack --progress --colors --watch -d",
+    "server": "node_modules/.bin/webpack -p --optimize-dedupe && node index.js"
   },
   "repository": {
     "type": "git",
