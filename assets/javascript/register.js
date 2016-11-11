@@ -1,8 +1,10 @@
+import $ from 'jquery';
+
 $(function(){
 
   const $registerForm = $('.js-register-form');
 
-  $registerForm.live('submit', (e) => {
+  $registerForm.on('submit', (e) => {
 		e.preventDefault();
 
 		const email = $registerForm.find('.js-email').val();
@@ -12,8 +14,7 @@ $(function(){
 		const dateOfBirth = $registerForm.find('.js-date-of-birth').val();
 
 		
-		$.ajax({
-			type: 'POST',
+		$.post({
 			url: '/register',
 			dataType: 'json',
 			data: {
@@ -22,13 +23,11 @@ $(function(){
 				firstName,
 				lastName,
 				dateOfBirth
-			},
-			success: function(data){
-				if(data.errors || data.message){
-					window.location.replace('/register');
-				}else{
-					window.location.replace('/login');
-			}}
-		})
+			}
+		}).done(() => {
+			// TODO
+		}).fail(() => {
+			// TODO
+		});
 	});
 });

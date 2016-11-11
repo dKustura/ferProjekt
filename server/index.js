@@ -4,7 +4,6 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 
-const router = require('router');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');

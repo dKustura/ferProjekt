@@ -42,7 +42,7 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: Date,
     validate: {
-      validator: validator.validateDate,
+      validator: validator.validateDateOfBirth,
       message: 'Date of birth is not valid'
     }
   },

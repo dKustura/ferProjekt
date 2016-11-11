@@ -10,7 +10,7 @@ const messageSchema = new Schema({
   content: {
     type: String,
     required: [true, 'Message content is required'],
-    max: [MAX_LENGTH, 'Message must not be longer than ${MAX_LENGTH} characters']
+    max: [MAX_LENGTH, `Message must not be longer than ${MAX_LENGTH} characters`]
   },
 
   sentAt: {

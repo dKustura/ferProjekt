@@ -4,6 +4,7 @@ module.exports = function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	passport.authenticate('local-login', (error, user, info) => {
 		
+		res.status(400);
 		if (error) {
 			console.log(error);
 			res.send(error);
@@ -16,6 +17,7 @@ module.exports = function(req, res) {
 			return;
 		}
 		
+		res.status(200);
 		res.send(user);
 	})(req, res);
 }

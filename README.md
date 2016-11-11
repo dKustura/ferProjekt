@@ -1,6 +1,6 @@
 # ferProjekt
 
-## Instalation
+## Installation
 
 Make sure you have installed:
 * nodejs > 6.5

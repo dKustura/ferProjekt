@@ -20,8 +20,5 @@ var validateURL = function(value) {
 }
 
 module.exports = {
-    validateEmail: validateEmail,
-    validateName: validateName,
-    validateDate: validateDateOfBirth,   
-    validateURL: validateURL
+    validateEmail, validateName, validateDateOfBirth, validateURL
 };
