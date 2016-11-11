@@ -20,12 +20,12 @@ $(function() {
 		}).done(() => {
 			window.location.replace('/home');
 		}).fail((data) => {
-			var error = data.responseJSON.error;
+			var obj = data.responseJSON;
 			$('.js-login-error').empty();
-			if(error) {
-				$(`.js-login-${error.field}-error`).text(error.message);
+			if(obj.error) {
+				$(`.js-login-${obj.error.field}-error`).text(obj.error.message);
 			} else {
-				$('.js-login-missing-error').text(data.message);
+				$('.js-login-missing-error').text(obj.message);
 			}
 		});
 	});
