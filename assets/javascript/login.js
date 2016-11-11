@@ -1,27 +1,26 @@
+import $ from 'jquery';
+
 $(function() {
 	
-	const $loginForm = $('.js-login-form');
+  const $loginForm = $('.js-login-form');
 
-	$loginForm.live('submit', (e) => {
-		e.preventDefault(); 
+  $loginForm.on('submit', (e) => {
+    e.preventDefault(); 
 		
-		const email = $loginForm.find('.js-email').val();
-		const password = $loginForm.find('.js-password').val();
+    const email = $loginForm.find('.js-email').val();
+    const password = $loginForm.find('.js-password').val();
 		
-		$.ajax({
-			type: 'POST',
-			url: '/login',
-			dataType: 'json',
-			data: {
-				email,
-				password
-			},
-			success: function(data){
-				if(data.error || data.message)
-					window.location.replace('/login');
-				else{
-					window.location.replace('/home');
-			}}
-		});
-	});
+    $.post({
+      url: '/login',
+      dataType: 'json',
+      data: {
+        email,
+        password
+      }
+    }).done(() => {
+      window.location.replace('/home');
+    }).fail(() => {
+      window.location.replace('/login');
+    });
+  });
 }); 

@@ -39,30 +39,32 @@ app.set('views', 'server/views/');
 const pathToPublicFolder = path.resolve(__dirname, '../public');
 app.use('/public', express.static(pathToPublicFolder));
  
-
+// Module for parsing cookies
 app.use(cookieParser());
+
+// Module for parsing incoming request bodies (2 types)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Using session for logged-in user
 app.use(session({
   secret: 'myUserSuperSecret',
   cookie: {
     maxAge: 2628000000,
   },
 	resave: true,
-	saveUninitialized: true,
+	saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
  
+// use passport for authentication at login and register
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 
 
-
-
+//Add router
 app.use(endpoints);  // always use just before starting server
-
 
 
 // start listening on port 4242
