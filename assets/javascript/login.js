@@ -19,8 +19,8 @@ $(function() {
 			}
 		}).done(() => {
 			window.location.replace('/home');
-		}).fail((data) => {
-			var obj = data.responseJSON;
+		}).fail((error) => {
+			var obj = error.responseJSON;
 			$('.js-login-error').empty();
 			if(obj.error) {
 				$(`.js-login-${obj.error.field}-error`).text(obj.error.message);

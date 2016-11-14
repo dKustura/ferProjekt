@@ -1,3 +1,10 @@
 <h1> Homepage </h1>
 
+<h3>You are logged in as: {{user.firstName}} {{user.lastName}}</h3>
+
+<form action="/home" class="js-post-form" method="post">
+	<textarea placeholder="Express yourself..." name="postContent"></textarea>
+	<input type="submit" value="Post"/>
+</form>
+
 <a href="/logout">Logout</a>

@@ -15,7 +15,7 @@ const messageSchema = new Schema({
 
   sentAt: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
 
   sender: {

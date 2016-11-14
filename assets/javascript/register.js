@@ -12,7 +12,6 @@ $(function(){
 		const firstName = $registerForm.find('.js-first-name').val();
 		const lastName = $registerForm.find('.js-last-name').val();
 		const dateOfBirth = $registerForm.find('.js-date-of-birth').val();
-
 		
 		$.post({
 			url: '/register',
@@ -25,9 +24,17 @@ $(function(){
 				dateOfBirth
 			}
 		}).done(() => {
-			// TODO
-		}).fail(() => {
-			// TODO
+			window.location.replace('/login');
+		}).fail((error) => {
+			var obj = error.responseJSON;
+			$('.js-register-error').empty();
+			if(obj.errors) {
+				$.each(obj.errors, (key, value) => {
+					$(`.js-register-${key}-error`).text(value.message);
+				});
+			} else {
+				$('.js-register-missing-error').text(obj.message);
+			}
 		});
 	});
 });

@@ -6,6 +6,6 @@ module.exports = function(req, res) {
     res.redirect('/login');
   } else {
     // this will render home template in /server/views
-    res.render('home');
+    res.render('home', {user: req.user});
   }
 }

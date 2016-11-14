@@ -72,10 +72,15 @@ const userSchema = new Schema({
     ref: 'User'
   }],
 
-  messages : [{
+  messages: [{
     type: ObjectId,
     ref: 'Message'
-  }]
+  }],
+
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 
 });
 
