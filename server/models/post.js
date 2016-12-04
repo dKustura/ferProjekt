@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -33,5 +34,7 @@ const postSchema = new Schema({
     ref: 'User'
   }],
 });
+
+postSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('Post', postSchema);

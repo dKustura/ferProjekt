@@ -1,5 +1,6 @@
 import $ from 'jquery';
 
+import './util';
 import './register';
 import './login';
 

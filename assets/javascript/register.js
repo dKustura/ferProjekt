@@ -7,12 +7,12 @@ $(function(){
   $registerForm.on('submit', (e) => {
 		e.preventDefault();
 
-		const email = $registerForm.find('.js-email').val();
+		const email = $registerForm.find('.js-email').val().toLowerCase();
 		const password = $registerForm.find('.js-password').val();
-		const firstName = $registerForm.find('.js-first-name').val();
-		const lastName = $registerForm.find('.js-last-name').val();
+		const firstName = $registerForm.find('.js-first-name').val().toTitleCase();
+		const lastName = $registerForm.find('.js-last-name').val().toTitleCase();
 		const dateOfBirth = $registerForm.find('.js-date-of-birth').val();
-		
+
 		$.post({
 			url: '/register',
 			dataType: 'json',

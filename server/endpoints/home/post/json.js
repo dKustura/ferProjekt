@@ -1,4 +1,5 @@
 const Post = require('../../../models/post');
+const User = require('../../../models/user');
 
 module.exports = function(req, res) {
 	res.setHeader('Content-Type', 'text/html');
@@ -13,7 +14,15 @@ module.exports = function(req, res) {
 				console.log(error);
 				res.send(error);
 			} else {
-				res.render('home', {user: req.user});
+				req.user.posts.push(newPost);
+				req.user.save((err) => {
+					if(err) {
+						console.log(err);
+						res.send(err);
+					} else {
+						res.redirect('/home');
+					}
+				});
 			}
 		});
 	}

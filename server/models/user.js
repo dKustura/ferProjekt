@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('../services/validators');
 const bcrypt = require ('bcryptjs');
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -91,5 +92,15 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
+
+userSchema.plugin(deepPopulate, {
+  populate: {
+    'posts': {
+      options: {
+        sort: {postedAt: -1}
+      }
+    }
+  }
+});
 
 module.exports = mongoose.model('User', userSchema);;

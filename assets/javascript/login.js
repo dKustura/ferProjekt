@@ -7,7 +7,7 @@ $(function() {
 	$loginForm.on('submit', (e) => {
 		e.preventDefault(); 
 		
-		const email = $loginForm.find('.js-email').val();
+		const email = $loginForm.find('.js-email').val().toLowerCase();
 		const password = $loginForm.find('.js-password').val();
 
 		$.post({

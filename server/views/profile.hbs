@@ -1,0 +1,14 @@
+<a href="/home">Home</a>
+<form action="/search" class="js-search-form" method="get">
+	<input type="text" class="js-search" placeholder="Search" name="query"/>
+	<input type="submit" value="Search"/>
+</form>
+
+<h1> {{user.firstName}} {{user.lastName}}</h1>
+
+<h3>Posts:</h3>
+{{#each user.posts}}
+	<p>{{this.content}}<br>Posted at: {{this.postedAt}}</p>
+{{/each}}
+
+<a href="/logout">Logout</a>
