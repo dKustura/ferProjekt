@@ -1,12 +1,19 @@
-<h1>Welcome, please login</h1>
+<main class="page-card-container">
+  <h1 class="page-card-title"> Welcome, please login </h1>
 
-<form action="/login" class="js-login-form" method="post">
-  <input type="text" placeholder = "Email address" class="js-email" name = "email"/>
-  <input type="password" placeholder = "Password" class="js-password" name="password"/>
-  <input type="submit"/>
-</form>
+  <form action="/login" class="page-card js-login-form form" method="post">
+    <label class="form-label">
+      <span> Email: </span>
+      <input type="text" class="js-email" name="email"/>
+    </label>
 
-<a href="/register">
-  <input type="submit" value="Register" name="Submit" id="" />
-</a>
-	
+    <label class="form-label">
+      <span> Password: </span>
+      <input type="password" class="js-password" name="password"/>
+    </label>
+
+    <input class="form-submit" type="submit" value="Submit" />
+  </form>
+
+  <a class="register-link" href="/register"> Register </a>
+</main>
