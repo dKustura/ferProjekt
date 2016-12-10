@@ -1,24 +1,35 @@
 const validator = require('validator');
 
-var validateEmail = function(value) {
-    return validator.isEmail(value);
-}
+const validateEmail = function(value) {
+  return validator.isEmail(value);
+};
 
-var validateName = function(value) {
-    return !validator.isEmpty(value) && validator.isAlpha(value)
-            && validator.isLength(value, {min:0, max:20});
-}
+const validateName = function(value) {
+  return !validator.isEmpty(value) && validator.isAlpha(value) && validator.isLength(value, {min: 0, max: 20});
+};
 
-var validateDateOfBirth = function(value) {
-   var maxlimitDate = new Date().setFullYear(new Date().getFullYear() - 18);
-	 var minlimitDate = new Date().setFullYear(new Date().getFullYear() - 100);
-	 return value > minlimitDate && value < maxlimitDate;
-}
+const validateDate = function(value) {
+  if (!value) {
+    return false;
+  }
+  return validator.isDate(value.toString());
+};
 
-var validateURL = function(value) {
-    return validator.isURL(value);
-}
+const validateURL = function(value) {
+  return validator.isURL(value);
+};
+
+const validatePassword = function(value) {
+  return validator.isLength(value, {
+    min: 6,
+    max: 15
+  });
+};
 
 module.exports = {
-    validateEmail, validateName, validateDateOfBirth, validateURL
+  validateEmail,
+  validateName,
+  validateDate,
+  validateURL,
+  validatePassword
 };

@@ -1,27 +1,51 @@
 const express = require('express');
-const accepts = require('accepts');
-
-const getHtml = require('./get/html');
-const getJson = require('./get/json');
-
-const postJson = require('./post/json');
+const passport = require('passport');
 
 const router = new express.Router();
 
+// GET
+
 router.get('/register', function(req, res) {
-  const accept = accepts(req);
-  switch(accept.type(['json', 'html'])) {
-  case 'json':
-    getJson(req, res);
-    break
-  default:
-    getHtml(req, res);
-    break
+  if (req.user) {
+    res.redirect('/');
+    res.end();
+    return;
   }
+  
+  res.render('register');
 });
 
+// POST
+
+function showRegisterFormError(req, res, error) {
+  res.status(401);
+  res.render('register', {
+    errors: [error],
+    fields: {
+      email: req.body.email,
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      dateOfBirth: req.body.dateOfBirth
+    }
+  });
+}
+
 router.post('/register', function(req, res) {
-  postJson(req, res);
+  passport.authenticate('local-register', (error, user, info) => {
+    if (error) {
+      showRegisterFormError(req, res, error);
+      return;
+    }
+
+    if (!user) {
+      showRegisterFormError(req, res, info);
+      return;
+    }
+
+    res.status(200);
+    res.redirect('/login');
+  })(req, res);
 });
 
 module.exports = router;

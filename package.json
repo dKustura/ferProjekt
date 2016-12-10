@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node_modules/.bin/nodemon index.js",
-    "build": "node_modules/.bin/webpack --progress --colors --watch -d"
+    "build": "node_modules/.bin/webpack --progress --colors --watch -d",
+    "server": "node_modules/.bin/webpack -p --optimize-dedupe && node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,15 +19,16 @@
   },
   "homepage": "https://github.com/dKustura/ferProjekt#readme",
   "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.12.0",
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "accepts": "^1.3.3",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
-    "bcryptjs": "^2.3.0",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",
     "connect-mongo": "^1.3.2",
     "cookie-parser": "^1.4.3",
@@ -38,6 +40,7 @@
     "jquery": "^3.1.1",
     "mongoose": "^4.6.5",
     "mongoose-deep-populate": "^3.0.0",
+    "morgan": "^1.7.0",
     "node-sass": "^3.11.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

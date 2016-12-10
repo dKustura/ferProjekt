@@ -7,7 +7,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const MAX_LENGTH = 8000;
 
 const commentSchema = new Schema({
-  
+
   content: {
     type: String,
     max: [MAX_LENGTH, `Comment must not be longer than ${MAX_LENGTH} characters`],
@@ -28,7 +28,6 @@ const commentSchema = new Schema({
     type: Date,
     default: Date.now
   }
-  
 });
 
 commentSchema.plugin(deepPopulate);

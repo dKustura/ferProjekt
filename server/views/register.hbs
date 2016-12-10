@@ -1,42 +1,39 @@
-{{#if user}}
-	<h3>You are already registered. Redirecting...</h3>
-{{else}}
-	<h1>Welcome to registration page</h1>
-	<form action="/register" class="js-register-form" method="post">
-		<div>
-			<label>First name:</label>
-			<input type="text" class="js-first-name" name="firstName"/>
-		</div>
-		<span class="js-register-firstName-error js-register-error"></span>
+<main class="page-card-container">
+  <h1 class="page-card-title"> Welcome to registration page </h1>
 
-		<div>
-			<label>Last name:</label>
-			<input type="text" class="js-last-name" name="lastName"/>
-		</div>
-		<span class="js-register-lastName-error js-register-error"></span>
+  <form action="/register" class="page-card form" method="post">
 
-		<div>
-			<label>Email:</label>
-			<input type="text" class="js-email" name="email"/>
-		</div>
-		<span class="js-register-email-error js-register-error"></span>
+    <div class="errors">
+      {{#each errors}}
+        {{message}}
+      {{/each}}
+    </div>
 
-		<div>
-			<label>Password:</label>
-			<input type="password" class="js-password" name="password"/>
-		</div>
-		<span class="js-register-password-error js-register-error"></span>
+    <label class="form-label">
+      <span> Email: </span>
+      <input type="text" class="js-email" name="email" value="{{fields.email}}"/>
+    </label>
 
-		<div>
-			<label>Date of birth:</label>
-			<input type="date" class="js-date-of-birth" name="dateOfBirth"/>
-		</div>
-		<span class="js-register-dateOfBirth-error js-register-error"></span>
+    <label class="form-label">
+      <span> Password: </span>
+      <input type="password" class="js-password" name="password" value="{{fields.password}}"/>
+    </label>
 
-		<div>
-			<input type="submit" value="Submit" />
-		</div>
-		<span class="js-register-missing-error js-register-error"></span>
-	</form>
-	<a href="/login">Login</a>
-{{/if}}
+    <label class="form-label">
+      <span> First name: </span>
+      <input type="text" class="js-first-name" name="firstName" value="{{fields.firstName}}"/>
+    </label>
+
+    <label class="form-label">
+      <span> Last name: </span>
+      <input type="text" class="js-last-name" name="lastName" value="{{fields.lastName}}"/>
+    </label>
+
+    <label class="form-label">
+      <span> Date of birth: </span>
+      <input type="date" class="js-date-of-birth" name="dateOfBirth" value="{{fields.dateOfBirth}}"/>
+    </label>
+
+    <input class="form-submit" type="submit" value="Submit" />
+  </form>
+</main>

@@ -8,7 +8,16 @@ const profile = require('./profile');
 
 const router = new express.Router();
 
-router.use(home);
+function isAuthenticated(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect('/login');
+    res.end();
+  }
+}
+
+router.use(isAuthenticated, home);
 router.use(login);
 router.use(register);
 router.use(logout);

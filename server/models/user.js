@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
 const validator = require('../services/validators');
-const bcrypt = require ('bcryptjs');
 const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const Schema = mongoose.Schema;
@@ -43,7 +43,7 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: Date,
     validate: {
-      validator: validator.validateDateOfBirth,
+      validator: validator.validateDate,
       message: 'Date of birth is not valid'
     }
   },
@@ -82,7 +82,6 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now
   }
-
 });
 
 userSchema.methods.generateHash = function(password) {
@@ -105,4 +104,4 @@ userSchema.plugin(deepPopulate, {
 
 userSchema.index({firstName: 'text', lastName: 'text'});
 
-module.exports = mongoose.model('User', userSchema);;
+module.exports = mongoose.model('User', userSchema);
