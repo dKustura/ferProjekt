@@ -17,11 +17,11 @@ function isAuthenticated(req, res, next) {
   }
 }
 
-router.use(isAuthenticated, home);
-router.use(login);
 router.use(register);
+router.use(login);
 router.use(logout);
-router.use(search);
-router.use(profile);
+router.use(isAuthenticated, home);
+router.use(isAuthenticated, search);
+router.use(isAuthenticated, profile);
 
 module.exports = router;

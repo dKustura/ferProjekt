@@ -1,11 +1,19 @@
 const express = require('express');
-
-const getHtml = require('./get/html');
+const User = require('../../models/user');
 
 const router = new express.Router();
 
 router.get('/search', function(req, res) {
-    getHtml(req, res);
+  const search = req.query.query;
+
+  User.find({
+    $text: {$search: search}
+  }).exec((err, users) => {
+    if (err) {
+      throw err;
+    }
+    res.render('search', {users});
+  });
 });
 
 module.exports = router;

@@ -32,7 +32,7 @@ const postSchema = new Schema({
   likes: [{
     type: ObjectId,
     ref: 'User'
-  }],
+  }]
 });
 
 postSchema.plugin(deepPopulate);

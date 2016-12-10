@@ -7,12 +7,10 @@
 
 <h1> Search results </h1>
 
-{{#if users}}
-	{{#each users}}
-		<a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a><br>
-	{{/each}}
+{{#each users}}
+	<a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a><br>
 {{else}}
-	<p>No results.</p>
-{{/if}}
+  <p>No results.</p>
+{{/each}}
 
 <a href="/logout">Logout</a>

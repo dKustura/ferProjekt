@@ -1,11 +1,15 @@
 const express = require('express');
-
-const getHtml = require('./get/html');
+const User = require('../../models/user');
 
 const router = new express.Router();
 
 router.get('/profile/:id', function(req, res) {
-    getHtml(req, res);
+  User.findById(req.params.id).deepPopulate('posts').exec((err, user) => {
+    if (err) {
+      throw err;
+    }
+    res.render('profile', {user});
+  });
 });
 
 module.exports = router;
