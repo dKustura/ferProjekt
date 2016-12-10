@@ -5,7 +5,16 @@ const home = require('./home');
 
 const router = new express.Router();
 
-router.use(home);
+function isAuthenticated(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect('/login');
+    res.end();
+  }
+}
+
+router.use(isAuthenticated, home);
 router.use(login);
 router.use(register);
 
