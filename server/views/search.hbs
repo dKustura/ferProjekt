@@ -1,5 +1,10 @@
 <a href="/home">Home</a>
 
+<form action="/search" class="js-search-form" method="get">
+	<input type="text" class="js-search" placeholder="Search" name="query"/>
+	<input type="submit" value="Search"/>
+</form>
+
 <h1> Search results </h1>
 
 {{#if users}}

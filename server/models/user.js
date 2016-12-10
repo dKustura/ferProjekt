@@ -103,4 +103,6 @@ userSchema.plugin(deepPopulate, {
   }
 });
 
+userSchema.index({firstName: 'text', lastName: 'text'});
+
 module.exports = mongoose.model('User', userSchema);;

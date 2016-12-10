@@ -8,7 +8,7 @@ module.exports = function(req, res) {
     res.redirect('/login');
   } else {
     // this will render home template in /server/views
-    req.user.deepPopulate('posts', (err, user) => {
+    User.findById(req.params.id).deepPopulate('posts').exec((err, user) => {
       if(err) throw err;
       res.render('profile', {user: user});
     });

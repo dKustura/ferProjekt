@@ -4,6 +4,13 @@ $(function(){
 
   const $registerForm = $('.js-register-form');
 
+	if(!$registerForm.length && window.location.pathname === '/register') {
+		var delay = 2000; //redirection delay
+		setTimeout(function(){
+			window.location.replace('/home');
+		}, delay);
+	}
+
   $registerForm.on('submit', (e) => {
 		e.preventDefault();
 
