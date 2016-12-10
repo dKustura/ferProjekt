@@ -1,27 +1,30 @@
 const express = require('express');
-const accepts = require('accepts');
-
-const getHtml = require('./get/html');
-const getJson = require('./get/json');
-
-const postJson = require('./post/json');
 
 const router = new express.Router();
 
 router.get('/register', function(req, res) {
-  const accept = accepts(req);
-  switch(accept.type(['json', 'html'])) {
-  case 'json':
-    getJson(req, res);
-    break
-  default:
-    getHtml(req, res);
-    break
-  }
+
+  // this will render register template in /server/views
+  res.render('register');
 });
 
 router.post('/register', function(req, res) {
-  postJson(req, res);
+  passport.authenticate('local-register', (error, user, info) => {
+  if (error) {
+      res.status(401);
+      res.send(error);
+      return;
+    }
+
+    if (!user) {
+      res.status(404);
+      res.send(info);
+      return;
+    }
+
+    res.status(200);
+    res.send(user);
+  })(req, res);
 });
 
 module.exports = router;

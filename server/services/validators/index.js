@@ -10,7 +10,7 @@ const validateName = function(value) {
 }
 
 const validateDate = function(value) {
-	return validator.isDate(value);
+  return validator.isDate(value);
 }
 
 const validateURL = function(value) {
@@ -18,7 +18,7 @@ const validateURL = function(value) {
 }
 
 const validatePassword = function(value){
-	return validator.isLength(value, {
+  return validator.isLength(value, {
     min: 6,
     max: 15
   });
@@ -28,6 +28,6 @@ module.exports = {
   validateEmail: validateEmail,
   validateName: validateName,
   validateDate: validateDate,
-  validateURL: validateURL
-	validatePassword : validatePassword
+  validateURL: validateURL,
+  validatePassword: validatePassword
 };

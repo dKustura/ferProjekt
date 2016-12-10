@@ -4,14 +4,12 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 
-const router = require('router');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const connectMongo = require('connect-mongo');
 const passport = require('passport');
 const endpoints = require('./endpoints');
-
 
 // Create new app
 const app = express();
@@ -38,7 +36,7 @@ app.set('views', 'server/views/');
 // serve static files from /public folder
 const pathToPublicFolder = path.resolve(__dirname, '../public');
 app.use('/public', express.static(pathToPublicFolder));
- 
+
 // Module for parsing cookies
 app.use(cookieParser());
 
@@ -56,7 +54,7 @@ app.use(session({
 	saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
- 
+
 // use passport for authentication at login and register
 app.use(passport.initialize());
 app.use(passport.session());
