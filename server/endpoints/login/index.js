@@ -23,7 +23,6 @@ function showLoginFormError(req, res, error) {
 
 router.post('/login', function(req, res) {
   passport.authenticate('local-login', (error, user, info) => {
-    console.log(error, user, info);
     if (error) {
       showLoginFormError(req, res, error);
       return;
