@@ -1,33 +1,32 @@
-<h1>Welcome to registration page</h1>
-<element>
-  <form action="/register" class="js-register-form" method="post">
-    <div>
-      <label>Email:</label>
+<main class="page-card-container">
+  <h1 class="page-card-title"> Welcome to registration page </h1>
+
+  <form action="/register" class="page-card js-register-form form" method="post">
+    <label class="form-label">
+      <span> Email: </span>
       <input type="text" class="js-email" name="email"/>
-    </div>
+    </label>
 
-    <div>
-      <label>Password:</label>
+    <label class="form-label">
+      <span> Password: </span>
       <input type="password" class="js-password" name="password"/>
-    </div>
+    </label>
 
-    <div>
-      <label>First name:</label>
+    <label class="form-label">
+      <span> First name: </span>
       <input type="text" class="js-first-name" name="firstName"/>
-    </div>
+    </label>
 
-    <div>
-      <label>Last name:</label>
+    <label class="form-label">
+      <span> Last name: </span>
       <input type="text" class="js-last-name" name="lastName"/>
-    </div>
+    </label>
 
-    <div>
-      <label>Date of birth:</label>
+    <label class="form-label">
+      <span> Date of birth: </span>
       <input type="date" class="js-date-of-birth" name="dateOfBirth"/>
-    </div>
+    </label>
 
-    <div>
-     <input type="submit" value="Submit" />
-    </div>
+    <input class="form-submit" type="submit" value="Submit" />
   </form>
-</element>
+</main>

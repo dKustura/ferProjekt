@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const router = new express.Router();
 
@@ -10,7 +11,7 @@ router.get('/register', function(req, res) {
 
 router.post('/register', function(req, res) {
   passport.authenticate('local-register', (error, user, info) => {
-  if (error) {
+    if (error) {
       res.status(401);
       res.send(error);
       return;

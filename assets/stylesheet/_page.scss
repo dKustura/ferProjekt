@@ -1,0 +1,19 @@
+.page {
+  height: 100%;
+}
+
+.page-card {
+
+}
+
+.page-card-title {
+  margin-bottom: 20px;
+}
+
+.page-card-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
