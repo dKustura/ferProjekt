@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
 const validator = require('../services/validators');
 const bcrypt = require ('bcryptjs');
 
@@ -42,7 +43,7 @@ const userSchema = new Schema({
   dateOfBirth: {
     type: Date,
     validate: {
-      validator: validator.validateDateOfBirth,
+      validator: validator.validateDate,
       message: 'Date of birth is not valid'
     }
   },
@@ -76,7 +77,6 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Message'
   }]
-
 });
 
 userSchema.methods.generateHash = function(password) {

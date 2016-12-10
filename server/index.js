@@ -62,12 +62,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 
-
 //Add router
 app.use(endpoints);  // always use just before starting server
 
-
 // start listening on port 4242
-app.listen(4242, function () {
-  console.log('App running on http://localhost:4242 (Ctrl + click to open)');
+const port = process.env.PORT || '4242';
+app.listen(port, function () {
+  console.log(`App running on http://localhost:${port} (Ctrl + click to open)`);
 });
