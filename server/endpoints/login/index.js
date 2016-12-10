@@ -1,27 +1,41 @@
 const express = require('express');
-const accepts = require('accepts');
-
-const getHtml = require('./get/html');
-const getJson = require('./get/json');
-
-const postJson = require('./post/json');
+const passport = require('passport');
 
 const router = new express.Router();
 
-router.get('/login', function(req, res) {
-  const accept = accepts(req);
-  switch(accept.type(['json', 'html'])) {
-  case 'json':
-    getJson(req, res);
-    break
-  default:
-    getHtml(req, res);
-    break
-  }
-});
+// GET
 
 router.get('/login', function(req, res) {
-  postJson(req, res);
+  res.render('login');
+});
+
+// POST
+
+function showLoginFormError(req, res, error) {
+  res.status(401);
+  res.render('login', {
+    errors: [error],
+    fields: {
+      email: req.body.email
+    }
+  });
+}
+
+router.post('/login', function(req, res) {
+  passport.authenticate('local-login', (error, user, info) => {
+    if (error) {
+      showLoginFormError(req, res, error);
+      return;
+    }
+
+    if (!user) {
+      showLoginFormError(req, res, info);
+      return;
+    }
+
+    res.status(200);
+    res.redirect('/');
+  })(req, res);
 });
 
 module.exports = router;
