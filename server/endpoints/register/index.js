@@ -4,8 +4,6 @@ const passport = require('passport');
 const router = new express.Router();
 
 router.get('/register', function(req, res) {
-
-  // this will render register template in /server/views
   res.render('register');
 });
 

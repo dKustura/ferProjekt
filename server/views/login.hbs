@@ -1,15 +1,22 @@
 <main class="page-card-container">
   <h1 class="page-card-title"> Welcome, please login </h1>
 
-  <form action="/login" class="page-card js-login-form form" method="post">
+  <form action="/login" class="page-card form" method="post">
+
+    <div class="errors">
+      {{#each errors}}
+        {{message}}
+      {{/each}}
+    </div>
+
     <label class="form-label">
       <span> Email: </span>
-      <input type="text" class="js-email" name="email"/>
+      <input type="text" class="js-email" name="email" value="{{fields.email}}"/>
     </label>
 
     <label class="form-label">
       <span> Password: </span>
-      <input type="password" class="js-password" name="password"/>
+      <input type="password" class="js-password" name="password" value="{{fields.password}}"/>
     </label>
 
     <input class="form-submit" type="submit" value="Submit" />

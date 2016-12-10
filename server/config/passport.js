@@ -3,7 +3,7 @@ const User = require('../models/user');
 
 
 module.exports = function(passport){
-	
+
   passport.serializeUser(function(user, done){
     done(null, user.id);
   });
@@ -13,7 +13,7 @@ module.exports = function(passport){
       done(err, user);
     });
   });
-	
+
   passport.use('local-register', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -25,14 +25,13 @@ module.exports = function(passport){
         if(err){
           return done(err);
         }
-				
-        if(user){
-        return done(null, false, {
-          message: 'Email is already in use.',
-          field: 'email'
+
+        if (user) {
+          return done({
+            message: 'Email is already in use.',
           });
         }
-				
+
         const newUser = new User();
         newUser.email = email;
         newUser.password = newUser.generateHash(password);
@@ -49,8 +48,8 @@ module.exports = function(passport){
       });
     });
   }));
-	
-	
+
+
   passport.use('local-login', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
@@ -61,22 +60,16 @@ module.exports = function(passport){
       if (err) {
         return done(err);
       }
-			
+
       if (!user) {
         return done(null, false, {
-        error: {
-          message: 'Email was not found.',
-          field: 'email'
-          }
+          message: 'Email was not found.'
         });
       }
-			
+
      if (!user.validPassword(password)) {
        return done(null, false, {
-         error: {
-            message: 'Incorrect password',
-            field: 'password'
-          }
+          message: 'Incorrect password',
         });
       }
 

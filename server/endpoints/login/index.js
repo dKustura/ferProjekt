@@ -3,28 +3,39 @@ const passport = require('passport');
 
 const router = new express.Router();
 
-router.get('/login', function(req, res) {
+// GET
 
-  // this will render login template in /server/views
+router.get('/login', function(req, res) {
   res.render('login');
 });
 
+// POST
+
+function showLoginFormError(req, res, error) {
+  res.status(401);
+  res.render('login', {
+    errors: [error],
+    fields: {
+      email: req.body.email
+    }
+  });
+}
+
 router.post('/login', function(req, res) {
   passport.authenticate('local-login', (error, user, info) => {
+    console.log(error, user, info);
     if (error) {
-      res.status(401);
-      res.send(error);
+      showLoginFormError(req, res, error);
       return;
     }
 
     if (!user) {
-      res.status(404);
-      res.send(info);
+      showLoginFormError(req, res, info);
       return;
     }
 
     res.status(200);
-    res.send(user);
+    res.redirect('/');
   })(req, res);
 });
 
