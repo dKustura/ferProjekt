@@ -1,0 +1,21 @@
+{{> header }}
+
+<main class="page">
+
+  <h1> {{user.firstName}} {{user.lastName}}</h1>
+
+  <h3> Posts: </h3>
+
+  {{#each user.posts}}
+    <div class="post">
+      <div class="post__info">
+        <div class="post__date">
+          Posted at: {{formatDate postedAt}}
+        </div>
+      </div>
+      <div class="page__content">
+        {{content}}
+      </div>
+    </div>
+  {{/each}}
+</main>

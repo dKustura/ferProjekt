@@ -1,0 +1,14 @@
+<div class="header">
+  <a class="header__logo" href="/"> RDM </a>
+  <form action="/search" method="get" class="header__search">
+  	<input type="text" name="query" class="header__search-input" value="{{fields.query}}" />
+  	<input type="submit" value="Search" class="header__search-submit"/>
+  </form>
+  <div class="header__current-user">
+    <a href="/profile/{{currentUser.id}}">
+      {{currentUser.firstName}} {{currentUser.lastName}}
+    </a>
+    -
+    <a href="/logout" class="header__logout">Logout</a>
+  </div>
+</div>

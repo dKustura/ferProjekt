@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 const validator = require('../services/validators');
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -75,7 +76,12 @@ const userSchema = new Schema({
   messages: [{
     type: ObjectId,
     ref: 'Message'
-  }]
+  }],
+
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 userSchema.methods.generateHash = function(password) {
@@ -85,5 +91,17 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
+
+userSchema.plugin(deepPopulate, {
+  populate: {
+    'posts': {
+      options: {
+        sort: {postedAt: -1}
+      }
+    }
+  }
+});
+
+userSchema.index({firstName: 'text', lastName: 'text'});
 
 module.exports = mongoose.model('User', userSchema);
