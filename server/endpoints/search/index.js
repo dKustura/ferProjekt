@@ -13,10 +13,10 @@ router.get('/search', function(req, res) {
       if (err) {
         throw err;
       }
-      res.render('search', {users});
+      res.render('search', {users, fields: {query}});
     });
   } else {
-    res.render('search');
+    res.render('search', {fields: {query}});
   }
 });
 

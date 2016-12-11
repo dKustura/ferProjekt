@@ -1,21 +1,31 @@
 {{> header }}
 
-<h1> Homepage </h1>
+<div class="page">
 
-<form action="/home" class="js-post-form" method="post">
-	<textarea placeholder="Express yourself..." name="postContent"></textarea>
-	<input type="submit" value="Post"/>
-</form>
+  <form action="/post" class="js-post-form" method="post">
+    <textarea placeholder="Express yourself..." name="content"></textarea>
+    <input type="submit" value="Post"/>
+  </form>
 
-<h3>Posts:</h3>
-{{#each posts}}
-<div>
-	{{this.user.firstName}} {{this.user.lastName}}<br>
-	{{this.content}}<br>Posted at: {{this.postedAt}}<br>
-	{{#each this.comments}}
-		{{this.content}}<br>
-	{{/each}}
-</div><br>
-{{/each}}
+  <div class="posts">
+    {{#each posts}}
+      <div class="post">
+        <div class="post__user">
+          {{this.user.firstName}} {{this.user.lastName}}
+        </div>
+        <div class="post__content">
+          {{this.content}}
+        </div>
+        <div class="post__date">
+          Posted at: {{this.postedAt}}
+        </div>
 
-<a href="/logout">Logout</a>
+        {{#each this.comments}}
+          <div class="post__comment">
+            {{this.content}}
+          </div>
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</div>

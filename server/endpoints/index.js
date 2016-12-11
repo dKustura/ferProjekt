@@ -5,6 +5,7 @@ const logout = require('./logout');
 const home = require('./home');
 const search = require('./search');
 const profile = require('./profile');
+const post = require('./post');
 
 const router = new express.Router();
 
@@ -23,5 +24,6 @@ router.use(logout);
 router.use(isAuthenticated, home);
 router.use(isAuthenticated, search);
 router.use(isAuthenticated, profile);
+router.use(isAuthenticated, post);
 
 module.exports = router;
