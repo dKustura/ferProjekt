@@ -6,6 +6,12 @@ const router = new express.Router();
 // GET
 
 router.get('/register', function(req, res) {
+  if (req.user) {
+    res.redirect('/');
+    res.end();
+    return;
+  }
+  
   res.render('register');
 });
 

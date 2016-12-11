@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const validateURL = require('../services/validators').validateURL
+const validateURL = require('../services/validators').validateURL;
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -41,5 +42,7 @@ const photoSchema = new Schema({
     ref: 'Album'
   }
 });
+
+photoSchema.plugin(deepPopulate);
 
 module.exports = mongoose.model('Photo', photoSchema);
