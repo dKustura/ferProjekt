@@ -11,6 +11,7 @@ const morgan = require('morgan');
 
 const config = require('./config');
 const endpoints = require('./endpoints');
+require('./models');
 
 // Create new app
 const app = express();
@@ -26,7 +27,8 @@ const MongoStore = connectMongo(session);
 const hbs = exphbs.create({
   extname: '.hbs',
   defaultLayout: 'main',
-  layoutsDir: 'server/views/layouts/'
+  layoutsDir: 'server/views/layouts/',
+  partialsDir: 'server/views/partials/'
 });
 
 // Register `hbs.engine` with the Express app.

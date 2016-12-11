@@ -1,11 +1,6 @@
+{{> header }}
+
 <h1> Homepage </h1>
-
-<form action="/search" class="js-search-form" method="get">
-	<input type="text" class="js-search" placeholder="Search" name="query"/>
-	<input type="submit" value="Search"/>
-</form>
-
-<h3>You are logged in as: {{user.firstName}} {{user.lastName}}</h3>
 
 <form action="/home" class="js-post-form" method="post">
 	<textarea placeholder="Express yourself..." name="postContent"></textarea>

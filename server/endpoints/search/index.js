@@ -4,16 +4,20 @@ const User = require('../../models/user');
 const router = new express.Router();
 
 router.get('/search', function(req, res) {
-  const search = req.query.query;
+  const query = req.query.query;
 
-  User.find({
-    $text: {$search: search}
-  }).exec((err, users) => {
-    if (err) {
-      throw err;
-    }
-    res.render('search', {users});
-  });
+  if (query) {
+    User.find({
+      $text: {$search: query}
+    }).exec((err, users) => {
+      if (err) {
+        throw err;
+      }
+      res.render('search', {users});
+    });
+  } else {
+    res.render('search');
+  }
 });
 
 module.exports = router;
