@@ -1,14 +1,21 @@
-<a href="/home">Home</a>
-<form action="/search" class="js-search-form" method="get">
-	<input type="text" class="js-search" placeholder="Search" name="query"/>
-	<input type="submit" value="Search"/>
-</form>
+{{> header }}
 
-<h1> {{user.firstName}} {{user.lastName}}</h1>
+<main class="page">
 
-<h3>Posts:</h3>
-{{#each user.posts}}
-	<p>{{this.content}}<br>Posted at: {{this.postedAt}}</p>
-{{/each}}
+  <h1> {{user.firstName}} {{user.lastName}}</h1>
 
-<a href="/logout">Logout</a>
+  <h3> Posts: </h3>
+
+  {{#each user.posts}}
+    <div class="post">
+      <div class="post__info">
+        <div class="post__date">
+          Posted at: {{formatDate postedAt}}
+        </div>
+      </div>
+      <div class="page__content">
+        {{content}}
+      </div>
+    </div>
+  {{/each}}
+</main>

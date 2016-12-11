@@ -1,21 +1,17 @@
 {{> header }}
 
 <main class="page">
-  <form action="/search" class="js-search-form" method="get">
-    <label>
-      <span> Search: </span>
-      <input type="text" name="query" value="{{fields.query}}"/>
-    </label>
-
-  	<input type="text" class="js-search" placeholder="Search" name="query"/>
-  	<input class="form-submit" type="submit" value="Search"/>
-  </form>
-
   <h1> Search results </h1>
 
-  {{#each users}}
-  	<a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a><br>
+  {{#if users}}
+    <ul>
+      {{#each users}}
+        <li>
+          <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
+        </li>
+      {{/each}}
+    </ul>
   {{else}}
-    <p>No results.</p>
-  {{/each}}
+    <div> No results. </div>
+  {{/if}}
 </main>
