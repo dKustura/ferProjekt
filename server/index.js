@@ -28,7 +28,12 @@ const hbs = exphbs.create({
   extname: '.hbs',
   defaultLayout: 'main',
   layoutsDir: 'server/views/layouts/',
-  partialsDir: 'server/views/partials/'
+  partialsDir: 'server/views/partials/',
+  helpers: {
+    formatDate(date) {
+      return date.toLocaleDateString();
+    }
+  }
 });
 
 // Register `hbs.engine` with the Express app.

@@ -2,27 +2,30 @@
 
 <div class="page">
 
-  <form action="/post" class="js-post-form" method="post">
-    <textarea placeholder="Express yourself..." name="content"></textarea>
-    <input type="submit" value="Post"/>
+  <form action="/post" class="post-form" method="post">
+    <textarea placeholder="Express yourself..." name="content" class="post-form__input"></textarea>
+    <input type="submit" value="Post" class="post-form__submit"/>
   </form>
 
   <div class="posts">
     {{#each posts}}
       <div class="post">
-        <div class="post__user">
-          {{this.user.firstName}} {{this.user.lastName}}
-        </div>
-        <div class="post__content">
-          {{this.content}}
-        </div>
-        <div class="post__date">
-          Posted at: {{this.postedAt}}
+        <div class="post__info">
+          <a class="post__user" href="/profile/{{user.id}}">
+            {{user.firstName}} {{user.lastName}}
+          </a>
+          <div class="post__date">
+            Posted at: {{formatDate postedAt}}
+          </div>
         </div>
 
-        {{#each this.comments}}
+        <div class="post__content">
+          {{content}}
+        </div>
+
+        {{#each comments}}
           <div class="post__comment">
-            {{this.content}}
+            {{content}}
           </div>
         {{/each}}
       </div>
