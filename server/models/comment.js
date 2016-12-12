@@ -19,6 +19,11 @@ const commentSchema = new Schema({
     ref: 'User'
   },
 
+  post: {
+    type: ObjectId,
+    ref: 'Post'
+  },
+
   likes: [{
     type: ObjectId,
     ref: 'User'
