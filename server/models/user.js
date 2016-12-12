@@ -73,6 +73,11 @@ const userSchema = new Schema({
     ref: 'User'
   }],
 
+  requests: [{
+    type: ObjectId,
+    ref: 'User'
+  }],
+
   messages: [{
     type: ObjectId,
     ref: 'Message'

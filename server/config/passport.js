@@ -20,6 +20,14 @@ module.exports = function(passport) {
   },
   function(req, email, password, done) {
     process.nextTick(function() {
+
+      var minPasswordLength = 6;
+      if(password.length < minPasswordLength) {
+        return done({
+          message: `Password must be at least ${minPasswordLength} characters long`
+        });
+      }
+
       User.findOne({email}, (err, user) => {
         if (err) {
           return done(err);

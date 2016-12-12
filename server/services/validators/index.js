@@ -1,5 +1,7 @@
 const validator = require('validator');
 
+const minPasswordLength = 6;
+
 const validateEmail = function(value) {
   return validator.isEmail(value);
 };
@@ -19,17 +21,9 @@ const validateURL = function(value) {
   return validator.isURL(value);
 };
 
-const validatePassword = function(value) {
-  return validator.isLength(value, {
-    min: 6,
-    max: 15
-  });
-};
-
 module.exports = {
   validateEmail,
   validateName,
   validateDate,
-  validateURL,
-  validatePassword
+  validateURL
 };

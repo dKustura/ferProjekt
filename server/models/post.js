@@ -16,7 +16,7 @@ const postSchema = new Schema({
   content: {
     type: String,
     required: true,
-    max: [MAX_LENGTH, `Post must not be longer than ${MAX_LENGTH} characters`]
+    maxlength: [MAX_LENGTH, `Post must not be longer than ${MAX_LENGTH} characters`]
   },
 
   postedAt: {

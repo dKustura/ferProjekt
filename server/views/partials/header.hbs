@@ -4,6 +4,12 @@
   	<input type="text" name="query" class="header__search-input" value="{{fields.query}}" />
   	<input type="submit" value="Search" class="header__search-submit"/>
   </form>
+  <div class="header__current-user-requests">
+    <a href="/requests">
+      Requests({{currentUser.requests.length}})
+    </a>
+    - 
+  </div>
   <div class="header__current-user">
     <a href="/profile/{{currentUser.id}}">
       {{currentUser.firstName}} {{currentUser.lastName}}

@@ -32,6 +32,19 @@ const hbs = exphbs.create({
   helpers: {
     formatDate(date) {
       return date.toLocaleDateString();
+    },
+    isContact(user, currentUser) {
+      return user.contacts.find((contact) => {
+        return contact.id === currentUser.id;
+      });
+    },
+    hasRequest(user, currentUser) {
+      return user.requests.find((req) => {
+        return req.id === currentUser.id;
+      });
+    },
+    isEqual(o1, o2) {
+      return o1 === o2;
     }
   }
 });
