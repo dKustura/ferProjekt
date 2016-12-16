@@ -9,10 +9,10 @@
         <li>
           <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
 		  <button data-profile-id="{{this.id}}" class="js-add-friend-button"> Add friend </button>
-  		  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+		   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 			<script type="text/javascript">
 			$( document ).ready(function() {
-				const $button = $('#button-');
+				const $button = $('.js-add-friend-button');
 				$button.on('click', function(event) {
 				
 				const profileId = $(event.target).attr('data-profile-id');
@@ -20,9 +20,9 @@
 					$.ajax({
 				
 				url: `/add-profile/${profileId}`
+				});
 				$button.prop('disabled',true);
   });
-				});
 });
 		  </script>
         </li>
