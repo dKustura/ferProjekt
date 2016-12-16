@@ -67,6 +67,16 @@ const userSchema = new Schema({
     type: ObjectId,
     ref: 'Post'
   }],
+  
+  pending: [{
+    type: ObjectId,
+    ref: 'User'
+  }],
+  
+  requests: [{
+    type: ObjectId,
+    ref: 'User'
+  }],
 
   contacts: [{
     type: ObjectId,

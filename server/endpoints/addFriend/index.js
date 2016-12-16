@@ -9,12 +9,12 @@ router.get('/add-profile/:id', function(req, res) {
   
   User.findById(req.params.id, (err,user) => {
   
-  var index = user.contacts.indexOf(currentUser);
+  var index = currentUser.contacts.indexOf(user.id);
 		
 		
 		if (index == -1) {
-			currentUser.contacts.push(user);
-			user.contacts.push(currentUser);
+			currentUser.requests.push(user);
+			user.pending.push(currentUser);
 		    currentUser.save((err) => {
 				if(err) {
 					res.send(err);
@@ -29,7 +29,6 @@ router.get('/add-profile/:id', function(req, res) {
 			})
 		}
 
-		res.redirect('/');
 	});		
 });
 
