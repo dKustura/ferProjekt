@@ -1,0 +1,19 @@
+{{> header }}
+
+<main class="page">
+  <h1> Contact Requests </h1>
+
+  {{#if requests}}
+    <ul>
+      {{#each requests}}
+        <li>
+        {{this.firstName}} {{this.lastName}}
+        <a href="/contact/accept/{{this.id}}">Accept</a>
+        <a href="/contact/decline/{{this.id}}">Decline</a>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <div> No requests. </div>
+  {{/if}}
+</main>

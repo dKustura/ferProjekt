@@ -2,21 +2,10 @@
 
 <main class="page">
 
+  <a href="/contacts"> Contacts </a>
+
   <h1> {{user.firstName}} {{user.lastName}}</h1>
   {{#if (isEqual user.id currentUser.id)}}
-    <div class="requests">
-      <div class="requests__title">
-        Contact requests
-      </div>
-    {{#each user.requests}}
-      <div class="request">
-        {{this.firstName}} {{this.lastName}}
-        <a href="/contact/accept/{{this.id}}">Accept</a>
-        <a href="/contact/decline/{{this.id}}">Decline</a>
-      </div>
-    {{/each}}
-    </div>
-  {{else}}
     {{#if (isContact user currentUser)}}
       <a href="/contact/remove/{{user.id}}">Remove contact</a>
     {{else}}

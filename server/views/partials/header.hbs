@@ -2,15 +2,19 @@
   <a class="header__logo" href="/"> RDM </a>
   <form action="/search" method="get" class="header__search">
   	<input type="text" name="query" class="header__search-input" value="{{fields.query}}" />
-  	<input type="submit" value="Search" class="header__search-submit"/>
+  	<input type="submit" class="glyphicon glyphicon-search" aria-hidden="true"/>
   </form>
-  <div class="header__current-user-requests">
+  {{!--<div class="header__current-user-requests">
     <a href="/requests">
       Requests({{currentUser.requests.length}})
     </a>
-    - 
-  </div>
+    -
+  </div>--}}
   <div class="header__current-user">
+    <a href="/requests">
+      Requests({{currentUser.requests.length}})
+    </a>
+    -
     <a href="/profile/{{currentUser.id}}">
       {{currentUser.firstName}} {{currentUser.lastName}}
     </a>

@@ -3,6 +3,26 @@ const User = require('../../models/user');
 
 const router = new express.Router();
 
+router.get('/requests', function(req, res) {
+  const currentUser = req.user;
+
+  User.findById(currentUser.id)
+    .deepPopulate('requests')
+    .exec((err, user) => {
+      res.render('requests', {currentUser: user, requests: user.requests});
+  });;
+});
+
+router.get('/contacts', function(req, res) {
+  const currentUser = req.user;
+
+  User.findById(currentUser.id)
+    .deepPopulate('contacts')
+    .exec((err, user) => {
+      res.render('contacts', {currentUser: user, contacts: user.contacts});
+  });;
+});
+
 router.get('/contact/decline/:id', function(req, res) {
   const currentUser = req.user;
   const userId = req.params.id;
@@ -39,6 +59,9 @@ router.get('/contact/accept/:id', function(req, res) {
       }
     });
     User.findById(userId, (err, user) => {
+      if(err) {
+        throw err;
+      }
       user.contacts.push(currentUser);
       user.save((err) => {
         if(err) {
@@ -59,6 +82,9 @@ router.get('/contact/remove/:id', function(req, res) {
 
   if(userIndex !== -1) {
     User.findById(userId, (err, user) => {
+      if(err) {
+        throw err;
+      }
       var index = user.contacts.indexOf(currentUser.id);
       user.contacts.splice(index, 1);
 
@@ -85,6 +111,9 @@ router.get('/contact/request/:id', function(req, res) {
   const userId = req.params.id;
   
   User.findById(userId, (err, user) => {
+    if(err) {
+      throw err;
+    }
 
     var index = currentUser.contacts.indexOf(userId);
 

@@ -37,7 +37,8 @@ const userSchema = new Schema({
 
   password: {
     type: String,
-    required: [true, 'User password is required']
+    required: [true, 'User password is required'],
+    select: false
   },
 
   dateOfBirth: {
