@@ -7,7 +7,6 @@ const search = require('./search');
 const profile = require('./profile');
 const post = require('./post');
 const comment = require('./comment');
-const deletePost = require('./deletePost');
 
 const router = new express.Router();
 
@@ -28,6 +27,5 @@ router.use(isAuthenticated, search);
 router.use(isAuthenticated, profile);
 router.use(isAuthenticated, post);
 router.use(isAuthenticated, comment);
-router.use(isAuthenticated, deletePost);
 
 module.exports = router;

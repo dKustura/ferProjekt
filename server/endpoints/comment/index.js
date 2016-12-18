@@ -4,7 +4,7 @@ const Post = require('../../models/post');
 
 const router = new express.Router();
 
-router.delete('/comment/:id', function(req, res) {
+router.post('/comment/:id/delete', function(req, res) {
   const currentUser = req.user;
 
   Comment.findById(req.params.id, (commentFindError, comment) => {

@@ -1,3 +1,6 @@
+/* global Promise */
+
+const mongoose = require('mongoose');
 const express = require('express');
 const Post = require('../../models/post');
 const Comment = require('../../models/comment');
@@ -114,5 +117,37 @@ router.post('/post/:id/unlike', function(req, res) {
     }
   });
 });
+
+router.post('/post/:id/delete', function(req, res) {
+  const currentUser = req.user;
+
+  Post.findById(req.params.id, (err, post) => {
+    if (err) {
+      throw err;
+    }
+    if (currentUser.id.toString() === post.user.toString()) {
+      const userIndex = currentUser.posts.indexOf(req.params.id);
+      currentUser.posts.splice(userIndex);
+
+      const postComments = post.comments.map((id) => mongoose.Types.ObjectId(id));
+
+      Comment.find({_id: {$in: postComments}}, function(commentFindError, comments) {
+
+        const postRemove = post.remove();
+        const userSave = currentUser.save();
+        const commentsDelete = comments.map((comment) => comment.remove());
+
+        Promise.all([postRemove, userSave, ...commentsDelete]).then(() => {
+          res.redirect('back');
+        }).catch(() => {
+          res.status(500);
+          res.send();
+          return;
+        });
+      });
+    }
+  });
+});
+
 
 module.exports = router;

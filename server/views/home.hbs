@@ -27,11 +27,11 @@
           {{likes.length}}
 
           {{#if (isLiked likes ../currentUser) }}
-            <form action="/unlike/{{this.id}}" method="post">
+            <form action="/post/{{this.id}}/unlike" method="post">
               <input type="submit" value="Unlike"/>
             </form>
           {{else}}
-            <form action="/like/{{this.id}}" method="post">
+            <form action="/post/{{this.id}}/like" method="post">
               <input type="submit" value="Like"/>
             </form>
           {{/if}}
@@ -39,7 +39,7 @@
 
 
         {{#if (isOwner user.id ../currentUser.id) }}
-          <form action="/deletePost/{{this.id}}" method="post">
+          <form action="/post/{{this.id}}/delete" method="post">
             <input type="submit" value="Delete"/>
           </form>
         {{/if}}
@@ -67,7 +67,7 @@
             {{/if}}
 
             {{#if (isOwner user ../../currentUser.id) }}
-              <form action="/comment/{{this.id}}" method="delete">
+              <form action="/comment/{{this.id}}/delete" method="post">
                 <input type="submit" value="Delete"/>
               </form>
             {{/if}}
