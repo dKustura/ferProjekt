@@ -23,7 +23,7 @@ router.post('/post', function(req, res) {
         return;
       }
 
-      res.redirect('/');
+      res.redirect('back');
     });
   });
 });
@@ -33,7 +33,8 @@ router.post('/post/:post_id/comment', function(req, res) {
 
   Post.findById(req.params.post_id, (postError, post) => {
     if (postError) {
-      throw postError;
+      res.send(postError);
+      return;
     }
 
     const newComment = new Comment();
@@ -57,6 +58,60 @@ router.post('/post/:post_id/comment', function(req, res) {
         res.redirect('back');
       });
     });
+  });
+});
+
+router.post('/post/:id/like', function(req, res) {
+  const currentUser = req.user;
+  Post.findById(req.params.id, (postFindError, post) => {
+    if (postFindError) {
+      res.send(postFindError);
+      return;
+    }
+
+    if (post.likes.indexOf(currentUser.id) === -1) {
+      post.likes.push(currentUser);
+      post.save((postSaveError) => {
+        if (postSaveError) {
+          res.send(postSaveError);
+          return;
+        }
+
+        res.redirect('back');
+      });
+    } else {
+      res.status(401);
+      res.send();
+      return;
+    }
+  });
+});
+
+router.post('/post/:id/unlike', function(req, res) {
+  const currentUser = req.user;
+  Post.findById(req.params.id, (postFindError, post) => {
+    if (postFindError) {
+      res.send(postFindError);
+      return;
+    }
+
+    const userIndex = post.likes.indexOf(currentUser.id);
+
+    if (userIndex !== -1) {
+      post.likes.splice(userIndex, 1);
+      post.save((postSaveError) => {
+        if (postSaveError) {
+          res.send(postSaveError);
+          return;
+        }
+
+        res.redirect('back');
+      });
+    } else {
+      res.status(401);
+      res.send();
+      return;
+    }
   });
 });
 
