@@ -9,9 +9,6 @@ const post = require('./post');
 const like = require('./like');
 const unlike = require('./unlike');
 const comment = require('./comment');
-const likeComment = require('./likeComment');
-const unlikeComment = require('./unlikeComment');
-const deleteComment = require('./deleteComment');
 const deletePost = require('./deletePost');
 
 const router = new express.Router();
@@ -35,9 +32,6 @@ router.use(isAuthenticated, post);
 router.use(isAuthenticated, like);
 router.use(isAuthenticated, unlike);
 router.use(isAuthenticated, comment);
-router.use(isAuthenticated, likeComment);
-router.use(isAuthenticated, unlikeComment);
-router.use(isAuthenticated, deleteComment);
 router.use(isAuthenticated, deletePost);
 
 module.exports = router;

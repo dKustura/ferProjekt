@@ -22,21 +22,21 @@
         <div class="post__content">
           {{content}}
         </div>
-        
+
         <div>
           {{likes.length}}
 
           {{#if (isLiked likes ../currentUser) }}
-          <form action="/unlike/{{this.id}}" method="post">
+            <form action="/unlike/{{this.id}}" method="post">
               <input type="submit" value="Unlike"/>
-          </form>
+            </form>
           {{else}}
             <form action="/like/{{this.id}}" method="post">
-                <input type="submit" value="Like"/>
+              <input type="submit" value="Like"/>
             </form>
           {{/if}}
         </div>
-        
+
 
         {{#if (isOwner user.id ../currentUser.id) }}
           <form action="/deletePost/{{this.id}}" method="post">
@@ -49,30 +49,32 @@
             <a class="comment__user" href="/profile/{{user.id}}">
               {{user.firstName}} {{user.lastName}}
             </a>
-            <br>{{content}}<br> 
+            <br>{{content}}<br>
             <div class="comment__date">
               Posted at: {{formatDate createdAt}}
             </div>
-            {{likes.length}}    
+
+            {{likes.length}}
+
             {{#if (isLiked likes ../../currentUser) }}
-              <form action="/unlikeComment/{{this.id}}" method="post">
+              <form action="/comment/{{this.id}}/unlike" method="post">
                 <input type="submit" value="Unlike"/>
               </form>
             {{else}}
-              <form action="/likeComment/{{this.id}}" method="post">
+              <form action="/comment/{{this.id}}/like" method="post">
                 <input type="submit" value="Like"/>
               </form>
             {{/if}}
 
             {{#if (isOwner user ../../currentUser.id) }}
-              <form action="/deleteComment/{{this.id}}" method="post">
+              <form action="/comment/{{this.id}}" method="delete">
                 <input type="submit" value="Delete"/>
               </form>
             {{/if}}
           </div>
         {{/each}}
 
-        <form action="/comment/{{this.id}}" method="post">
+        <form action="/post/{{this.id}}/comment" method="post">
           <textarea placeholder="Add a comment..." name="content" class="post-form__input"></textarea>
           <input type="submit" value="Comment" class="post-form__submit"/>
         </form>

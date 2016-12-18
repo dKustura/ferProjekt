@@ -1,5 +1,6 @@
 const express = require('express');
 const Post = require('../../models/post');
+const Comment = require('../../models/comment');
 
 const router = new express.Router();
 
@@ -23,6 +24,38 @@ router.post('/post', function(req, res) {
       }
 
       res.redirect('/');
+    });
+  });
+});
+
+router.post('/post/:post_id/comment', function(req, res) {
+  const currentUser = req.user;
+
+  Post.findById(req.params.post_id, (postError, post) => {
+    if (postError) {
+      throw postError;
+    }
+
+    const newComment = new Comment();
+    newComment.user = currentUser;
+    newComment.content = req.body.content;
+    newComment.post = post;
+
+    newComment.save((commentError) => {
+      if (commentError) {
+        res.send(commentError);
+        return;
+      }
+
+      post.comments.push(newComment);
+      post.save((postSaveError) => {
+        if (postSaveError) {
+          res.send(postSaveError);
+          return;
+        }
+
+        res.redirect('back');
+      });
     });
   });
 });
