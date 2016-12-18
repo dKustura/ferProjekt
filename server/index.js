@@ -32,6 +32,17 @@ const hbs = exphbs.create({
   helpers: {
     formatDate(date) {
       return date.toLocaleDateString();
+    },
+    isLiked(likes, user) {
+      for(var i = 0; i < likes.length; i++) {
+        if(likes[i].id === user.id) {
+          return true;
+        }
+      }
+      return false;
+    },
+    isOwner(objectUserId, currentUserId) {
+      return objectUserId == currentUserId;
     }
   }
 });

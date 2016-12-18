@@ -7,8 +7,8 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const albumSchema = new Schema({
 
   user: {
-     type: ObjectId,
-     ref: 'User'
+    type: ObjectId,
+    ref: 'User'
   },
 
   title: {
@@ -26,7 +26,7 @@ const albumSchema = new Schema({
   photos: [{
     type: ObjectId,
     ref: 'Photo'
-  }],
+  }]
 });
 
 albumSchema.plugin(deepPopulate);
