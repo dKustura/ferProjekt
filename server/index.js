@@ -8,7 +8,6 @@ const session = require('express-session');
 const connectMongo = require('connect-mongo');
 const passport = require('passport');
 const morgan = require('morgan');
-const bb = require('express-busboy');
 
 const config = require('./config');
 const endpoints = require('./endpoints');
@@ -52,9 +51,6 @@ app.use('/public', express.static(pathToPublicFolder));
 // Module for parsing cookies
 app.use(cookieParser());
 
-bb.extend(app, {
-  upload: true
-});
 // Module for parsing incoming request bodies (2 types)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -74,6 +70,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
+
+// Serve uploaded photos to logged in users
+app.use('/public/uploads', function (req, res) {
+  if (!req.user) {
+    res.send('/');
+    return;
+  }
+
+  res.sendFile(`public/uploads${req.path}`);
+});
 
 // Add router
 app.use(endpoints);  // always use just before starting server
