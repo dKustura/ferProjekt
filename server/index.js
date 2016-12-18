@@ -71,6 +71,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 
+// Serve uploaded photos to logged in users
+app.use('/public/uploads', function (req, res) {
+  if (!req.user) {
+    res.send('/');
+    return;
+  }
+
+  res.sendFile(`public/uploads${req.path}`);
+});
+
 // Add router
 app.use(endpoints);  // always use just before starting server
 
