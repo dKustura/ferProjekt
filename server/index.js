@@ -45,6 +45,17 @@ const hbs = exphbs.create({
     },
     isEqual(o1, o2) {
       return o1 === o2;
+    },
+    isLiked(likes, user) {
+      for (let i = 0; i < likes.length; i++) {
+        if (likes[i].id === user.id) {
+          return true;
+        }
+      }
+      return false;
+    },
+    isOwner(objectUserId, currentUserId) {
+      return objectUserId === currentUserId;
     }
   }
 });
@@ -83,6 +94,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
+
+// Serve uploaded photos to logged in users
+app.use('/public/uploads', function (req, res) {
+  if (!req.user) {
+    res.send('/');
+    return;
+  }
+
+  res.sendFile(`public/uploads${req.path}`);
+});
 
 // Add router
 app.use(endpoints);  // always use just before starting server

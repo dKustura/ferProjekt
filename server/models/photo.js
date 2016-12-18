@@ -13,10 +13,6 @@ const photoSchema = new Schema({
 
   url: {
     type: String,
-    validate: {
-      validator: validateURL,
-      message: 'URL is not valid'
-    },
     required: [true, 'Photo URL is required']
   },
 
