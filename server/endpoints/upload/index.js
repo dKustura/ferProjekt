@@ -2,40 +2,63 @@ const express = require('express');
 const fs = require('fs');
 const Photo = require('../../models/photo');
 const randToken = require('rand-token');
-const config = require('../../config')
+const config = require('../../config');
+const multer = require('multer');
+const path = require('path');
 
 const router = new express.Router();
+const upload = multer({dest: '/tmp'});
 
-router.get('/upload', function(req, res) {
-  const currentUser = req.user;
-  if (!currentUser) {
-    res.redirect('/');
-    res.end();
-    return;
-  }
-
+router.get('/upload', function (req, res) {
   res.render('upload');
 });
 
-router.post('/upload', function (req, res) {
-  const currentUser = req.user;
+router.post('/upload', upload.single("file"), function (req, res) {
+  if (!req.file) {
+    res.redirect('/');
+    return;
+  }
 
-  const dir = config.uploadDirectory;
+  const newFileName = randToken.generate(32).toLowerCase();
+  const uploadDirectory = config.uploadDirectory;
+  const extension = path.extname(req.file.originalname);
 
-  const savePath = dir + randToken.generate(16);
+  const filePath = uploadDirectory + newFileName + extension;
 
-  // fs.readFile(req.files.displayImage.path, function (err, data) {
-  //   // ...
-  //   var newPath = __dirname + "/uploads/uploadedFileName";
-  //   fs.writeFile(newPath, data, function (err) {
-  //     res.redirect("back");
-  //   });
+  fs.readFile(req.file.path, function (error, data) {
+    if (error) {
+      res.send(error);
+      return;
+    }
 
-  // TODO Get the image file and save it at save path
+    fs.writeFile(filePath, data, function (err) {
+      if (err) {
+        res.send(err);
+        return;
 
-  // const newPhoto = new Photo();
-  // newPhoto.user = currentUser;
-  // newPhoto.url = req.headers.host + savePath;
+      }
+    });
+  });
+
+  const newPhoto = new Photo();
+  newPhoto.user = req.user;
+  newPhoto.url = filePath;
+
+  newPhoto.save(function (error) {
+    if (error) {
+      res.send(error);
+      return;
+    }
+
+    req.user.photos.push(newPhoto);
+    req.user.save(function (err) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+    });
+
+  });
 
   res.redirect('/');
 });
