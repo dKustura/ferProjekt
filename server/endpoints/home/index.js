@@ -5,6 +5,8 @@ const router = new express.Router();
 router.get('/', function(req, res) {
   const currentUser = req.user;
   currentUser.deepPopulate([
+    'messages',
+    'requests',
     'posts.user',
     'posts.likes',
     'posts.comments',

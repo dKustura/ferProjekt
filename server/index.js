@@ -8,6 +8,7 @@ const session = require('express-session');
 const connectMongo = require('connect-mongo');
 const passport = require('passport');
 const morgan = require('morgan');
+const socketio = require('socket.io');
 
 const config = require('./config');
 const endpoints = require('./endpoints');
@@ -38,9 +39,14 @@ const hbs = exphbs.create({
         return contact.id === currentUser.id;
       });
     },
-    hasRequest(user, currentUser) {
+    hasSentRequest(user, currentUser) {
       return user.requests.find((req) => {
         return req.id === currentUser.id;
+      });
+    },
+    hasReceivedRequest(user, currentUser) {
+      return currentUser.requests.find((req) => {
+        return req.id === user.id;
       });
     },
     isEqual(o1, o2) {
@@ -89,6 +95,57 @@ app.use(endpoints);  // always use just before starting server
 
 // start listening on port 4242
 const port = process.env.PORT || '4242';
-app.listen(port, function() {
+
+const server = app.listen(port, function() {
   console.log(`App running on http://localhost:${port} (Ctrl + click to open)`);
+});
+
+// Socket.io configuration
+const io = socketio.listen(server);
+
+var userSockets = [];
+
+var User = require('./models/user');
+var Message = require('./models/message');
+
+io.sockets.on('connection', function(socket) {
+  socket.user = socket.handshake.query.user;
+  userSockets.push(socket);
+
+  socket.on('send message', function(message) {
+    User.findById(message.sender, (err, sender) => {
+      if(err) {
+        throw err;
+      }
+      User.findById(message.receiver, (err, receiver) => {
+        if(err) {
+          throw err;
+        }
+
+        var newMessage = new Message();
+        newMessage.content = message.content;
+        newMessage.sender = sender;
+        newMessage.receiver = receiver;
+        newMessage.save((err) => {
+          if(err) {
+            throw err;
+          }
+          sender.messages.push(newMessage);
+          sender.save();
+          receiver.messages.push(newMessage);
+          receiver.save();
+          // FIX Provjera jesu li kontakti
+          socket.emit('new message', newMessage);
+
+          if(newMessage.content && newMessage.content.trim()) {
+            for(var i = 0; i < userSockets.length; i++) {
+              if(userSockets[i].user === newMessage.receiver.id) {
+                userSockets[i].emit('new message', newMessage);
+              }
+            }
+          }
+        });
+      });
+    });
+  });
 });

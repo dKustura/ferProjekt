@@ -1,0 +1,20 @@
+{{> header }}
+
+<main class="page">
+
+  <a href="/contacts">Back to Contacts</a>
+
+  <h2>{{user.firstName}} {{user.lastName}}</h2>
+
+  <div class="chat"></div>
+
+  <form class="js-message-form page-card form">
+
+    <label class="form-label">
+      <span> Message: </span>
+      <input type="text" class="js-message" name="message" autocomplete="off"/>
+    </label>
+
+    <input type="submit" value="Send" />
+  </form>
+</main>

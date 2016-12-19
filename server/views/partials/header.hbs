@@ -5,6 +5,10 @@
   	<input type="submit" class="glyphicon glyphicon-search" aria-hidden="true"/>
   </form>
   <div class="header__current-user">
+    <a href="/contacts">
+      Chat({{currentUser.messages.length}})
+    </a>
+    -
     <a href="/requests">
       Requests({{currentUser.requests.length}})
     </a>
