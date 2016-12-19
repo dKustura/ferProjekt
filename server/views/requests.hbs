@@ -7,9 +7,15 @@
     <ul>
       {{#each requests}}
         <li>
-        {{this.firstName}} {{this.lastName}}
-        <a href="/contact/accept/{{this.id}}">Accept</a>
-        <a href="/contact/decline/{{this.id}}">Decline</a>
+          {{this.firstName}} {{this.lastName}}
+
+          <form action="/contact/accept/{{this.id}}" method="post">
+            <input type="submit" value="Accept" />
+          </form>
+
+          <form action="/contact/decline/{{this.id}}" method="post">
+            <input type="submit" value="Decline" />
+          </form>
         </li>
       {{/each}}
     </ul>
