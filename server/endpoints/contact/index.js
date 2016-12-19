@@ -1,3 +1,4 @@
+/* global Promise */
 const express = require('express');
 const User = require('../../models/user');
 
@@ -10,7 +11,7 @@ router.get('/requests', function(req, res) {
     .deepPopulate('requests')
     .exec((err, user) => {
       res.render('requests', {currentUser: user, requests: user.requests});
-  });;
+    });
 });
 
 router.get('/contacts', function(req, res) {
@@ -20,123 +21,116 @@ router.get('/contacts', function(req, res) {
     .deepPopulate('contacts')
     .exec((err, user) => {
       res.render('contacts', {currentUser: user, contacts: user.contacts});
-  });;
+    });
 });
 
-router.get('/contact/decline/:id', function(req, res) {
+router.post('/contact/decline/:id', function(req, res) {
   const currentUser = req.user;
   const userId = req.params.id;
 
-  var index = currentUser.requests.indexOf(userId);
+  const userIndex = currentUser.requests.indexOf(userId);
 
-  // Pitanje: treba li res.redirect biti u .save zbog asinkronog poziva
-  // (ovdje i na ostalim mjestima)
-  if(index !== -1) {
+  if (userIndex !== -1) {
     currentUser.requests.splice(userId, 1);
     currentUser.save((err) => {
-      if(err) {
+      if (err) {
         res.send(err);
         return;
       }
+
+      res.redirect('back');
     });
   }
-  res.redirect('back');
 });
 
-router.get('/contact/accept/:id', function(req, res) {
+router.post('/contact/accept/:id', function(req, res) {
   const currentUser = req.user;
   const userId = req.params.id;
 
-  var index = currentUser.requests.indexOf(userId);
+  const userIndex = currentUser.requests.indexOf(userId);
 
-  if(index !== -1) {
-    currentUser.requests.splice(userId, 1);
-    currentUser.contacts.push(userId);
-    currentUser.save((err) => {
-      if(err) {
-        res.send(err);
-        return;
-      }
-    });
+  if (userIndex !== -1) {
     User.findById(userId, (err, user) => {
-      if(err) {
-        throw err;
-      }
+
+      currentUser.requests.splice(userId, 1);
+      currentUser.contacts.push(userId);
+
+      const currentUserSave = currentUser.save();
+
       user.contacts.push(currentUser);
-      user.save((err) => {
-        if(err) {
-          res.send(err);
-          return;
-        }
+      const userSave = user.save();
+
+      Promise.all([currentUserSave, userSave]).then(() => {
+        res.redirect('back');
       });
     });
   }
-  res.redirect('back');
 });
 
-router.get('/contact/remove/:id', function(req, res) {
+router.post('/contact/remove/:id', function(req, res) {
   const currentUser = req.user;
   const userId = req.params.id;
 
-  var userIndex = currentUser.contacts.indexOf(userId);
+  const currentUserIndex = currentUser.contacts.indexOf(userId);
 
-  if(userIndex !== -1) {
+  if (currentUserIndex !== -1) {
     User.findById(userId, (err, user) => {
-      if(err) {
+      if (err) {
         throw err;
       }
-      var index = user.contacts.indexOf(currentUser.id);
-      user.contacts.splice(index, 1);
+      const userIndex = user.contacts.indexOf(currentUser.id);
 
-      currentUser.contacts.splice(userIndex, 1);
-      currentUser.save((err) => {
-        if(err) {
-          res.send(err);
-          return;
-        }
-      });
-      user.save((err) => {
-        if(err) {
-          res.send(err);
-          return;
-        };
+      user.contacts.splice(userIndex, 1);
+      currentUser.contacts.splice(currentUserIndex, 1);
+
+      const currentUserSave = currentUser.save();
+      const userSave = user.save();
+
+      Promise.all([currentUserSave, userSave]).then(() => {
+        res.redirect('back');
       });
     });
   }
-  res.redirect('back');
 });
 
-router.get('/contact/request/:id', function(req, res) {
+router.post('/contact/request/:id', function(req, res) {
   const currentUser = req.user;
   const userId = req.params.id;
-  
+
   User.findById(userId, (err, user) => {
-    if(err) {
+    if (err) {
       throw err;
     }
 
-    var index = currentUser.contacts.indexOf(userId);
+    const index = currentUser.contacts.indexOf(userId);
 
     // if the user isn't a contact and is not current user
-    if(index === -1 && userId !== currentUser) {
-      // send a contact request
-      var reqIndex = user.requests.indexOf(currentUser.id);
+    if (index === -1 && userId !== currentUser.id) {
 
-      if(reqIndex === -1) {
+      // send a contact request
+      const reqIndex = user.requests.indexOf(currentUser.id);
+
+      if (reqIndex === -1) {
         user.requests.push(currentUser.id);
 
       // otherwise cancel contact request
       } else {
         user.requests.splice(reqIndex, 1);
       }
+
+      user.save((userSaveError) => {
+        if (userSaveError) {
+          res.send(err);
+          return;
+        }
+
+        res.redirect('back');
+      });
+    } else {
+      res.status(401);
+      res.send();
+      return;
     }
-    user.save((err) => {
-      if (err) {
-        res.send(err);
-        return;
-      }
-      res.redirect('back');
-    });
   });
 });
 

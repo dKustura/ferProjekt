@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
       throw err;
     }
 
-    var posts = user.posts;
+    let posts = user.posts;
     user.contacts.forEach((contact) => {
       posts = posts.concat(contact.posts);
     });
