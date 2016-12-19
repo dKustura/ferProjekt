@@ -33,16 +33,24 @@ const hbs = exphbs.create({
     formatDate(date) {
       return date.toLocaleDateString();
     },
+    isContact(user, currentUser) {
+      return user.contacts.find((contact) => {
+        return contact.id === currentUser.id;
+      });
+    },
+    hasRequest(user, currentUser) {
+      return user.requests.find((req) => {
+        return req.id === currentUser.id;
+      });
+    },
+    isEqual(o1, o2) {
+      return o1 === o2;
+    },
     isLiked(likes, user) {
-      for(var i = 0; i < likes.length; i++) {
-        if(likes[i].id === user.id) {
-          return true;
-        }
-      }
-      return false;
+      return !!likes.filter((like) => like.id === user.id).length;
     },
     isOwner(objectUserId, currentUserId) {
-      return objectUserId == currentUserId;
+      return objectUserId === currentUserId;
     }
   }
 });
@@ -83,7 +91,7 @@ app.use(passport.session());
 passportConfig(passport);
 
 // Serve uploaded photos to logged in users
-app.use('/public/uploads', function (req, res) {
+app.use('/public/uploads', function(req, res) {
   if (!req.user) {
     res.send('/');
     return;

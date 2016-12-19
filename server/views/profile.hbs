@@ -2,7 +2,26 @@
 
 <main class="page">
 
+  <a href="/contacts"> Contacts </a>
+
   <h1> {{user.firstName}} {{user.lastName}}</h1>
+  {{#if (isEqual user.id currentUser.id)}}
+    {{#if (isContact user currentUser)}}
+      <form action="/contact/remove/{{user.id}}" method="post">
+        <input type="submit" value="Remove contact" />
+      </form>
+    {{else}}
+      {{#if (hasRequest user currentUser)}}
+        <form action="/contact/request/{{user.id}}" method="post">
+          <input type="submit" value="Cancel contact request" />
+        </form>
+      {{else}}
+        <form action="/contact/request/{{user.id}}" method="post">
+          <input type="submit" value="Send contact request" />
+        </form>
+      {{/if}}
+    {{/if}}
+  {{/if}}
 
   <h3> Posts: </h3>
 
@@ -18,59 +37,59 @@
       </div>
 
       <div>
-          {{likes.length}}
+        {{likes.length}}
 
-          {{#if (isLiked likes ../currentUser) }}
+        {{#if (isLiked likes ../currentUser) }}
           <form action="/unlike/{{this.id}}" method="post">
-              <input type="submit" value="Unlike"/>
+            <input type="submit" value="Unlike"/>
           </form>
+        {{else}}
+          <form action="/like/{{this.id}}" method="post">
+            <input type="submit" value="Like"/>
+          </form>
+        {{/if}}
+      </div>
+
+
+      {{#if (isOwner user.id ../currentUser.id) }}
+        <form action="/deletePost/{{this.id}}" method="post">
+          <input type="submit" value="Delete"/>
+        </form>
+      {{/if}}
+
+      {{#each comments}}
+        <div class="comment">
+          <a class="comment__user" href="/profile/{{user.id}}">
+            {{user.firstName}} {{user.lastName}}
+          </a>
+          <br>{{content}}<br>
+          <div class="comment__date">
+            Posted at: {{formatDate createdAt}}
+          </div>
+          {{likes.length}}
+          {{#if (isLiked likes ../../currentUser) }}
+            <form action="/unlikeComment/{{this.id}}" method="post">
+              <input type="submit" value="Unlike"/>
+            </form>
           {{else}}
-            <form action="/like/{{this.id}}" method="post">
-                <input type="submit" value="Like"/>
+            <form action="/likeComment/{{this.id}}" method="post">
+              <input type="submit" value="Like"/>
+            </form>
+          {{/if}}
+
+          {{#if (isOwner user ../../currentUser.id) }}
+            <form action="/deleteComment/{{this.id}}" method="post">
+              <input type="submit" value="Delete"/>
             </form>
           {{/if}}
         </div>
-        
+      {{/each}}
 
-        {{#if (isOwner user.id ../currentUser.id) }}
-          <form action="/deletePost/{{this.id}}" method="post">
-            <input type="submit" value="Delete"/>
-          </form>
-        {{/if}}
+      <form action="/comment/{{this.id}}" method="post">
+        <textarea placeholder="Add a comment..." name="content" class="post-form__input"></textarea>
+        <input type="submit" value="Comment" class="post-form__submit"/>
+      </form>
 
-        {{#each comments}}
-          <div class="comment">
-            <a class="comment__user" href="/profile/{{user.id}}">
-              {{user.firstName}} {{user.lastName}}
-            </a>
-            <br>{{content}}<br> 
-            <div class="comment__date">
-              Posted at: {{formatDate createdAt}}
-            </div>
-            {{likes.length}}    
-            {{#if (isLiked likes ../../currentUser) }}
-              <form action="/unlikeComment/{{this.id}}" method="post">
-                <input type="submit" value="Unlike"/>
-              </form>
-            {{else}}
-              <form action="/likeComment/{{this.id}}" method="post">
-                <input type="submit" value="Like"/>
-              </form>
-            {{/if}}
-
-            {{#if (isOwner user ../../currentUser.id) }}
-              <form action="/deleteComment/{{this.id}}" method="post">
-                <input type="submit" value="Delete"/>
-              </form>
-            {{/if}}
-          </div>
-        {{/each}}
-
-        <form action="/comment/{{this.id}}" method="post">
-          <textarea placeholder="Add a comment..." name="content" class="post-form__input"></textarea>
-          <input type="submit" value="Comment" class="post-form__submit"/>
-        </form>
-        
     </div>
   {{/each}}
 </main>

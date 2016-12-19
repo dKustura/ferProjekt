@@ -6,10 +6,13 @@ const router = new express.Router();
 router.get('/profile/:id', function(req, res) {
   const currentUser = req.user;
   User.findById(req.params.id).deepPopulate([
+    'posts',
     'posts.user',
     'posts.likes',
     'posts.comments.likes',
-    'posts.comments.user'
+    'posts.comments.user',
+    'requests',
+    'contacts'
   ]).exec((err, user) => {
     if (err) {
       throw err;

@@ -20,6 +20,14 @@ module.exports = function(passport) {
   },
   function(req, email, password, done) {
     process.nextTick(function() {
+
+      const minPasswordLength = 6;
+      if (password.length < minPasswordLength) {
+        return done({
+          message: `Password must be at least ${minPasswordLength} characters long`
+        });
+      }
+
       User.findOne({email}, (err, user) => {
         if (err) {
           return done(err);
@@ -55,7 +63,7 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, email, password, done) {
-    User.findOne({email}, (err, user) => {
+    User.findOne({email}).select('+password').exec((err, user) => {
       if (err) {
         return done(err);
       }
