@@ -8,12 +8,20 @@ router.get('/profile/:id', function(req, res) {
   User.findById(req.params.id).deepPopulate([
     'posts',
     'requests',
-    'contacts'
+    'contacts',
     ]).exec((err, user) => {
     if (err) {
       throw err;
     }
-    res.render('profile', {user, currentUser});
+    currentUser.deepPopulate([
+      'messages',
+      'requests'
+    ], (err, currentUser) => {
+      if (err) {
+        throw err;
+      }
+      res.render('profile', {user, currentUser});
+    });
   });
 });
 

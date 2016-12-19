@@ -6,9 +6,7 @@ const router = new express.Router();
 router.get('/requests', function(req, res) {
   const currentUser = req.user;
 
-  User.findById(currentUser.id)
-    .deepPopulate('requests')
-    .exec((err, user) => {
+  currentUser.deepPopulate('requests', (err, user) => {
       res.render('requests', {currentUser: user, requests: user.requests});
   });;
 });
@@ -16,9 +14,7 @@ router.get('/requests', function(req, res) {
 router.get('/contacts', function(req, res) {
   const currentUser = req.user;
 
-  User.findById(currentUser.id)
-    .deepPopulate('contacts')
-    .exec((err, user) => {
+  currentUser.deepPopulate('contacts', (err, user) => {
       res.render('contacts', {currentUser: user, contacts: user.contacts});
   });;
 });
