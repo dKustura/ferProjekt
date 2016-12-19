@@ -23,6 +23,14 @@
     {{/if}}
   {{/if}}
 
+  <h3> Photos: </h3>
+  
+  <div>
+  {{#each user.photos}}
+    <img src="{{url}}"/>
+  {{/each}}
+  </div>
+
   <h3> Posts: </h3>
 
   {{#each user.posts}}
