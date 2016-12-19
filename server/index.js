@@ -47,12 +47,7 @@ const hbs = exphbs.create({
       return o1 === o2;
     },
     isLiked(likes, user) {
-      for (let i = 0; i < likes.length; i++) {
-        if (likes[i].id === user.id) {
-          return true;
-        }
-      }
-      return false;
+      return !!likes.filter((like) => like.id === user.id).length;
     },
     isOwner(objectUserId, currentUserId) {
       return objectUserId === currentUserId;
@@ -96,7 +91,7 @@ app.use(passport.session());
 passportConfig(passport);
 
 // Serve uploaded photos to logged in users
-app.use('/public/uploads', function (req, res) {
+app.use('/public/uploads', function(req, res) {
   if (!req.user) {
     res.send('/');
     return;

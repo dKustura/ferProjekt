@@ -1,7 +1,5 @@
 const validator = require('validator');
 
-const minPasswordLength = 6;
-
 const validateEmail = function(value) {
   return validator.isEmail(value);
 };
