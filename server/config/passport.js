@@ -111,7 +111,7 @@ module.exports = function(passport) {
         
         if (!user.validPassword(password)) {
           return done({ 
-          message: { currentPassword : 'Please provide correct password to apply changes.' }}, 
+            message: { currentPassword : 'Please provide correct password to apply changes.' }}, 
             req.body
           );
         };
