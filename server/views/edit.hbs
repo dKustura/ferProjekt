@@ -1,0 +1,56 @@
+{{> header }}
+
+<main class="page-card-container">
+    <form action="/profile/{{currentUser.id}}/edit" class="page-card form" method="post">
+
+      <label class="form-label">
+        <span> Email: </span>
+        <input type="text" class="js-email" name="email" value="{{fields.email}}"/>
+        <div class="errors">
+          {{errors.errors.email.message}}
+        </div>
+      </label>
+
+      <label class="form-label">
+        <span> New Password: </span>
+        <input type="password" class="js-new-password" name="newPassword"/>
+        <div class="errors">
+          {{errors.message.newPassword}}
+        </div>
+      </label>
+
+      <label class="form-label">
+        <span> First name: </span>
+        <input type="text" class="js-first-name" name="firstName" value="{{fields.firstName}}"/>
+        <div class="errors">
+          {{errors.errors.firstName.message}}
+        </div>
+      </label>
+
+      <label class="form-label">
+        <span> Last name: </span>
+        <input type="text" class="js-last-name" name="lastName" value="{{fields.lastName}}"/>
+        <div class="errors">
+          {{errors.errors.lastName.message}}
+        </div>
+      </label>
+
+      <label class="form-label">
+        <span> Date of birth: </span>
+        <input type="date" class="js-date-of-birth" name="dateOfBirth" value="{{formatDate fields.dateOfBirth}}"/>
+        <div class="errors">
+          {{errors.errors.dateOfBirth.message}}
+        </div>
+      </label>
+
+      <label class="form-label">
+        <span> Enter your current password to confirm changes: </span>
+        <input type="password" class="js-current-password" name="currentPassword"/>
+        <div class="errors">
+          {{errors.message.currentPassword}}
+        </div>
+      </label>
+      
+      <input class="form-submit" type="submit" value="Apply" />
+    </form>
+</main>

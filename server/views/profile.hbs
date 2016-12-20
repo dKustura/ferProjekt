@@ -1,5 +1,15 @@
 {{> header }}
 
+<div class="about-user">
+  <h4> About {{user.firstName}} </h4>
+  Date of birth: {{formatDate user.dateOfBirth}}
+  <br> Contact: {{user.email}} <br>
+  
+  {{#if (isOwner user.id currentUser.id) }}
+   <a href="/profile/{{currentUser.id}}/edit"> Edit profile </a>
+  {{/if}}
+</div>
+
 <main class="page">
 
   <a href="/contacts"> Contacts </a>
