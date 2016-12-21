@@ -31,8 +31,9 @@ const hbs = exphbs.create({
   partialsDir: 'server/views/partials/',
   helpers: {
     formatDate(date) {
-      try{
-      let dateFormat = date.toLocaleDateString();
+      let dateFormat;
+      try {
+        dateFormat = date.toLocaleDateString();
       } catch (e) {
         return date;
       }
