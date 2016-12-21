@@ -22,7 +22,6 @@ router.get('/profile/:id/edit', function(req, res) {
 });
 
 function showEditFormError(req, res, error) {
-  res.status(401);
   res.render('edit', {
     errors: error,
     currentUser : req.user,
@@ -39,11 +38,13 @@ function showEditFormError(req, res, error) {
 router.post('/profile/:id/edit', function(req, res) {
   passport.authenticate('local-edit', (error, user, info) => {
     if (error) {
+      res.status(500);
       showEditFormError(req, res, error);
       return;
     }
 
     if (!user) {
+      res.status(404);
       showEditFormError(req, res, info);
       return;
     }

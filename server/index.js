@@ -32,7 +32,7 @@ const hbs = exphbs.create({
   helpers: {
     formatDate(date) {
       try{
-      var dateFormat = date.toLocaleDateString();
+      let dateFormat = date.toLocaleDateString();
       } catch (e) {
         return date;
       }
