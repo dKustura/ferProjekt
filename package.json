@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node_modules/.bin/nodemon index.js",
+    "start": "node_modules/.bin/nodemon index.js --watch server",
     "build": "node_modules/.bin/webpack --progress --colors --watch -d",
     "server": "node_modules/.bin/webpack -p --optimize-dedupe && node index.js"
   },

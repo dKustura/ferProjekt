@@ -32,7 +32,8 @@
 
 .post {
   margin-top: 20px;
-  border-bottom: 1px solid #424242;
+  border-bottom: 4px solid $color-primary;
+  padding-bottom: 20px;
 
   .post__info {
     display: flex;
@@ -41,5 +42,30 @@
 
   .post__content {
     margin: 5px 0;
+  }
+
+  .post__likes {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+    &.is-active {
+      background-color: $color-primary;
+      color: $color-text-white;
+    }
+  }
+
+  .post__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .post__action {
+    margin-left: 10px;
   }
 }
