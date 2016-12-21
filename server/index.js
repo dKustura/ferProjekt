@@ -31,7 +31,12 @@ const hbs = exphbs.create({
   partialsDir: 'server/views/partials/',
   helpers: {
     formatDate(date) {
-      return date.toLocaleDateString();
+      try{
+      let dateFormat = date.toLocaleDateString();
+      } catch (e) {
+        return date;
+      }
+      return dateFormat;
     },
     isContact(user, currentUser) {
       return user.contacts.find((contact) => {
