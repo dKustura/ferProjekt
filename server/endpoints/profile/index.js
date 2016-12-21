@@ -12,7 +12,8 @@ router.get('/profile/:id', function(req, res) {
     'posts.comments.likes',
     'posts.comments.user',
     'requests',
-    'contacts'
+    'contacts',
+    'photos'
   ]).exec((err, user) => {
     if (err) {
       throw err;
