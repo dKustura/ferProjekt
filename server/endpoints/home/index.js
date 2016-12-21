@@ -7,18 +7,20 @@ router.get('/', function(req, res) {
   currentUser.deepPopulate([
     'posts.user',
     'posts.likes',
-    'posts.comments',
+    'posts.comments.likes',
+    'posts.comments.user',
     'contacts.posts.user',
     'contacts.posts.likes',
-    'contacts.posts.comments'
+    'contacts.posts.comments.likes',
+    'contacts.posts.comments.users'
   ], (err, user) => {
     if (err) {
       throw err;
     }
 
-    const posts = user.posts;
+    let posts = user.posts;
     user.contacts.forEach((contact) => {
-      posts.concat(contact.posts);
+      posts = posts.concat(contact.posts);
     });
 
     posts.sort((a, b) => {

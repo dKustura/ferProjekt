@@ -20,7 +20,7 @@ router.get('/register', function(req, res) {
 function showRegisterFormError(req, res, error) {
   res.status(401);
   res.render('register', {
-    errors: [error],
+    errors: error,
     fields: {
       email: req.body.email,
       password: req.body.password,

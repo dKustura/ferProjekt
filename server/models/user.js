@@ -37,7 +37,8 @@ const userSchema = new Schema({
 
   password: {
     type: String,
-    required: [true, 'User password is required']
+    required: [true, 'User password is required'],
+    select: false
   },
 
   dateOfBirth: {
@@ -69,6 +70,11 @@ const userSchema = new Schema({
   }],
 
   contacts: [{
+    type: ObjectId,
+    ref: 'User'
+  }],
+
+  requests: [{
     type: ObjectId,
     ref: 'User'
   }],

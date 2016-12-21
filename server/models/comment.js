@@ -10,13 +10,18 @@ const commentSchema = new Schema({
 
   content: {
     type: String,
-    max: [MAX_LENGTH, `Comment must not be longer than ${MAX_LENGTH} characters`],
+    maxlength: [MAX_LENGTH, `Comment must not be longer than ${MAX_LENGTH} characters`],
     required: [true, 'Comment content is required']
   },
 
   user: {
     type: ObjectId,
     ref: 'User'
+  },
+
+  post: {
+    type: ObjectId,
+    ref: 'Post'
   },
 
   likes: [{

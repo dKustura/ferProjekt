@@ -23,11 +23,61 @@
           {{content}}
         </div>
 
+        <div>
+          {{likes.length}}
+
+          {{#if (isLiked likes ../currentUser) }}
+            <form action="/post/{{this.id}}/unlike" method="post">
+              <input type="submit" value="Unlike"/>
+            </form>
+          {{else}}
+            <form action="/post/{{this.id}}/like" method="post">
+              <input type="submit" value="Like"/>
+            </form>
+          {{/if}}
+        </div>
+
+
+        {{#if (isOwner user.id ../currentUser.id) }}
+          <form action="/post/{{this.id}}/delete" method="post">
+            <input type="submit" value="Delete"/>
+          </form>
+        {{/if}}
+
         {{#each comments}}
-          <div class="post__comment">
-            {{content}}
+          <div class="comment">
+            <a class="comment__user" href="/profile/{{user.id}}">
+              {{user.firstName}} {{user.lastName}}
+            </a>
+            <br>{{content}}<br>
+            <div class="comment__date">
+              Posted at: {{formatDate createdAt}}
+            </div>
+
+            {{likes.length}}
+
+            {{#if (isLiked likes ../../currentUser) }}
+              <form action="/comment/{{this.id}}/unlike" method="post">
+                <input type="submit" value="Unlike"/>
+              </form>
+            {{else}}
+              <form action="/comment/{{this.id}}/like" method="post">
+                <input type="submit" value="Like"/>
+              </form>
+            {{/if}}
+
+            {{#if (isOwner user ../../currentUser.id) }}
+              <form action="/comment/{{this.id}}/delete" method="post">
+                <input type="submit" value="Delete"/>
+              </form>
+            {{/if}}
           </div>
         {{/each}}
+
+        <form action="/post/{{this.id}}/comment" method="post">
+          <textarea placeholder="Add a comment..." name="content" class="post-form__input"></textarea>
+          <input type="submit" value="Comment" class="post-form__submit"/>
+        </form>
       </div>
     {{/each}}
   </div>
