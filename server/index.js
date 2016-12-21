@@ -49,14 +49,11 @@ const hbs = exphbs.create({
         return req.id === currentUser.id;
       });
     },
-    isEqual(o1, o2) {
-      return o1 === o2;
-    },
     isLiked(likes, user) {
       return !!likes.filter((like) => like.id === user.id).length;
     },
-    isOwner(objectUserId, currentUserId) {
-      return objectUserId === currentUserId;
+    eq(obj1, obj2) {
+      return obj1 === obj2;
     }
   }
 });

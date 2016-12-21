@@ -9,10 +9,6 @@ const path = require('path');
 const router = new express.Router();
 const upload = multer({dest: '/tmp'});
 
-router.get('/upload', function(req, res) {
-  res.render('upload');
-});
-
 router.post('/upload', upload.single('file'), function(req, res) {
   if (!req.file) {
     res.redirect('/');
