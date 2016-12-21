@@ -5,8 +5,12 @@
   <a href="/contacts">Back to Contacts</a>
 
   <h2>{{user.firstName}} {{user.lastName}}</h2>
-
-  <div class="chat"></div>
+  
+  <div class="chat">
+    {{#each messages}}
+      <b>{{this.sender.firstName}} {{this.sender.lastName}}: </b>{{this.content}}<br/>
+    {{/each}}
+  </div>
 
   <form class="js-message-form page-card form">
 

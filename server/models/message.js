@@ -27,6 +27,11 @@ const messageSchema = new Schema({
   receiver: {
     type: ObjectId,
     ref: 'User'
+  },
+
+  isSeen: {
+    type: Boolean,
+    default: false
   }
 });
 

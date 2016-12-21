@@ -32,7 +32,7 @@ const hbs = exphbs.create({
   partialsDir: 'server/views/partials/',
   helpers: {
     formatDate(date) {
-      return date.toLocaleDateString();
+      return date.toLocaleString();
     },
     isContact(user, currentUser) {
       return user.contacts.find((contact) => {
@@ -113,6 +113,7 @@ io.sockets.on('connection', function(socket) {
   userSockets.push(socket);
 
   socket.on('send message', function(message) {
+
     User.findById(message.sender, (err, sender) => {
       if(err) {
         throw err;
@@ -134,7 +135,6 @@ io.sockets.on('connection', function(socket) {
           sender.save();
           receiver.messages.push(newMessage);
           receiver.save();
-          // FIX Provjera jesu li kontakti
           socket.emit('new message', newMessage);
 
           if(newMessage.content && newMessage.content.trim()) {

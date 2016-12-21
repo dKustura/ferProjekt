@@ -5,8 +5,6 @@ const router = new express.Router();
 router.get('/', function(req, res) {
   const currentUser = req.user;
   currentUser.deepPopulate([
-    'messages',
-    'requests',
     'posts.user',
     'posts.likes',
     'posts.comments',
@@ -27,7 +25,9 @@ router.get('/', function(req, res) {
       return b.postedAt - a.postedAt;
     });
 
-    res.render('home', {posts, currentUser: user});
+    user.getMessagesSeparated(function(result) {
+      res.render('home', {posts, currentUser: user, newMessages: result.newMessages});
+    });
   });
 });
 

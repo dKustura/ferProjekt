@@ -18,9 +18,9 @@ $(function() {
     });
 
     socket.on('new message', function(message) {
-      if(message.sender._id == currentUser || message.receiver._id == currentUser) {
-        $chat.append(message.sentAt + "<b>" + message.sender.firstName + ": </b>" + message.content + "<br/>");
-      }
+      $chat.append(
+        "<b>" + message.sender.firstName + " " + message.sender.lastName + ": </b>" + message.content + "<br/>"
+      );
     });
   });
 });

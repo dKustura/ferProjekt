@@ -7,15 +7,29 @@ router.get('/requests', function(req, res) {
   const currentUser = req.user;
 
   currentUser.deepPopulate('requests', (err, user) => {
-      res.render('requests', {currentUser: user, requests: user.requests});
+    user.getMessagesSeparated(function(result) {
+      res.render('requests', {
+          currentUser: user,
+          requests: user.requests,
+          newMessages: result.newMessages
+        });
+    });
   });;
 });
 
 router.get('/contacts', function(req, res) {
   const currentUser = req.user;
 
-  currentUser.deepPopulate('contacts', (err, user) => {
-      res.render('contacts', {currentUser: user, contacts: user.contacts});
+  currentUser.deepPopulate([
+    'contacts',
+  ], (err, user) => {
+    user.getMessagesSeparated(function(result) {
+      res.render('contacts', {
+        currentUser: user,
+        contacts: user.contacts,
+        newMessages: result.newMessages
+      });
+    });
   });;
 });
 
