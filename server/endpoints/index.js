@@ -9,6 +9,9 @@ const post = require('./post');
 const contact = require('./contact');
 const chat = require('./chat');
 const userData = require('./user-data');
+const upload = require('./upload');
+const comment = require('./comment');
+const edit = require('./edit');
 
 const router = new express.Router();
 
@@ -31,5 +34,8 @@ router.use(isAuthenticated, post);
 router.use(isAuthenticated, contact);
 router.use(isAuthenticated, chat);
 router.use(isAuthenticated, userData);
+router.use(isAuthenticated, upload);
+router.use(isAuthenticated, comment);
+router.use(isAuthenticated, edit);
 
 module.exports = router;

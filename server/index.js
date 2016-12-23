@@ -32,7 +32,13 @@ const hbs = exphbs.create({
   partialsDir: 'server/views/partials/',
   helpers: {
     formatDate(date) {
-      return date.toLocaleString();
+      let dateFormat;
+      try {
+        dateFormat = date.toLocaleDateString();
+      } catch (e) {
+        return date;
+      }
+      return dateFormat;
     },
     isContact(user, currentUser) {
       return user.contacts.find((contact) => {
@@ -49,8 +55,11 @@ const hbs = exphbs.create({
         return req.id === user.id;
       });
     },
-    isEqual(o1, o2) {
-      return o1 === o2;
+    isLiked(likes, user) {
+      return !!likes.filter((like) => like.id === user.id).length;
+    },
+    eq(obj1, obj2) {
+      return obj1 === obj2;
     }
   }
 });
@@ -89,6 +98,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
+
+// Serve uploaded photos to logged in users
+app.use('/public/uploads', function(req, res) {
+  if (!req.user) {
+    res.send('/');
+    return;
+  }
+
+  res.sendFile(`public/uploads${req.path}`);
+});
 
 // Add router
 app.use(endpoints);  // always use just before starting server

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node_modules/.bin/nodemon index.js",
+    "start": "node_modules/.bin/nodemon index.js --watch server",
     "build": "node_modules/.bin/webpack --progress --colors --watch -d",
     "server": "node_modules/.bin/webpack -p --optimize-dedupe && node index.js"
   },
@@ -41,9 +41,12 @@
     "mongoose": "^4.6.5",
     "mongoose-deep-populate": "^3.0.0",
     "morgan": "^1.7.0",
+    "multer": "^1.2.1",
     "node-sass": "^3.11.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "rand-token": "^0.3.0",
     "sass-loader": "^4.0.2",
     "socket.io": "^1.7.2",
     "style-loader": "^0.13.1",

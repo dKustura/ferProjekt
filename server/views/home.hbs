@@ -7,28 +7,5 @@
     <input type="submit" value="Post" class="post-form__submit"/>
   </form>
 
-  <div class="posts">
-    {{#each posts}}
-      <div class="post">
-        <div class="post__info">
-          <a class="post__user" href="/profile/{{user.id}}">
-            {{user.firstName}} {{user.lastName}}
-          </a>
-          <div class="post__date">
-            Posted at: {{formatDate postedAt}}
-          </div>
-        </div>
-
-        <div class="post__content">
-          {{content}}
-        </div>
-
-        {{#each comments}}
-          <div class="post__comment">
-            {{content}}
-          </div>
-        {{/each}}
-      </div>
-    {{/each}}
-  </div>
+  {{> posts}}
 </main>
