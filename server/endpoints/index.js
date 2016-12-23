@@ -10,7 +10,6 @@ const contact = require('./contact');
 const upload = require('./upload');
 const comment = require('./comment');
 const edit = require('./edit');
-const photo = require('./profile/photo');
 
 const router = new express.Router();
 
@@ -34,6 +33,5 @@ router.use(isAuthenticated, contact);
 router.use(isAuthenticated, upload);
 router.use(isAuthenticated, comment);
 router.use(isAuthenticated, edit);
-router.use(isAuthenticated, photo);
 
 module.exports = router;

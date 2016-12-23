@@ -44,9 +44,7 @@
 
     <main class="photos">
       {{#each user.photos}}
-        <a href="/profile/{{user.id}}/photo/{{this.id}}">
-          <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
-        </a>
+        <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
       {{/each}}
 
       {{#if (eq user.id currentUser.id)}}
