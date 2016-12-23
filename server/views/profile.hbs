@@ -43,8 +43,11 @@
     </header>
 
     <main class="photos">
+      
       {{#each user.photos}}
-        <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
+       <a href="/profile/{{user.id}}/photo/{{this.id}}">
+         <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
+       </a>
       {{/each}}
 
       {{#if (eq user.id currentUser.id)}}
