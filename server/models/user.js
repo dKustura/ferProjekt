@@ -103,20 +103,20 @@ userSchema.methods.getMessagesSeparated = function(next) {
     'messages',
     'messages.sender'
   ]).exec((err, user) => {
-    var oldMessages = new Set();
-    var newMessages = new Set();
-    for(var i = 0; i < user.messages.length; i++) {
-      var sender = user.messages[i].sender;
-      if(sender.id === this.id) {continue;}
-      if(user.messages[i].isSeen == false) {
-        newMessages.add(sender);
-        oldMessages.delete(sender);
-      } else {
-        oldMessages.add(sender);
-      }
-    }
-    newMessages = Array.from(newMessages);
-    oldMessages = Array.from(oldMessages);
+    const messages = user.messages.filter((message) => message.sender.id !== this.id);
+    var newMessages = Array.from(new Set(
+      messages.filter((message) => { return !message.isSeen })
+        .map((message) => {
+          return message.sender;
+        })
+    ));
+    var oldMessages = Array.from(new Set(
+      messages.filter((message) => {
+        return message.isSeen && !newMessages.includes(message.sender)
+      }).map((message) => {
+          return message.sender;
+        })
+    ));
     next({user, newMessages, oldMessages});
   });
 };

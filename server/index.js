@@ -8,7 +8,7 @@ const session = require('express-session');
 const connectMongo = require('connect-mongo');
 const passport = require('passport');
 const morgan = require('morgan');
-const socketio = require('socket.io');
+const socketio = require('./sockets');
 
 const config = require('./config');
 const endpoints = require('./endpoints');
@@ -102,50 +102,3 @@ const server = app.listen(port, function() {
 
 // Socket.io configuration
 const io = socketio.listen(server);
-
-var userSockets = [];
-
-var User = require('./models/user');
-var Message = require('./models/message');
-
-io.sockets.on('connection', function(socket) {
-  socket.user = socket.handshake.query.user;
-  userSockets.push(socket);
-
-  socket.on('send message', function(message) {
-
-    User.findById(message.sender, (err, sender) => {
-      if(err) {
-        throw err;
-      }
-      User.findById(message.receiver, (err, receiver) => {
-        if(err) {
-          throw err;
-        }
-
-        var newMessage = new Message();
-        newMessage.content = message.content;
-        newMessage.sender = sender;
-        newMessage.receiver = receiver;
-        newMessage.save((err) => {
-          if(err) {
-            throw err;
-          }
-          sender.messages.push(newMessage);
-          sender.save();
-          receiver.messages.push(newMessage);
-          receiver.save();
-          socket.emit('new message', newMessage);
-
-          if(newMessage.content && newMessage.content.trim()) {
-            for(var i = 0; i < userSockets.length; i++) {
-              if(userSockets[i].user === newMessage.receiver.id) {
-                userSockets[i].emit('new message', newMessage);
-              }
-            }
-          }
-        });
-      });
-    });
-  });
-});

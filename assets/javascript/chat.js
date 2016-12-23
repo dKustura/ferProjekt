@@ -6,7 +6,7 @@ $(function() {
 
     var otherUser = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
     var currentUser = data;
-    var socket = io.connect({ query: "user=" + currentUser });
+    var socket = io.connect({ query: `user=${currentUser}` });
     const $messageForm = $('.js-message-form');
     const $message = $('.js-message');
     const $chat = $('.chat');
@@ -19,7 +19,7 @@ $(function() {
 
     socket.on('new message', function(message) {
       $chat.append(
-        "<b>" + message.sender.firstName + " " + message.sender.lastName + ": </b>" + message.content + "<br/>"
+        `<div><b>${message.sender.firstName} ${message.sender.lastName}: </b> ${message.content}</div>`
       );
     });
   });

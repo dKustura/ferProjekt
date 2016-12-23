@@ -4,7 +4,7 @@ const Message = require('../../models/message');
 
 const router = new express.Router();
 
-var chatViewHandler = function(req, res) {
+router.get('/chat/:id', function(req, res) {
   const currentUser = req.user;
   
   currentUser.deepPopulate([
@@ -19,37 +19,33 @@ var chatViewHandler = function(req, res) {
         res.redirect('/chat');
       } else {
         Message.find({receiver: currentUser.id, sender: usr.id}, (err, messages) => {
-          messages.forEach((message) => {
-            if(message.isSeen == false) {
-              message.isSeen = new Boolean(true);
+          messages.filter((message) => {return !message.isSeen})
+            .map((message) => {
+              message.isSeen = true;
               message.save((err) => {
-                if(err){ throw err };
+                if(err) throw err;
               });
-            }
-          });
+            });
         });
 
-        var msgs = [];
-        for(var i = 0; i < user.messages.length; i++) {
-          var message = user.messages[i];
-          console.log(message.sender);
-          if(message.sender.id == req.params.id || message.receiver == req.params.id) {
-            msgs.push(message);
-          }
-        }
+        const msgs = user.messages.filter((message) => {
+          return message.sender.id == req.params.id || message.receiver == req.params.id
+        });
+
         user.getMessagesSeparated((result) => {
-          res.render('chat', {currentUser: user, user: usr, messages: msgs, newMessages: result.newMessages});
+          res.render('chat', {
+            currentUser: user,
+            user: usr,
+            messages: msgs,
+            newMessages: result.newMessages
+          });
         });
       }
     });
   });
-};
+});
 
-router.get('/chat/:id', chatViewHandler)
-
-router.post('/chat/:id', chatViewHandler);
-
-router.get('/chat', function(req,res) {
+router.get('/chat', function(req, res) {
   const currentUser = req.user;
 
   currentUser.getMessagesSeparated(function(result) {

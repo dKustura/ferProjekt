@@ -8,7 +8,7 @@ const profile = require('./profile');
 const post = require('./post');
 const contact = require('./contact');
 const chat = require('./chat');
-const user_data = require('./user_data');
+const userData = require('./user-data');
 
 const router = new express.Router();
 
@@ -30,6 +30,6 @@ router.use(isAuthenticated, profile);
 router.use(isAuthenticated, post);
 router.use(isAuthenticated, contact);
 router.use(isAuthenticated, chat);
-router.use(isAuthenticated, user_data);
+router.use(isAuthenticated, userData);
 
 module.exports = router;
