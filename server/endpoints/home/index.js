@@ -27,7 +27,9 @@ router.get('/', function(req, res) {
       return b.postedAt - a.postedAt;
     });
 
-    res.render('home', {posts, currentUser: user});
+    user.getMessagesSeparated(function(result) {
+      res.render('home', {posts, currentUser: user, newMessages: result.newMessages});
+    });
   });
 });
 

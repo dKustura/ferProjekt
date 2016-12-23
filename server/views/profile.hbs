@@ -25,9 +25,17 @@
         <input type="submit" value="Remove contact" class="button"/>
       </form>
     {{else}}
-      {{#if (hasRequest user currentUser)}}
+      {{#if (hasSentRequest user currentUser)}}
         <form action="/contact/request/{{user.id}}" method="post">
           <input type="submit" value="Cancel contact request" class="button"/>
+        </form>
+      {{else if (hasReceivedRequest user currentUser)}}
+        <a href="/contact/accept/{{user.id}}">Accept</a>
+        <form action="/contact/accept/{{user.id}}" method="post">
+          <input type="submit" value="Accept" class="button"/>
+        </form>
+        <form action="/contact/decline/{{user.id}}" method="post">
+          <input type="submit" value="Accept" class="button"/>
         </form>
       {{else}}
         <form action="/contact/request/{{user.id}}" method="post">

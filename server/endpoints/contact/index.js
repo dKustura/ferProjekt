@@ -7,21 +7,31 @@ const router = new express.Router();
 router.get('/requests', function(req, res) {
   const currentUser = req.user;
 
-  User.findById(currentUser.id)
-    .deepPopulate('requests')
-    .exec((err, user) => {
-      res.render('requests', {currentUser: user, requests: user.requests});
+  currentUser.deepPopulate('requests', (err, user) => {
+    user.getMessagesSeparated(function(result) {
+      res.render('requests', {
+          currentUser: user,
+          requests: user.requests,
+          newMessages: result.newMessages
+        });
     });
+  });
 });
 
 router.get('/contacts', function(req, res) {
   const currentUser = req.user;
 
-  User.findById(currentUser.id)
-    .deepPopulate('contacts')
-    .exec((err, user) => {
-      res.render('contacts', {currentUser: user, contacts: user.contacts});
+  currentUser.deepPopulate([
+    'contacts',
+  ], (err, user) => {
+    user.getMessagesSeparated(function(result) {
+      res.render('contacts', {
+        currentUser: user,
+        contacts: user.contacts,
+        newMessages: result.newMessages
+      });
     });
+  });
 });
 
 router.post('/contact/decline/:id', function(req, res) {

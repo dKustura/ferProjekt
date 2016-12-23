@@ -98,11 +98,39 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
+userSchema.methods.getMessagesSeparated = function(next) {
+  this.model('User').findById(this.id).deepPopulate([
+    'messages',
+    'messages.sender'
+  ]).exec((err, user) => {
+    const messages = user.messages.filter((message) => message.sender.id !== this.id);
+    var newMessages = Array.from(new Set(
+      messages.filter((message) => { return !message.isSeen })
+        .map((message) => {
+          return message.sender;
+        })
+    ));
+    var oldMessages = Array.from(new Set(
+      messages.filter((message) => {
+        return message.isSeen && !newMessages.includes(message.sender)
+      }).map((message) => {
+          return message.sender;
+        })
+    ));
+    next({user, newMessages, oldMessages});
+  });
+};
+
 userSchema.plugin(deepPopulate, {
   populate: {
     'posts': {
       options: {
         sort: {postedAt: -1}
+      }
+    },
+    'messages': {
+      options: {
+        sort: {sentAt: 1}
       }
     }
   }

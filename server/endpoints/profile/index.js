@@ -18,7 +18,15 @@ router.get('/profile/:id', function(req, res) {
     if (err) {
       throw err;
     }
-    res.render('profile', {user, currentUser});
+    currentUser.deepPopulate([
+      'messages',
+      'requests'
+    ], (err, currentUser) => {
+      if (err) {
+        throw err;
+      }
+      res.render('profile', {user, currentUser});
+    });
   });
 });
 
