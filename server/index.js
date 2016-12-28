@@ -63,8 +63,24 @@ const hbs = exphbs.create({
     },
     isAllowedToView(user, currentUser) {
       return user.id === currentUser.id || user.contacts.find((contact) => {
-        return contact.id === currentUser.id;
+        return contact.toString() === currentUser.id.toString();
       });
+    },
+    hasNextPhoto(photo) {
+      if(photo.photoAlbum) {
+        const photos = photo.photoAlbum.photos;
+        return photos.indexOf(photo) !== photos.length - 1;
+      } else {
+        return false;
+      }
+    },
+    hasPrevPhoto(photo) {
+      if(photo.photoAlbum) {
+        const photos = photo.photoAlbum.photos;
+        return photos.indexOf(photo) !== 0;
+      } else {
+        return false;
+      }
     }
   }
 });

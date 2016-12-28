@@ -25,6 +25,8 @@
     <a href="/contacts"> Your contacts </a>
   {{/if}}
 
+  <a href="/albums/{{user.id}}"> Albums </a>
+
   {{#unless (eq user.id currentUser.id)}}
     {{#if (isContact user currentUser)}}
       <form action="/contact/remove/{{user.id}}" method="post">
@@ -58,12 +60,13 @@
 
       <main class="photos">
         {{#each user.photos}}
-          <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
+          <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
         {{/each}}
 
         {{#if (eq user.id currentUser.id)}}
           <form method='post' action='/upload' enctype='multipart/form-data'>
             <input type='file' name='file' accept='image/*'>
+            <textarea placeholder="Photo description" name="description" class="post-form__input"></textarea>
             <input type='submit' class="button">
           </form>
         {{/if}}

@@ -103,6 +103,7 @@ userSchema.methods.validPassword = function(password) {
 
 // FIX provjera je li profilna slika
 userSchema.methods.isAllowedToView = function(filePath) {
+  console.log(filePath);
   const url = uploadDirectory.substr(0, uploadDirectory.length - 1) + filePath;
   return Photo.findOne({url}).deepPopulate('user').then((photo) => {
     return this.id === photo.user.id || this.contacts.find((contact) => {

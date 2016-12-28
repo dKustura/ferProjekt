@@ -32,10 +32,11 @@ router.post('/upload', upload.single('file'), function(req, res) {
         res.send(err);
         return;
       }
-
+      
       const newPhoto = new Photo();
       newPhoto.user = req.user;
       newPhoto.url = filePath;
+      newPhoto.description = req.body.description;
 
       newPhoto.save(function(error) {
         if (error) {
