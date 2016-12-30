@@ -10,7 +10,7 @@ const contact = require('./contact');
 const upload = require('./upload');
 const comment = require('./comment');
 const edit = require('./edit');
-const photo = require('./profile/photo');
+const photo = require('./photo');
 
 const router = new express.Router();
 

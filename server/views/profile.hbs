@@ -45,7 +45,7 @@
     <main class="photos">
       
       {{#each user.photos}}
-       <a href="/profile/{{user.id}}/photo/{{this.id}}">
+       <a href="/photo/{{id}}">
          <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
        </a>
       {{/each}}
@@ -74,7 +74,7 @@
           <div class="post__content"> {{content}} </div>
 
           <div class="post__actions">
-            <span class="post__likes {{#if (isLiked likes ../currentUser)}} is-active {{/if}}"> {{likes.length}} </span>
+            // <span class="post__likes {{#if (isLiked likes ../currentUser)}} is-active {{/if}}"> {{likes.length}} </span>
 
             {{#if (isLiked likes ../currentUser) }}
               <form action="/post/{{this.id}}/unlike" method="post">
