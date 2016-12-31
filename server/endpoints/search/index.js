@@ -11,7 +11,8 @@ router.get('/search', function(req, res) {
     if (query) {
       User.find({
         $text: {$search: query}
-      }).exec((err, users) => {
+      }).deepPopulate('profilePhoto')
+      .exec((err, users) => {
         if (err) {
           throw err;
         }

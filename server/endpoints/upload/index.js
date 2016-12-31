@@ -45,6 +45,9 @@ router.post('/upload', upload.single('file'), function(req, res) {
         }
 
         req.user.photos.push(newPhoto);
+        if(req.body.isProfile) {
+          req.user.profilePhoto = newPhoto;
+        }
         req.user.save(function(err) {
           if (err) {
             res.send(err);

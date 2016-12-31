@@ -69,7 +69,10 @@ const hbs = exphbs.create({
     hasNextPhoto(photo) {
       if(photo.photoAlbum) {
         const photos = photo.photoAlbum.photos;
-        return photos.indexOf(photo) !== photos.length - 1;
+        const index = photos.findIndex((p) => {
+          return photo.id === p.id;
+        });
+        return index !== photos.length - 1;
       } else {
         return false;
       }
@@ -77,7 +80,10 @@ const hbs = exphbs.create({
     hasPrevPhoto(photo) {
       if(photo.photoAlbum) {
         const photos = photo.photoAlbum.photos;
-        return photos.indexOf(photo) !== 0;
+        const index = photos.findIndex((p) => {
+          return photo.id === p.id;
+        });
+        return index !== 0;
       } else {
         return false;
       }

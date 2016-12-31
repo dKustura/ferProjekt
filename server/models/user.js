@@ -101,14 +101,12 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-// FIX provjera je li profilna slika
 userSchema.methods.isAllowedToView = function(filePath) {
-  console.log(filePath);
   const url = uploadDirectory.substr(0, uploadDirectory.length - 1) + filePath;
   return Photo.findOne({url}).deepPopulate('user').then((photo) => {
     return this.id === photo.user.id || this.contacts.find((contact) => {
       return contact == photo.user.id;
-    }) !== undefined;
+    }) !== undefined || photo.user.profilePhoto == photo.id;
   });
 };
 
@@ -136,9 +134,6 @@ userSchema.methods.getMessagesSeparated = function() {
           return getOtherUser(this, message);
         })
     ));
-    // if(next) {
-    //   next({user, newMessages, oldMessages});
-    // }
     return {user, newMessages, oldMessages};
   });
 };

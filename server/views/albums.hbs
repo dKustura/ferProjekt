@@ -1,7 +1,24 @@
 {{> header }}
 
-<ul>
-{{#each albums}}
-  <li>{{this.title}}</li>
-{{/each}}
-</ul>
+<main class="page">
+  <h1> Albums </h1>
+
+  {{#if (eq user.id currentUser.id) }}
+    <a href="/albums/new"> Create new album </a>
+  {{/if}}
+
+  {{#if albums}}
+    <ul>
+      {{#each albums}}
+        <li>
+          <a href="/albums/view/{{id}}">{{title}}</a>
+          {{#if description}}
+            {{description}}
+          {{/if}}
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <div> No albums. </div>
+  {{/if}}
+</main>

@@ -12,7 +12,8 @@ router.get('/profile/:id', function(req, res) {
     'posts.likes',
     'posts.comments.likes',
     'posts.comments.user',
-    'photos'
+    'photos',
+    'profilePhoto'
   ]);
   Promise.all([messages, user]).then(([messages, user]) => {
     res.render('profile', {user, currentUser, newMessages: messages.newMessages});

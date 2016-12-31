@@ -8,22 +8,27 @@
 
     {{#if (hasNextPhoto photo)}}
       <div>
-        <a href="/photo/{{photo.id}}/next"> Next </a>
+        <a href="/photo/{{photo.id}}/next"> Next in album </a>
       </div>
     {{/if}}
     {{#if (hasPrevPhoto photo)}}
       <div>
-        <a href="/photo/{{photo.id}}/prev"> Previous </a>
+        <a href="/photo/{{photo.id}}/prev"> Previous in album </a>
       </div>
     {{/if}}
     <img src="/{{photo.url}}" alt="userPhoto" height="500" class="photo"/>
+    <form action="/profile-photo/{{photo.id}}" method="post">
+      <input type="submit" value="Make this my profile photo" class="button">
+    </form>
     <div class="photo__info">
       <div class="photo__date"> Posted at: {{formatDate photo.createdAt}} </div>
     </div>
-    <div> {{photo.description}} </div>
+    {{#if photo.description}}
+      <div>Description: {{photo.description}} </div>
+    {{/if}}
 
     {{#if photo.photoAlbum}}
-      <div> {{photo.photoAlbum.title}} </div>
+      <div>Album: <a href="/albums/view/{{photo.photoAlbum.id}}"> {{photo.photoAlbum.title}} </a></div>
     {{/if}}
 
     <div class="photo__actions">
