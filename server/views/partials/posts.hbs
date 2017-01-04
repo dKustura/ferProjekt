@@ -54,9 +54,9 @@
               </form>
             {{/if}}
 
-            {{#if (eq user ../../currentUser.id) }}
+            {{#if (eq user.id ../../currentUser.id) }}
               <form action="/comment/{{this.id}}/delete" method="post">
-                <input type="submit" value="Delete"/>
+                <input type="submit" value="Delete" class="button post__action"/>
               </form>
             {{/if}}
           </div>
