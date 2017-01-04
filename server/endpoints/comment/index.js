@@ -12,7 +12,7 @@ router.post('/comment/:id/delete', function(req, res) {
       throw commentFindError;
     }
 
-    if (comment.user.id !== currentUser.id) {
+    if (comment.user.toString() !== currentUser.id.toString()) {
       res.status(403);
       res.send();
       return;

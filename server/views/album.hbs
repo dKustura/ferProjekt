@@ -1,0 +1,24 @@
+{{> header }}
+
+<main class="page">
+  
+  <a href="/albums/list/{{album.user}}">Go to albums</a>
+
+  {{#if (eq ../user.id ../currentUser.id) }}
+    <a href="/albums/edit/{{album.id}}">Edit</a>
+    <form action="/albums/remove/{{album.id}}" method="post">
+      <input type="submit" value="Delete album" class="button">
+    </form>
+  {{/if}}
+  <h1> Album: {{album.title}} </h1>
+  
+  {{#if album.photos}}
+    <main class="photos">
+      {{#each album.photos}}
+        <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
+      {{/each}}
+    </main>
+  {{else}}
+    <div> Album is empty. </div>
+  {{/if}}
+</main>

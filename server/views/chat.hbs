@@ -2,9 +2,9 @@
 
 <main class="page">
 
-  <a href="/contacts">Back to Contacts</a>
+  <a href="/chat">Go to Messages</a>
 
-  <h2>{{user.firstName}} {{user.lastName}}</h2>
+  <h2><a href="/profile/{{user.id}}">{{user.firstName}} {{user.lastName}}</a></h2>
   
   <div class="chat">
     {{#each messages}}
