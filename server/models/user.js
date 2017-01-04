@@ -104,11 +104,14 @@ userSchema.methods.validPassword = function(password) {
 userSchema.methods.isAllowedToView = function(filePath) {
   const url = uploadDirectory.substr(0, uploadDirectory.length - 1) + filePath;
   return Photo.findOne({url}).deepPopulate('user').then((photo) => {
-    return this.id === photo.user.id || this.contacts.find((contact) => {
-      return contact == photo.user.id;
-    }) !== undefined || photo.user.profilePhoto == photo.id;
+    const isContact = this.contacts.find((contact) => contact === photo.user.id).length;
+    return this.id === photo.user.id || isContact || photo.user.profilePhoto === photo.id;
   });
 };
+
+function getOtherUser(user, message) {
+  return message.sender.id === user.id ? message.receiver : message.sender;
+}
 
 userSchema.methods.getMessagesSeparated = function() {
   return this.model('User').findById(this.id).deepPopulate([
@@ -116,30 +119,17 @@ userSchema.methods.getMessagesSeparated = function() {
     'messages.sender',
     'messages.receiver'
   ]).then((user) => {
-    var newMessages = Array.from(new Set(
-      user.messages.filter((message) => {
-        return !message.isSeen && message.sender.id !== this.id
-      }).map((message) => {
-          return message.sender;
-        })
-    ));
-    var oldMessages = Array.from(new Set(
-      user.messages.filter((message) => {
-        var other = getOtherUser(this, message);
-        return message.sender.id === this.id
-          && newMessages.find((user) => {
-            return user.id === other.id;
-        }) === undefined;
-      }).map((message) => {
-          return getOtherUser(this, message);
-        })
-    ));
+    const newMessages = user.messages
+      .filter((message) => !message.isSeen && message.sender.id !== this.id)
+      .map((message) => message.sender);
+
+    const oldMessages = user.messages.filter((message) => {
+      const other = getOtherUser(this, message);
+      return message.sender.id === this.id && !newMessages.find((user) => user.id === other.id).length;
+    }).map((message) => getOtherUser(this, message));
+    
     return {user, newMessages, oldMessages};
   });
-};
-
-function getOtherUser(user, message) {
-  return message.sender.id === user.id ? message.receiver : message.sender;
 };
 
 userSchema.plugin(deepPopulate, {

@@ -9,11 +9,9 @@
   {{#if (eq user.id currentUser.id)}}
     <a href="/profile-photo"> Change profile photo </a>
   {{else}}
-    <form action="/chat/{{user.id}}" method="get">
-      <input type="submit" value="Chat" class="button"/>
-    </form>
+    <a href="/chat/{{user.id}}" class="button"> Chat </a>
   {{/if}}
-  
+
 
   <div class="about-user">
     <h4> About {{user.firstName}} </h4>
@@ -152,7 +150,7 @@
                       <input type="submit" value="Like" class="button post__action"/>
                     </form>
                   {{/if}}
-                  
+
                   {{#if (eq user.id ../../currentUser.id) }}
                     <form action="/comment/{{this.id}}/delete" method="post">
                       <input type="submit" value="Delete" class="button post__action"/>

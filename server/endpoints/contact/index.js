@@ -142,28 +142,21 @@ router.post('/contact/request/:id', function(req, res) {
   });
 });
 
-router.get('/contact/search', function(req, res) {
+router.get('/contact/search', function(req, res, next) {
   const currentUser = req.user;
-  const query = req.query.query;
-
   currentUser.getMessagesSeparated().then((result) => {
-    if (query) {
-      User.find({
-        $text: {$search: query},
-      }).exec((err, users) => {
-        if (err) {
-          throw err;
-        }
-        users = users.filter((user) => {
-          return currentUser.contacts.find((contact) => {
-            return contact.toString() === user.id.toString();
-          });
-        });
-        res.render('search', {users, fields: {query}, currentUser, newMessages: result.newMessages});
-      });
-    } else {
-      res.render('search', {fields: {query}, currentUser, newMessages: result.newMessages});
-    }
+    req.currentUserMessages = result;
+    next();
+  });
+}, function(req, res) {
+  const currentUser = req.user;
+  const query = req.query.query || '';
+
+  User.find({
+    $text: {$search: query},
+    _id: {$in: currentUser.contacts}
+  }).then((users) => {
+    res.render('search', {users, fields: {query}, currentUser, newMessages: req.currentUserMessages.newMessages});
   });
 });
 
