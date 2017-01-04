@@ -104,8 +104,8 @@ userSchema.methods.validPassword = function(password) {
 userSchema.methods.isAllowedToView = function(filePath) {
   const url = uploadDirectory.substr(0, uploadDirectory.length - 1) + filePath;
   return Photo.findOne({url}).deepPopulate('user').then((photo) => {
-    const isContact = this.contacts.find((contact) => contact === photo.user.id).length;
-    return this.id === photo.user.id || isContact || photo.user.profilePhoto === photo.id;
+    const isContact = this.contacts.find((contact) => contact == photo.user.id);
+    return this.id === photo.user.id || isContact || photo.user.profilePhoto == photo.id;
   });
 };
 
@@ -119,15 +119,15 @@ userSchema.methods.getMessagesSeparated = function() {
     'messages.sender',
     'messages.receiver'
   ]).then((user) => {
-    const newMessages = user.messages
+    const newMessages = Array.from(new Set(user.messages
       .filter((message) => !message.isSeen && message.sender.id !== this.id)
-      .map((message) => message.sender);
+      .map((message) => message.sender)));
 
-    const oldMessages = user.messages.filter((message) => {
+    const oldMessages = Array.from(new Set(user.messages.filter((message) => {
       const other = getOtherUser(this, message);
-      return message.sender.id === this.id && !newMessages.find((user) => user.id === other.id).length;
-    }).map((message) => getOtherUser(this, message));
-    
+      return message.sender.id === this.id && !newMessages.find((user) => user.id === other.id);
+    }).map((message) => getOtherUser(this, message))));
+
     return {user, newMessages, oldMessages};
   });
 };

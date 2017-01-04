@@ -148,7 +148,7 @@ router.post('/albums/remove/photo/:photo_id', function(req, res) {
     .then((photo) => {
       if (photo.photoAlbum) {
         const albumId = photo.photoAlbum;
-        photo.photoAlbum = null;
+        photo.photoAlbum = undefined;
         photo.save();
 
         Album.findById(albumId, (err, album) => {

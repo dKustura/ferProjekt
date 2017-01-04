@@ -13,7 +13,7 @@
       {{#each contacts}}
         <li>
           <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
-          <a href="/chat/{{user.id}}" class="button"> Chat </a>
+          <a href="/chat/{{this.id}}" class="button"> Chat </a>
 
           <form action="/contact/remove/{{user.id}}" method="post">
             <input type="submit" value="Remove contact" class="button"/>
