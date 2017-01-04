@@ -10,10 +10,10 @@ router.get('/requests', function(req, res) {
   currentUser.deepPopulate('requests', (err, user) => {
     user.getMessagesSeparated().then((result) => {
       res.render('requests', {
-          currentUser: user,
-          requests: user.requests,
-          newMessages: result.newMessages
-        });
+        currentUser: user,
+        requests: user.requests,
+        newMessages: result.newMessages
+      });
     });
   });
 });
@@ -156,8 +156,8 @@ router.get('/contact/search', function(req, res) {
         }
         users = users.filter((user) => {
           return currentUser.contacts.find((contact) => {
-              return contact.toString() === user.id.toString();
-            });
+            return contact.toString() === user.id.toString();
+          });
         });
         res.render('search', {users, fields: {query}, currentUser, newMessages: result.newMessages});
       });
