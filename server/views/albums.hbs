@@ -13,7 +13,14 @@
         <li>
           <a href="/albums/view/{{id}}">{{title}}</a>
           {{#if description}}
-            {{description}}
+            Description: {{description}}
+          {{/if}}
+          
+          {{#if (eq ../user.id ../currentUser.id) }}
+            <a href="/albums/edit/{{id}}">Edit</a>
+            <form action="/albums/remove/{{id}}" method="post">
+              <input type="submit" value="Delete album" class="button">
+            </form>
           {{/if}}
         </li>
       {{/each}}

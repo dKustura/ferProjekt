@@ -5,13 +5,14 @@
   {{#if user.profilePhoto}}
     <img src="/{{user.profilePhoto.url}}" alt="userPhoto" height="200" class="photo"/>
   {{/if}}
-  <a href="/profile-photo"> Change profile photo </a>
 
-  {{#unless (eq user.id currentUser.id)}}
+  {{#if (eq user.id currentUser.id)}}
+    <a href="/profile-photo"> Change profile photo </a>
+  {{else}}
     <form action="/chat/{{user.id}}" method="get">
       <input type="submit" value="Chat" class="button"/>
     </form>
-  {{/unless}}
+  {{/if}}
   
 
   <div class="about-user">

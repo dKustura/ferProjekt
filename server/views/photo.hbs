@@ -26,7 +26,7 @@
         </form>
       {{/unless}}
       {{#if (hasAlbum photo)}}
-        <form action="/albums/remove/{{photo.id}}" method="post">
+        <form action="/albums/remove/photo/{{photo.id}}" method="post">
           <input type="submit" value="Remove from album" class="button">
         </form>
       {{/if}}

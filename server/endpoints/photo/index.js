@@ -103,12 +103,13 @@ router.get('/albums/new', function(req, res) {
 
 router.post('/albums/new', function(req, res) {
   const currentUser = req.user;
+  const photos = [].concat(req.body.photos);
   
   const newAlbum = new Album();
   newAlbum.user = currentUser;
   newAlbum.title = req.body.title;
   newAlbum.description = req.body.description;
-  newAlbum.photos = req.body.photos;
+  newAlbum.photos = photos;
   newAlbum.save((err) => {
     if(err) {
       res.send(err);
@@ -118,7 +119,7 @@ router.post('/albums/new', function(req, res) {
     currentUser.save();
   });
 
-  req.body.photos.forEach((id) => {
+  photos.forEach((id) => {
     Photo.findById(id, (err, photo) => {
       if(err) {
         throw err;
@@ -127,7 +128,7 @@ router.post('/albums/new', function(req, res) {
       photo.save(); 
     });
   });
-  res.redirect('back');
+  res.redirect(`/albums/list/${currentUser.id}`);
 });
 
 router.get('/albums/view/:album_id', function(req, res) {
@@ -144,7 +145,7 @@ router.get('/albums/view/:album_id', function(req, res) {
   });
 });
 
-router.post('/albums/remove/:photo_id', function(req, res) {
+router.post('/albums/remove/photo/:photo_id', function(req, res) {
   const currentUser = req.user;
   const photo = Photo.findById(req.params.photo_id).deepPopulate('photoAlbum');
  
@@ -222,5 +223,122 @@ function areContacts(u1, u2) {
     return contact.toString() === u2.id.toString();
   }) !== undefined;
 };
+
+router.get('/albums/edit/:album_id', function(req, res) {
+  const currentUser = req.user;
+  const album = Album.findById(req.params.album_id).deepPopulate('photos');
+  const photos = Photo.find({user: currentUser, photoAlbum: undefined});
+  const messages = currentUser.getMessagesSeparated();
+
+  Promise.all([album, photos, messages]).then(([album, photos, messages]) => {
+    if(album.user.toString() !== currentUser.id.toString()) {
+      res.redirect('back');
+    } else {
+      res.render('album-edit', {currentUser, album, photos, newMessages: messages.newMessages});
+    }
+  });
+});
+
+router.post('/albums/edit/:album_id/add', function(req, res) {
+  const currentUser = req.user;
+  const album = Album.findById(req.params.album_id);
+  const photoIds = [].concat(req.body.photos);
+  let photos = [];
+
+  album.then((album) => {
+    if(album.user.toString() === currentUser.id.toString()) {
+      photoIds.forEach((photoId) => {
+        if(!album.photos.includes(photoId)) {
+          photos.push(Photo.findById(photoId));
+        }
+      });
+
+      Promise.all(photos).then((photos) => {
+        photos.forEach((photo) => {
+          if(photo.user.toString() === currentUser.id.toString()) {
+            album.photos.push(photo);
+            photo.photoAlbum = album;
+            photo.save();
+          }
+        });
+
+        album.save((err) => {
+          if(err) {
+            throw err;
+          }
+          res.redirect('back');
+        });
+      });
+    } else {
+      res.redirect('back');
+    }
+  });
+});
+
+router.post('/albums/edit/:album_id/remove', function(req, res) {
+  const currentUser = req.user;
+  const album = Album.findById(req.params.album_id);
+  const photoIds = [].concat(req.body.photos);
+  let photos = [];
+
+  album.then((album) => {
+    if(album.user.toString() === currentUser.id.toString()) {
+      photoIds.forEach((photoId) => {
+        if(!album.photos.includes(photoId)) {
+          photos.push(Photo.findById(photoId));
+        }
+      });
+
+      Promise.all(photos).then((photos) => {
+        photos.forEach((photo) => {
+          album.photos.splice(album.photos.findIndex((p) => {
+            return p.toString() === photo.id.toString();
+          }), 1);
+          photo.photoAlbum = undefined;
+          photo.save();
+        });
+
+        album.save((err) => {
+          if(err) {
+            throw err;
+          }
+          res.redirect('back');
+        });
+      });
+    } else {
+      res.redirect('back');
+    }
+  });
+});
+
+router.post('/albums/remove/:album_id', function(req, res) {
+  const currentUser = req.user;
+  const album = Album.findById(req.params.album_id);
+  let photos = [];
+
+  album.then((album) => {
+    if(album.user.toString() === currentUser.id.toString()) {
+      album.photos.forEach((photoId) => {
+        photos.push(Photo.findById(photoId));
+      });
+
+      Promise.all(photos).then((photos) => {
+        photos.forEach((photo) => {
+          photo.photoAlbum = undefined;
+          photo.save();
+        });
+
+        album.remove((err) => {
+          if(err) {
+            throw err;
+          }
+          res.redirect(`/albums/list/${currentUser.id}`);
+        });
+      });
+    } else {
+      res.redirect('back');
+    }
+  });
+});
 
 module.exports = router;
