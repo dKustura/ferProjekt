@@ -9,6 +9,33 @@
         <li>
           <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
         </li>
+        {{#unless (eq this.id ../currentUser.id)}}
+          <form action="/chat/{{user.id}}" method="get">
+            <input type="submit" value="Chat" class="button"/>
+          </form>
+          {{#if (isContact this ../currentUser)}}
+            <form action="/contact/remove/{{this.id}}" method="post">
+              <input type="submit" value="Remove contact" class="button"/>
+            </form>
+          {{else}}
+            {{#if (hasSentRequest this ../currentUser)}}
+              <form action="/contact/request/{{this.id}}" method="post">
+                <input type="submit" value="Cancel contact request" class="button"/>
+              </form>
+            {{else if (hasReceivedRequest this ../currentUser)}}
+              <form action="/contact/accept/{{this.id}}" method="post">
+                <input type="submit" value="Accept" class="button"/>
+              </form>
+              <form action="/contact/decline/{{this.id}}" method="post">
+                <input type="submit" value="Decline" class="button"/>
+              </form>
+            {{else}}
+              <form action="/contact/request/{{this.id}}" method="post">
+                <input type="submit" value="Send contact request" class="button"/>
+              </form>
+            {{/if}}
+          {{/if}}
+        {{/unless}}
       {{/each}}
     </ul>
   {{else}}

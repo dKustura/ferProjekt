@@ -11,7 +11,7 @@ const upload = multer({dest: '/tmp'});
 
 router.post('/upload', upload.single('file'), function(req, res) {
   if (!req.file) {
-    res.redirect('/');
+    res.redirect('back');
     return;
   }
 
@@ -50,12 +50,11 @@ router.post('/upload', upload.single('file'), function(req, res) {
             return;
           }
 
-          res.redirect('/');
+          res.redirect('back');
         });
       });
     });
   });
-
 });
 
 module.exports = router;
