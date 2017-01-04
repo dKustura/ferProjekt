@@ -42,17 +42,17 @@ const hbs = exphbs.create({
     },
     isContact(user, currentUser) {
       return user.contacts.find((contact) => {
-        return contact.id === currentUser.id;
+        return contact == currentUser.id;
       });
     },
     hasSentRequest(user, currentUser) {
       return user.requests.find((req) => {
-        return req.id === currentUser.id;
+        return req == currentUser.id;
       });
     },
     hasReceivedRequest(user, currentUser) {
       return currentUser.requests.find((req) => {
-        return req.id === user.id;
+        return req == user.id;
       });
     },
     isLiked(likes, user) {
@@ -60,6 +60,11 @@ const hbs = exphbs.create({
     },
     eq(obj1, obj2) {
       return obj1 === obj2;
+    },
+    isAllowedToView(user, currentUser) {
+      return user.id === currentUser.id || user.contacts.find((contact) => {
+        return contact.id === currentUser.id;
+      });
     }
   }
 });
@@ -71,10 +76,6 @@ app.set('views', 'server/views/');
 
 // Write all calls in console
 app.use(morgan('dev'));
-
-// serve static files from /public folder
-const pathToPublicFolder = path.resolve(__dirname, '../public');
-app.use('/public', express.static(pathToPublicFolder));
 
 // Module for parsing cookies
 app.use(cookieParser());
@@ -99,15 +100,25 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 
-// Serve uploaded photos to logged in users
-app.use('/public/uploads', function(req, res) {
-  if (!req.user) {
-    res.send('/');
-    return;
+app.use('/public/uploads', function(req, res, next) {
+  // if user is not logged in or is not the owner or owner's contact - restrict view
+  const currentUser = req.user;
+  if (!currentUser) {
+    res.redirect('/');
+  } else {
+    currentUser.isAllowedToView(req.path).then((result) => {
+      if(result) {
+        next();
+      } else {
+        res.redirect('back');
+      }
+    });
   }
-
-  res.sendFile(`public/uploads${req.path}`);
 });
+
+// serve static files from /public folder
+const pathToPublicFolder = path.resolve(__dirname, '../public');
+app.use('/public', express.static(pathToPublicFolder));
 
 // Add router
 app.use(endpoints);  // always use just before starting server
