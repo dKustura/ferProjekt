@@ -144,6 +144,33 @@ router.get('/albums/view/:album_id', function(req, res) {
   });
 });
 
+router.post('/albums/remove/:photo_id', function(req, res) {
+  const currentUser = req.user;
+  const photo = Photo.findById(req.params.photo_id).deepPopulate('photoAlbum');
+ 
+  photo.then((photo) => {
+    if(photo.photoAlbum) {
+      albumId = photo.photoAlbum;
+      photo.photoAlbum = undefined;
+      photo.save();
+
+      Album.findById(albumId, (err, album) => {
+        album.photos.splice(album.photos.findIndex((p) => {
+          return photo.id == p;
+        }), 1);
+        album.save((err) => {
+          if(err) {
+            throw err;
+          }
+          res.redirect('back');
+        });
+      });
+    } else {
+      res.redirect('back');
+    }
+  });
+});
+
 router.get('/profile-photo', function(req, res) {
   const currentUser = req.user;
   const user = currentUser.deepPopulate('photos');
@@ -166,7 +193,7 @@ router.post('/profile-photo', function(req, res) {
         currentUser.profilePhoto = photo;
         currentUser.save();
         
-        res.redirect(`/profile/${currentUser.id}`);
+        res.redirect('back');
       } else {
         res.redirect('back');
       }

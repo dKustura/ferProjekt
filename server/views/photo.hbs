@@ -17,9 +17,21 @@
       </div>
     {{/if}}
     <img src="/{{photo.url}}" alt="userPhoto" height="500" class="photo"/>
-    <form action="/profile-photo/{{photo.id}}" method="post">
-      <input type="submit" value="Make this my profile photo" class="button">
-    </form>
+
+
+    {{#if (eq photo.user.id currentUser.id)}}
+      {{#unless (isProfilePhoto photo currentUser)}}
+        <form action="/profile-photo/{{photo.id}}" method="post">
+          <input type="submit" value="Make this my profile photo" class="button">
+        </form>
+      {{/unless}}
+      {{#if (hasAlbum photo)}}
+        <form action="/albums/remove/{{photo.id}}" method="post">
+          <input type="submit" value="Remove from album" class="button">
+        </form>
+      {{/if}}
+    {{/if}}
+
     <div class="photo__info">
       <div class="photo__date"> Posted at: {{formatDate photo.createdAt}} </div>
     </div>

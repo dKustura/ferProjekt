@@ -87,6 +87,12 @@ const hbs = exphbs.create({
       } else {
         return false;
       }
+    },
+    isProfilePhoto(photo, user) {
+      return photo.id.toString() === user.profilePhoto.toString();
+    },
+    hasAlbum(photo) {
+      return photo.photoAlbum !== undefined;
     }
   }
 });
