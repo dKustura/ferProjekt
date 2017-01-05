@@ -129,7 +129,7 @@ app.use(passport.session());
 passportConfig(passport);
 
 app.use('/public/uploads', function(req, res, next) {
-  // if user is not logged in or is not the owner or owner's contact - restrict view
+  // if user is not logged in or is not allowed to view the file - restrict view
   const currentUser = req.user;
   if (!currentUser) {
     res.redirect('/');

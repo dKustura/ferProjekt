@@ -96,7 +96,7 @@ router.get('/albums/list/:user_id', function(req, res) {
 
 router.get('/albums/new', function(req, res) {
   const currentUser = req.user;
-  const photosPromise = Photo.find({user: currentUser, photoAlbum: null});
+  const photosPromise = Photo.find({user: currentUser, photoAlbum: undefined});
   const messagesPromise = currentUser.getMessagesSeparated();
   Promise.all([photosPromise, messagesPromise]).then(([photos, messages]) => {
     res.render('album-new', {currentUser, photos, newMessages: messages.newMessages});
@@ -131,11 +131,11 @@ router.post('/albums/new', function(req, res) {
 
 router.get('/albums/view/:album_id', function(req, res) {
   const currentUser = req.user;
-  const albumPromise = Album.findById(req.params.album_id).deepPopulate('photos');
+  const albumPromise = Album.findById(req.params.album_id).deepPopulate(['photos', 'user']);
   const messagesPromise = currentUser.getMessagesSeparated();
 
   Promise.all([albumPromise, messagesPromise]).then(([album, messages]) => {
-    if (areContacts(currentUser, album.user) || album.user.toString() === currentUser.id.toString()) {
+    if (areContacts(currentUser, album.user) || album.user.id === currentUser.id) {
       res.render('album', {currentUser, album, newMessages: messages.newMessages});
     } else {
       res.redirect('back');
@@ -152,7 +152,7 @@ router.post('/albums/remove/photo/:photo_id', function(req, res) {
         photo.save();
 
         Album.findById(albumId, (err, album) => {
-          album.photos.splice(album.photos.findIndex((p) => photo.id === p), 1);
+          album.photos.splice(album.photos.findIndex((p) => photo.id == p), 1);
           album.save().then(() => {
             res.redirect('back');
           });
@@ -184,7 +184,7 @@ router.post('/profile-photo', function(req, res) {
     if (photo.user.toString() === currentUser.id.toString()) {
       currentUser.profilePhoto = photo;
       currentUser.save().then(() => {
-        res.redirect('back');
+        res.redirect(`/profile/${currentUser.id}`);
       });
     } else {
       res.redirect('back');
@@ -209,7 +209,7 @@ router.post('/profile-photo/:photo_id', function(req, res) {
 router.get('/albums/edit/:album_id', function(req, res) {
   const currentUser = req.user;
   const albumPromise = Album.findById(req.params.album_id).deepPopulate('photos');
-  const photosPromise = Photo.find({user: currentUser, photoAlbum: null});
+  const photosPromise = Photo.find({user: currentUser, photoAlbum: undefined});
   const messagesPromise = currentUser.getMessagesSeparated();
 
   Promise.all([albumPromise, photosPromise, messagesPromise]).then(([album, photos, messages]) => {
@@ -263,7 +263,7 @@ router.post('/albums/edit/:album_id/remove', function(req, res) {
           album.photos.splice(album.photos.findIndex((p) => {
             return p.toString() === photo.id.toString();
           }), 1);
-          photo.photoAlbum = null;
+          photo.photoAlbum = undefined;
           return photo.save();
         });
 
@@ -285,8 +285,8 @@ router.post('/albums/remove/:album_id', function(req, res) {
       const photosPromises = album.photos.map((photoId) => Photo.findById(photoId));
 
       Promise.all(photosPromises).then((photos) => {
-        const editedPhotosPromises = photos.forEach((photo) => {
-          photo.photoAlbum = null;
+        const editedPhotosPromises = photos.map((photo) => {
+          photo.photoAlbum = undefined;
           return photo.save();
         });
 
