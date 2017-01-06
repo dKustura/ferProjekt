@@ -1,0 +1,23 @@
+.search-page {
+  .search-page__list {
+    padding: 0;
+  }
+
+  .search-page__item {
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-page__image {
+    margin-right: 5px;
+  }
+
+  .search-page__form {
+    display: inline-block;
+  }
+
+  .search-page__action {
+    margin: 0 5px;
+  }
+}

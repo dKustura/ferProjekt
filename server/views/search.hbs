@@ -1,44 +1,44 @@
 {{> header }}
 
-<main class="page">
+<main class="page search-page">
   <h1> Search results </h1>
 
   {{#if users}}
-    <ul>
+    <ul class="search-page__list">
       {{#each users}}
-        <li>
+        <li class="search-page__item">
           {{#if this.profilePhoto}}
-            <img src="/{{this.profilePhoto.url}}" alt="userPhoto" height="50" class="photo"/>
+            <img src="/{{this.profilePhoto.url}}" alt="userPhoto" height="50" class="photo search-page__image"/>
           {{/if}}
           <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
-        </li>
-        {{#unless (eq this.id ../currentUser.id)}}
-          <form action="/chat/{{this.id}}" method="get">
-            <input type="submit" value="Chat" class="button"/>
-          </form>
-          {{#if (isContact this ../currentUser)}}
-            <form action="/contact/remove/{{this.id}}" method="post">
-              <input type="submit" value="Remove contact" class="button"/>
-            </form>
-          {{else}}
-            {{#if (hasSentRequest this ../currentUser)}}
-              <form action="/contact/request/{{this.id}}" method="post">
-                <input type="submit" value="Cancel contact request" class="button"/>
-              </form>
-            {{else if (hasReceivedRequest this ../currentUser)}}
-              <form action="/contact/accept/{{this.id}}" method="post">
-                <input type="submit" value="Accept" class="button"/>
-              </form>
-              <form action="/contact/decline/{{this.id}}" method="post">
-                <input type="submit" value="Decline" class="button"/>
+
+          {{#unless (eq this.id ../currentUser.id)}}
+            <a href="/chat/{{this.id}}" class="button search-page__action"> Chat </a>
+
+            {{#if (isContact this ../currentUser)}}
+              <form class="search-page__form" action="/contact/remove/{{this.id}}" method="post">
+                <input type="submit" value="Remove contact" class="button search-page__action"/>
               </form>
             {{else}}
-              <form action="/contact/request/{{this.id}}" method="post">
-                <input type="submit" value="Send contact request" class="button"/>
-              </form>
+              {{#if (hasSentRequest this ../currentUser)}}
+                <form class="search-page__form" action="/contact/request/{{this.id}}" method="post">
+                  <input type="submit" value="Cancel contact request" class="button search-page__action"/>
+                </form>
+              {{else if (hasReceivedRequest this ../currentUser)}}
+                <form class="search-page__form" action="/contact/accept/{{this.id}}" method="post">
+                  <input type="submit" value="Accept" class="button search-page__action"/>
+                </form>
+                <form class="search-page__form" action="/contact/decline/{{this.id}}" method="post">
+                  <input type="submit" value="Decline" class="button search-page__action"/>
+                </form>
+              {{else}}
+                <form class="search-page__form" action="/contact/request/{{this.id}}" method="post">
+                  <input type="submit" value="Send contact request" class="button search-page__action"/>
+                </form>
+              {{/if}}
             {{/if}}
-          {{/if}}
-        {{/unless}}
+          {{/unless}}
+        </li>
       {{/each}}
     </ul>
   {{else}}
