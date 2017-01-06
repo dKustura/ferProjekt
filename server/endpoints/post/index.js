@@ -127,7 +127,7 @@ router.post('/post/:id/delete', function(req, res) {
     }
     if (currentUser.id.toString() === post.user.toString()) {
       const userIndex = currentUser.posts.indexOf(req.params.id);
-      currentUser.posts.splice(userIndex);
+      currentUser.posts.splice(userIndex, 1);
 
       const postComments = post.comments.map((id) => mongoose.Types.ObjectId(id));
 

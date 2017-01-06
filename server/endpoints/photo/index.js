@@ -33,7 +33,7 @@ router.post('/photo/:id/unlike', function(req, res) {
     const userIndex = photo.likes.indexOf(currentUser.id);
 
     if (userIndex !== -1) {
-      photo.likes.splice(userIndex);
+      photo.likes.splice(userIndex, 1);
       photo.save((photoSaveError) => {
         if (photoSaveError) {
           res.send(photoSaveError);
@@ -62,7 +62,7 @@ router.post('/photo/:id/comment', function(req, res) {
     const newComment = new Comment();
     newComment.user = currentUser;
     newComment.content = req.body.content;
-    newComment.post = photo;
+    newComment.photo = photo;
 
     newComment.save((commentError) => {
       if (commentError) {
