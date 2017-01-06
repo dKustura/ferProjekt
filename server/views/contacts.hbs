@@ -3,15 +3,22 @@
 <main class="page">
   <h1> Contacts </h1>
 
+  <form action="/contact/search" method="get">
+  	<input type="text" name="query" class="header__search-input" value="{{fields.query}}" 
+      placeholder="Search contacts"/>
+  	<input type="submit" class="header__search-submit" aria-hidden="true"/>
+  </form>
+
   {{#if contacts}}
     <ul>
       {{#each contacts}}
         <li>
           <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
-          :
-          <a href="/chat/{{this.id}}">Send Message</a>
-          -
-          <a href="/contact/remove/{{this.id}}">Remove contact</a>
+          <a href="/chat/{{this.id}}" class="button"> Chat </a>
+
+          <form action="/contact/remove/{{user.id}}" method="post">
+            <input type="submit" value="Remove contact" class="button"/>
+          </form>
         </li>
       {{/each}}
     </ul>
