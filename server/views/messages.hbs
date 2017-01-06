@@ -1,0 +1,24 @@
+{{> header }}
+
+<main class="page">
+
+  <h1>Messages:</h1>
+  {{#if newMessages}}
+    <h3>New Messages:</h3>
+    <ul>
+      {{#each newMessages}}
+        <li><b><a href="/chat/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></b></li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if oldMessages}}
+  <h3>Seen Messages:</h3>
+    <ul>
+      {{#each oldMessages}}
+        <li><a href="/chat/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+</main>

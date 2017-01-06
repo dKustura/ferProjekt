@@ -1,0 +1,24 @@
+{{> header }}
+
+<main class="page">
+
+  <a href="/chat">Go to Messages</a>
+
+  <h2><a href="/profile/{{user.id}}">{{user.firstName}} {{user.lastName}}</a></h2>
+  
+  <div class="chat">
+    {{#each messages}}
+      <b>{{this.sender.firstName}} {{this.sender.lastName}}: </b>{{this.content}}<br/>
+    {{/each}}
+  </div>
+
+  <form class="js-message-form page-card form">
+
+    <label class="form-label">
+      <span> Message: </span>
+      <input type="text" class="js-message" name="message" autocomplete="off"/>
+    </label>
+
+    <input type="submit" value="Send" />
+  </form>
+</main>

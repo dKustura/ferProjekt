@@ -1,0 +1,18 @@
+{{> header }}
+
+<main class="page">
+  
+  {{#if photos}}
+    <h1> Choose a profile photo</h1>
+    
+    <form action="/profile-photo" method="post">
+      {{#each photos}}
+        <input type="radio" name="profile_photo" value="{{id}}" />
+        <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="200" class="photo"/></a>
+      {{/each}}
+      <input type="submit" value="Submit" class="button">
+    </form>
+  {{else}}
+    <div> You have no photos. </div>
+  {{/if}}
+</main>

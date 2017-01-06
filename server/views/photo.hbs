@@ -1,14 +1,50 @@
 {{> header }}
 
 <main class="page">
+  <a href="/albums/list/{{photo.user.id}}">Go to albums</a>
+
   <div class="photo">
     <div class="photo__header">
-      <h3> {{photo.user.firstName}} {{photo.user.lastName}}</h3>
+      <a href="/profile/{{photo.user.id}}"><h3> {{photo.user.firstName}} {{photo.user.lastName}}</h3></a>
     </div>
+
+    {{#if (hasNextPhoto photo)}}
+      <div>
+        <a href="/photo/{{photo.id}}/next"> Next in album </a>
+      </div>
+    {{/if}}
+    {{#if (hasPrevPhoto photo)}}
+      <div>
+        <a href="/photo/{{photo.id}}/prev"> Previous in album </a>
+      </div>
+    {{/if}}
     <img src="/{{photo.url}}" alt="userPhoto" height="500" class="photo"/>
+
+
+    {{#if (eq photo.user.id currentUser.id)}}
+      {{#unless (isProfilePhoto photo currentUser)}}
+        <form action="/profile-photo/{{photo.id}}" method="post">
+          <input type="submit" value="Make this my profile photo" class="button">
+        </form>
+      {{/unless}}
+      {{#if (hasAlbum photo)}}
+        <form action="/albums/remove/photo/{{photo.id}}" method="post">
+          <input type="submit" value="Remove from album" class="button">
+        </form>
+      {{/if}}
+    {{/if}}
+
     <div class="photo__info">
       <div class="photo__date"> Posted at: {{formatDate photo.createdAt}} </div>
     </div>
+    {{#if photo.description}}
+      <div>Description: {{photo.description}} </div>
+    {{/if}}
+
+    {{#if photo.photoAlbum}}
+      <div>Album: <a href="/albums/view/{{photo.photoAlbum.id}}"> {{photo.photoAlbum.title}} </a></div>
+    {{/if}}
+
     <div class="photo__actions">
 
         <span class="photo__likes {{#if (isLiked photo.likes ../currentUser)}} is-active {{/if}}"> {{photo.likes.length}} </span>
