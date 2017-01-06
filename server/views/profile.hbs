@@ -65,17 +65,23 @@
           <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
         {{/each}}
 
-        <div>
-          Upload Photo:
-          {{#if (eq user.id currentUser.id)}}
-            <form method='post' action='/upload' enctype='multipart/form-data'>
+        {{#if (eq user.id currentUser.id)}}
+          <div class="upload-section">
+            <form method='post' action='/upload' enctype='multipart/form-data' class="post-form">
+              Upload Photo:
               <input type='file' name='file' accept='image/*'>
-              <div><input type="checkbox" name="isProfile" value="true" /> Profile Photo</div>
+
+              <div class="upload-section__profile-photo">
+                <input type="checkbox" name="isProfile" value="true" />
+                Profile Photo
+              </div>
+
               <textarea placeholder="Photo description" name="description" class="post-form__input"></textarea>
-              <input type='submit' class="button">
+              <input type='submit' class="post-form__submit">
             </form>
-          {{/if}}
-        </div>
+          </div>
+        {{/if}}
+
       </main>
       <div>
         <h4><a href="/albums/list/{{user.id}}"> Albums </a></h4>
