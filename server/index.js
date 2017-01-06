@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('rs');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
@@ -135,7 +136,7 @@ app.use('/public/uploads', function(req, res, next) {
     res.redirect('/');
   } else {
     currentUser.isAllowedToView(req.path).then((result) => {
-      if(result) {
+      if (result) {
         next();
       } else {
         res.redirect('back');
@@ -147,6 +148,10 @@ app.use('/public/uploads', function(req, res, next) {
 // serve static files from /public folder
 const pathToPublicFolder = path.resolve(__dirname, '../public');
 app.use('/public', express.static(pathToPublicFolder));
+
+if (!fs.existsSync(config.uploadDirectory)) {
+  fs.mkdirSync(config.uploadDirectory);
+}
 
 // Add router
 app.use(endpoints);  // always use just before starting server
