@@ -3,9 +3,6 @@ const bcrypt = require('bcrypt-nodejs');
 const validator = require('../services/validators');
 const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
-const Photo = require('./photo');
-const uploadDirectory = require('../config').uploadDirectory;
-
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -101,34 +98,26 @@ userSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.methods.isAllowedToView = function(filePath) {
-  const url = uploadDirectory.substr(0, uploadDirectory.length - 1) + filePath;
-  return Photo.findOne({url}).deepPopulate('user').then((photo) => {
-    const isContact = this.contacts.find((contact) => contact == photo.user.id);
-    return this.id === photo.user.id || isContact || photo.user.profilePhoto == photo.id;
-  });
-};
-
-function getOtherUser(user, message) {
-  return message.sender.id === user.id ? message.receiver : message.sender;
-}
-
-userSchema.methods.getMessagesSeparated = function() {
-  return this.model('User').findById(this.id).deepPopulate([
+userSchema.methods.getMessagesSeparated = function(next) {
+  this.model('User').findById(this.id).deepPopulate([
     'messages',
-    'messages.sender',
-    'messages.receiver'
-  ]).then((user) => {
-    const newMessages = Array.from(new Set(user.messages
-      .filter((message) => !message.isSeen && message.sender.id !== this.id)
-      .map((message) => message.sender)));
-
-    const oldMessages = Array.from(new Set(user.messages.filter((message) => {
-      const other = getOtherUser(this, message);
-      return message.sender.id === this.id && !newMessages.find((user) => user.id === other.id);
-    }).map((message) => getOtherUser(this, message))));
-
-    return {user, newMessages, oldMessages};
+    'messages.sender'
+  ]).exec((err, user) => {
+    const messages = user.messages.filter((message) => message.sender.id !== this.id);
+    var newMessages = Array.from(new Set(
+      messages.filter((message) => { return !message.isSeen })
+        .map((message) => {
+          return message.sender;
+        })
+    ));
+    var oldMessages = Array.from(new Set(
+      messages.filter((message) => {
+        return message.isSeen && !newMessages.includes(message.sender)
+      }).map((message) => {
+          return message.sender;
+        })
+    ));
+    next({user, newMessages, oldMessages});
   });
 };
 

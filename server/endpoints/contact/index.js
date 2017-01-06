@@ -8,12 +8,12 @@ router.get('/requests', function(req, res) {
   const currentUser = req.user;
 
   currentUser.deepPopulate('requests', (err, user) => {
-    user.getMessagesSeparated().then((result) => {
+    user.getMessagesSeparated(function(result) {
       res.render('requests', {
-        currentUser: user,
-        requests: user.requests,
-        newMessages: result.newMessages
-      });
+          currentUser: user,
+          requests: user.requests,
+          newMessages: result.newMessages
+        });
     });
   });
 });
@@ -24,7 +24,7 @@ router.get('/contacts', function(req, res) {
   currentUser.deepPopulate([
     'contacts',
   ], (err, user) => {
-    user.getMessagesSeparated().then((result) => {
+    user.getMessagesSeparated(function(result) {
       res.render('contacts', {
         currentUser: user,
         contacts: user.contacts,
@@ -137,26 +137,10 @@ router.post('/contact/request/:id', function(req, res) {
         res.redirect('back');
       });
     } else {
-      res.redirect('back');
+      res.status(401);
+      res.send();
+      return;
     }
-  });
-});
-
-router.get('/contact/search', function(req, res, next) {
-  const currentUser = req.user;
-  currentUser.getMessagesSeparated().then((result) => {
-    req.currentUserMessages = result;
-    next();
-  });
-}, function(req, res) {
-  const currentUser = req.user;
-  const query = req.query.query || '';
-
-  User.find({
-    $text: {$search: query},
-    _id: {$in: currentUser.contacts}
-  }).then((users) => {
-    res.render('search', {users, fields: {query}, currentUser, newMessages: req.currentUserMessages.newMessages});
   });
 });
 

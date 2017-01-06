@@ -2,12 +2,14 @@
 
 <main class="page">
 
+  <a href="/chat">Back to Messages</a>
+
   <h1>Messages:</h1>
   {{#if newMessages}}
     <h3>New Messages:</h3>
     <ul>
       {{#each newMessages}}
-        <li><b><a href="/chat/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></b></li>
+          <li><b><a href="/chat/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></b></li>
       {{/each}}
     </ul>
   {{/if}}

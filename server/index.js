@@ -42,17 +42,17 @@ const hbs = exphbs.create({
     },
     isContact(user, currentUser) {
       return user.contacts.find((contact) => {
-        return contact == currentUser.id;
+        return contact.id === currentUser.id;
       });
     },
     hasSentRequest(user, currentUser) {
       return user.requests.find((req) => {
-        return req == currentUser.id;
+        return req.id === currentUser.id;
       });
     },
     hasReceivedRequest(user, currentUser) {
       return currentUser.requests.find((req) => {
-        return req == user.id;
+        return req.id === user.id;
       });
     },
     isLiked(likes, user) {
@@ -60,39 +60,6 @@ const hbs = exphbs.create({
     },
     eq(obj1, obj2) {
       return obj1 === obj2;
-    },
-    isAllowedToView(user, currentUser) {
-      return user.id === currentUser.id || user.contacts.find((contact) => {
-        return contact.toString() === currentUser.id.toString();
-      });
-    },
-    hasNextPhoto(photo) {
-      if(photo.photoAlbum) {
-        const photos = photo.photoAlbum.photos;
-        const index = photos.findIndex((p) => {
-          return photo.id === p.id;
-        });
-        return index !== photos.length - 1;
-      } else {
-        return false;
-      }
-    },
-    hasPrevPhoto(photo) {
-      if(photo.photoAlbum) {
-        const photos = photo.photoAlbum.photos;
-        const index = photos.findIndex((p) => {
-          return photo.id === p.id;
-        });
-        return index !== 0;
-      } else {
-        return false;
-      }
-    },
-    isProfilePhoto(photo, user) {
-      return photo.id.toString() === user.profilePhoto.toString();
-    },
-    hasAlbum(photo) {
-      return photo.photoAlbum !== undefined;
     }
   }
 });
@@ -104,6 +71,10 @@ app.set('views', 'server/views/');
 
 // Write all calls in console
 app.use(morgan('dev'));
+
+// serve static files from /public folder
+const pathToPublicFolder = path.resolve(__dirname, '../public');
+app.use('/public', express.static(pathToPublicFolder));
 
 // Module for parsing cookies
 app.use(cookieParser());
@@ -128,25 +99,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 passportConfig(passport);
 
-app.use('/public/uploads', function(req, res, next) {
-  // if user is not logged in or is not allowed to view the file - restrict view
-  const currentUser = req.user;
-  if (!currentUser) {
-    res.redirect('/');
-  } else {
-    currentUser.isAllowedToView(req.path).then((result) => {
-      if(result) {
-        next();
-      } else {
-        res.redirect('back');
-      }
-    });
+// Serve uploaded photos to logged in users
+app.use('/public/uploads', function(req, res) {
+  if (!req.user) {
+    res.send('/');
+    return;
   }
-});
 
-// serve static files from /public folder
-const pathToPublicFolder = path.resolve(__dirname, '../public');
-app.use('/public', express.static(pathToPublicFolder));
+  res.sendFile(`public/uploads${req.path}`);
+});
 
 // Add router
 app.use(endpoints);  // always use just before starting server

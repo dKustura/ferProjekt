@@ -31,7 +31,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "comma-dangle": [0, "never"],
+    "comma-dangle": [1, "never"],
     "no-cond-assign": [2, "always"],
     "no-console": 1,
     "no-constant-condition": 1,

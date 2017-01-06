@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
     'contacts.posts.user',
     'contacts.posts.likes',
     'contacts.posts.comments.likes',
-    'contacts.posts.comments.user'
+    'contacts.posts.comments.users'
   ], (err, user) => {
     if (err) {
       throw err;
@@ -27,7 +27,7 @@ router.get('/', function(req, res) {
       return b.postedAt - a.postedAt;
     });
 
-    user.getMessagesSeparated().then((result) => {
+    user.getMessagesSeparated(function(result) {
       res.render('home', {posts, currentUser: user, newMessages: result.newMessages});
     });
   });

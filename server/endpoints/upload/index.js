@@ -11,7 +11,7 @@ const upload = multer({dest: '/tmp'});
 
 router.post('/upload', upload.single('file'), function(req, res) {
   if (!req.file) {
-    res.redirect('back');
+    res.redirect('/');
     return;
   }
 
@@ -32,11 +32,10 @@ router.post('/upload', upload.single('file'), function(req, res) {
         res.send(err);
         return;
       }
-      
+
       const newPhoto = new Photo();
       newPhoto.user = req.user;
       newPhoto.url = filePath;
-      newPhoto.description = req.body.description;
 
       newPhoto.save(function(error) {
         if (error) {
@@ -45,20 +44,18 @@ router.post('/upload', upload.single('file'), function(req, res) {
         }
 
         req.user.photos.push(newPhoto);
-        if(req.body.isProfile) {
-          req.user.profilePhoto = newPhoto;
-        }
         req.user.save(function(err) {
           if (err) {
             res.send(err);
             return;
           }
 
-          res.redirect('back');
+          res.redirect('/');
         });
       });
     });
   });
+
 });
 
 module.exports = router;

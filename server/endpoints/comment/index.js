@@ -1,6 +1,7 @@
 const express = require('express');
 const Comment = require('../../models/comment');
 const Post = require('../../models/post');
+const Photo = require('../../models/photo');
 
 const router = new express.Router();
 
@@ -18,23 +19,43 @@ router.post('/comment/:id/delete', function(req, res) {
       return;
     }
 
-    Post.findById(comment.post, (PostFindError, post) => {
-      if (PostFindError) {
-        throw PostFindError;
-      }
-
-      const indexOfComment = post.comments.indexOf(req.params.id);
-      post.comments.splice(indexOfComment, 1);
-
-      post.save((err) => {
-        if (err) {
-          res.send(err);
-          return;
+    // if comment is posted on a post
+    if(comment.post) {
+      Post.findById(comment.post, (PostFindError, post) => {
+        if (PostFindError) {
+          throw PostFindError;
         }
-      });
 
-      res.redirect('back');
-    });
+        const indexOfComment = post.comments.indexOf(req.params.id);
+        post.comments.splice(indexOfComment, 1);
+
+        post.save((err) => {
+          if (err) {
+            res.send(err);
+            return;
+          }
+        });
+
+        res.redirect('back');
+      });
+    // else - comment is posted on a photo
+    } else {
+      Photo.findById(comment.photo, (PhotoFindError, photo) => {
+        if (PhotoFindError) {
+          throw PhotoFindError;
+        }
+
+        const indexOfComment = photo.comments.indexOf(req.params.id);
+        photo.comments.splice(indexOfComment, 1);
+
+        photo.save((err) => {
+          if (err) {
+            res.send(err);
+            return;
+          }
+        });
+      });
+    }
   });
 });
 
