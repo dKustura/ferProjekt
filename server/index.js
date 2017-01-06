@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const fs = require('rs');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const cookieParser = require('cookie-parser');
