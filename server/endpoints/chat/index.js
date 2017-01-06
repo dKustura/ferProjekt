@@ -4,43 +4,47 @@ const Message = require('../../models/message');
 
 const router = new express.Router();
 
-router.get('/chat/:id', function(req, res) {
+router.get('/chat/:id', function(req, res, next) {
   const currentUser = req.user;
-  
+  if (req.params.id === currentUser.id) {
+    res.redirect('/chat');
+  } else {
+    next();
+  }
+}, function(req, res) {
+  const currentUser = req.user;
   currentUser.deepPopulate([
     'messages',
     'messages.sender',
-    ], (err, user) => {
-    if (err) {
-      throw err;
-    }
-    User.findById(req.params.id, (err, usr) => {
-      if(!usr) {
+  ]).then((sender) => {
+    User.findById(req.params.id).then((receiver) => {
+      if (!receiver) {
         res.redirect('/chat');
-      } else {
-        Message.find({receiver: currentUser.id, sender: usr.id}, (err, messages) => {
-          messages.filter((message) => {return !message.isSeen})
-            .map((message) => {
-              message.isSeen = true;
-              message.save((err) => {
-                if(err) throw err;
-              });
-            });
+        return;
+      }
+
+      Message.update({
+        receiver: currentUser.id,
+        sender: receiver.id,
+        isSeen: false
+      }, {
+        isSeen: true
+      }, {
+        multi: true
+      }).then(() => {
+        const msgs = sender.messages.filter((message) => {
+          return message.sender.id === req.params.id || message.receiver.toString() === req.params.id;
         });
 
-        const msgs = user.messages.filter((message) => {
-          return message.sender.id == req.params.id || message.receiver == req.params.id
-        });
-
-        user.getMessagesSeparated((result) => {
+        sender.getMessagesSeparated().then((result) => {
           res.render('chat', {
-            currentUser: user,
-            user: usr,
+            currentUser: sender,
+            user: receiver,
             messages: msgs,
             newMessages: result.newMessages
           });
         });
-      }
+      });
     });
   });
 });
@@ -48,7 +52,7 @@ router.get('/chat/:id', function(req, res) {
 router.get('/chat', function(req, res) {
   const currentUser = req.user;
 
-  currentUser.getMessagesSeparated(function(result) {
+  currentUser.getMessagesSeparated().then((result) => {
     res.render('messages', {
       currentUser: result.user,
       newMessages: result.newMessages,
