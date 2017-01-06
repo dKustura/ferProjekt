@@ -15,12 +15,15 @@ $(function() {
       e.preventDefault();
       socket.emit('send message', {content: $message.val(), sender: currentUser, receiver: otherUser});
       $message.val('');
+      $chat.get(0).scrollTop = $chat.get(0).scrollHeight;
     });
 
     socket.on('new message', function(message) {
       $chat.append(
         `<div><b>${message.sender.firstName} ${message.sender.lastName}: </b> ${message.content}</div>`
       );
+
+      $chat.get(0).scrollTop = $chat.get(0).scrollHeight;
     });
   });
 });
