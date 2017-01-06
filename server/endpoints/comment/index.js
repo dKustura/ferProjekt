@@ -24,7 +24,7 @@ router.post('/comment/:id/delete', function(req, res) {
       }
 
       const indexOfComment = post.comments.indexOf(req.params.id);
-      post.comments.splice(indexOfComment);
+      post.comments.splice(indexOfComment, 1);
 
       post.save((err) => {
         if (err) {
@@ -67,7 +67,7 @@ router.post('/comment/:id/unlike', function(req, res) {
     const userIndex = comment.likes.indexOf(currentUser.id);
 
     if (userIndex !== -1) {
-      comment.likes.splice(userIndex);
+      comment.likes.splice(userIndex, 1);
       comment.save((commentSaveError) => {
         if (commentSaveError) {
           res.send(commentSaveError);
