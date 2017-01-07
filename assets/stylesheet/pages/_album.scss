@@ -1,0 +1,44 @@
+.album-page {
+  .album-page__list {
+    padding: 0;
+  }
+
+  .album-page__item {
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .album-page__image {
+    margin-right: 5px;
+  }
+
+  .album-page__form {
+    display: inline-block;
+  }
+
+  .album-page__action {
+    margin: 0 5px;
+  }
+
+  .album-page__description {
+    margin: 0 5px;
+  }
+
+  .album-page__photo {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.photos-new {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photo-page {
+  .photo-page__photo {
+    max-width: 100%;
+    height: auto;
+  }
+}

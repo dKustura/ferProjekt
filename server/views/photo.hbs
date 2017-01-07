@@ -1,6 +1,6 @@
 {{> header }}
 
-<main class="page">
+<main class="page photo-page">
   <a href="/albums/list/{{photo.user.id}}">Go to albums</a>
 
   <div class="photo">
@@ -18,17 +18,18 @@
         <a href="/photo/{{photo.id}}/prev"> Previous in album </a>
       </div>
     {{/if}}
-    <img src="/{{photo.url}}" alt="userPhoto" height="500" class="photo"/>
-
+    <div class="">
+      <img src="/{{photo.url}}" alt="userPhoto" height="500" class="photo-page__photo"/>
+    </div>
 
     {{#if (eq photo.user.id currentUser.id)}}
       {{#unless (isProfilePhoto photo currentUser)}}
-        <form action="/profile-photo/{{photo.id}}" method="post">
+        <form action="/profile-photo/{{photo.id}}" method="post" class="form form--inline">
           <input type="submit" value="Make this my profile photo" class="button">
         </form>
       {{/unless}}
       {{#if (hasAlbum photo)}}
-        <form action="/albums/remove/photo/{{photo.id}}" method="post">
+        <form action="/albums/remove/photo/{{photo.id}}" method="post" class="form form--inline">
           <input type="submit" value="Remove from album" class="button">
         </form>
       {{/if}}
@@ -46,28 +47,27 @@
     {{/if}}
 
     <div class="photo__actions">
+        <span class="photo__likes {{#if (isLiked photo.likes currentUser)}} is-active {{/if}}"> {{photo.likes.length}} </span>
 
-        <span class="photo__likes {{#if (isLiked photo.likes ../currentUser)}} is-active {{/if}}"> {{photo.likes.length}} </span>
-
-        {{#if (isLiked photo.likes ../currentUser) }}
-          <form action="/photo/{{photo.id}}/unlike" method="post">
+        {{#if (isLiked photo.likes currentUser) }}
+          <form action="/photo/{{photo.id}}/unlike" method="post" class="form form--inline">
             <input type="submit" value="Unlike" class="button photo__action"/>
           </form>
         {{else}}
-          <form action="/photo/{{photo.id}}/like" method="post">
+          <form action="/photo/{{photo.id}}/like" method="post" class="form form--inline">
             <input type="submit" value="Like" class="button photo__action"/>
           </form>
         {{/if}}
 
-        {{#if (eq photo.user.id ../currentUser.id) }}
-          <form action="/photo/{{photo.id}}/delete" method="post">
+        {{#if (eq photo.user.id currentUser.id) }}
+          <form action="/photo/{{photo.id}}/delete" method="post" class="form form--inline">
             <input type="submit" value="Delete" class="button post__action"/>
           </form>
         {{/if}}
 
     </div>
 
-    {{#each comments}}
+    {{#each photo.comments}}
       <div class="comment">
         <div class="comment__info">
           <a class="comment__user" href="/profile/{{user.id}}"> {{user.firstName}} {{user.lastName}}
@@ -81,10 +81,9 @@
       </div>
     {{/each}}
 
-    <form action="/photo/{{this.id}}/comment" method="post" class="post-form">
+    <form action="/photo/{{photo.id}}/comment" method="post" class="post-form">
       <textarea placeholder="Add a comment..." name="content" class="post-form__input"></textarea>
       <input type="submit" value="Comment" class="post-form__submit"/>
     </form>
-
   </div>
 </main>

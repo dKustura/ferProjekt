@@ -1,6 +1,6 @@
 {{> header }}
 
-<main class="page">
+<main class="page album-page">
   <h1> Albums </h1>
 
   {{#if (eq user.id currentUser.id) }}
@@ -8,18 +8,21 @@
   {{/if}}
 
   {{#if albums}}
-    <ul>
+    <ul class="album-page__list">
       {{#each albums}}
-        <li>
-          <a href="/albums/view/{{id}}">{{title}}</a>
+        <li class="album-page__item">
+          <a href="/albums/view/{{id}}"> {{title}} </a>
+
           {{#if description}}
-            Description: {{description}}
+            <div class="album-page__description">
+              Description: {{description}}
+            </div>
           {{/if}}
-          
+
           {{#if (eq ../user.id ../currentUser.id) }}
             <a href="/albums/edit/{{id}}">Edit</a>
-            <form action="/albums/remove/{{id}}" method="post">
-              <input type="submit" value="Delete album" class="button">
+            <form action="/albums/remove/{{id}}" method="post" class="album-page__form">
+              <input type="submit" value="Delete album" class="button album-page__action">
             </form>
           {{/if}}
         </li>

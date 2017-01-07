@@ -2,18 +2,22 @@
 
 <main class="page">
   <a href="/albums/list/{{currentUser.id}}">Go to albums</a>
-  
+
   <h1> Create new album </h1>
-  
+
   {{#if photos}}
-    <form action="/albums/new" method="post">
-      <input type="text" name="title" placeholder="Album title" />
-      {{#each photos}}
-        <input type="checkbox" name="photos" value="{{id}}" />
-        <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
-      {{/each}}
+    <form action="/albums/new" method="post" class="post-form">
+      <input type="text" name="title" placeholder="Album title" class="post-form__inline"/>
+
+      <div class="photos-new">
+        {{#each photos}}
+          <input type="checkbox" name="photos" value="{{id}}" class="post-form__inline"/>
+          <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
+        {{/each}}
+      </div>
+
       <textarea placeholder="Album description" name="description" class="post-form__input"></textarea>
-      <input type="submit" value="Submit" class="button">
+      <input type="submit" value="Submit" class="button post-form__submit photos-submit">
     </form>
   {{else}}
     <div> No photos for new album. </div>

@@ -4,19 +4,19 @@
   <a href="/albums/list/{{currentUser.id}}">Go to albums</a>
 
   {{#if (eq ../user.id ../currentUser.id) }}
-    <form action="/albums/remove/{{album.id}}" method="post">
+    <form action="/albums/remove/{{album.id}}" method="post" class="form form--inline">
       <input type="submit" value="Delete album" class="button">
     </form>
   {{/if}}
-  
+
   <h1> Edit album: {{album.title}}</h1>
-  
+
   <h3> Add Photos </h3>
   {{#if photos}}
     <form action="/albums/edit/{{album.id}}/add" method="post">
       {{#each photos}}
         <input type="checkbox" name="photos" value="{{id}}" />
-        <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
+        <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
       {{/each}}
       <input type="submit" value="Add Selection" class="button">
     </form>
@@ -29,7 +29,7 @@
     <form action="/albums/edit/{{album.id}}/remove" method="post">
       {{#each album.photos}}
         <input type="checkbox" name="photos" value="{{id}}" />
-        <a href="/photo/{{id}}"><img src="/{{url}}" alt="userPhoto" height="100" class="photo"/></a>
+        <img src="/{{url}}" alt="userPhoto" height="100" class="photo"/>
       {{/each}}
       <input type="submit" value="Remove Selection" class="button">
     </form>
