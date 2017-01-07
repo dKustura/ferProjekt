@@ -1,0 +1,44 @@
+.contacts-page {
+  &__list {
+    padding: 0;
+  }
+
+  &__item {
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__image {
+    margin-right: 5px;
+  }
+
+  &__form {
+    display: inline-block;
+  }
+
+  &__action {
+    margin: 0 5px;
+  }
+
+  &__search {
+    flex: 1;
+    padding: 0 10px;
+    display: flex;
+  }
+
+  &__search-input {
+    border: 1;
+    min-width: 200px;
+  }
+
+  &__search-submit {
+    -webkit-appearance: none;
+    border: 0;
+    background: $color-primary;
+    color: $color-text-white;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+}

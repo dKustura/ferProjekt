@@ -1,0 +1,70 @@
+.photo-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .photo-form__input {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    border-color: $color-primary;
+    font-size: 14px;
+  }
+
+  .photo-form__submit {
+    align-self: flex-end;
+    margin-top: 10px;
+    -webkit-appearance: none;
+    border: 0;
+    background: $color-primary;
+    color: $color-text-white;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 10px;
+  }
+}
+
+.photos {
+  margin-top: 20px;
+}
+
+.photo {
+  margin-top: 20px;
+  padding-bottom: 20px;
+
+  .photo__info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .photo__content {
+    margin: 5px 0;
+  }
+
+  .photo__likes {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+    &.is-active {
+      background-color: $color-primary;
+      color: $color-text-white;
+    }
+  }
+
+  .photo__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .photo__action {
+    margin-left: 10px;
+  }
+}
