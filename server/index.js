@@ -68,26 +68,24 @@ const hbs = exphbs.create({
       });
     },
     hasNextPhoto(photo) {
-      if(photo.photoAlbum) {
+      if (photo.photoAlbum) {
         const photos = photo.photoAlbum.photos;
         const index = photos.findIndex((p) => {
           return photo.id === p.id;
         });
         return index !== photos.length - 1;
-      } else {
-        return false;
       }
+      return false;
     },
     hasPrevPhoto(photo) {
-      if(photo.photoAlbum) {
+      if (photo.photoAlbum) {
         const photos = photo.photoAlbum.photos;
         const index = photos.findIndex((p) => {
           return photo.id === p.id;
         });
         return index !== 0;
-      } else {
-        return false;
       }
+      return false;
     },
     isProfilePhoto(photo, user) {
       return photo.id.toString() === user.profilePhoto.toString();
