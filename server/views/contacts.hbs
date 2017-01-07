@@ -1,23 +1,26 @@
 {{> header }}
 
-<main class="page">
+<main class="page contacts-page">
   <h1> Contacts </h1>
 
-  <form action="/contact/search" method="get">
-  	<input type="text" name="query" class="header__search-input" value="{{fields.query}}" 
+  <form action="/contact/search" method="get" class="contacts-page__search">
+  	<input type="text" name="query" class="contacts-page__search-input" value="{{fields.query}}" 
       placeholder="Search contacts"/>
-  	<input type="submit" class="header__search-submit" aria-hidden="true"/>
+  	<input type="submit" class="contacts-page__search-submit" aria-hidden="true"/>
   </form>
 
   {{#if contacts}}
-    <ul>
+    <ul class="contacts-page__list">
       {{#each contacts}}
-        <li>
+        <li class="contacts-page__item">
+          {{#if this.profilePhoto}}
+            <img src="/{{this.profilePhoto.url}}" alt="userPhoto" height="50" class="photo contacts-page__image"/>
+          {{/if}}
           <a href="/profile/{{this.id}}">{{this.firstName}} {{this.lastName}}</a>
-          <a href="/chat/{{this.id}}" class="button"> Chat </a>
+          <a href="/chat/{{this.id}}" class="button contacts-page__action"> Chat </a>
 
-          <form action="/contact/remove/{{user.id}}" method="post">
-            <input type="submit" value="Remove contact" class="button"/>
+          <form class="contacts-page__form" action="/contact/remove/{{user.id}}" method="post">
+            <input type="submit" value="Remove contact" class="button contacts-page__action"/>
           </form>
         </li>
       {{/each}}

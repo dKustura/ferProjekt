@@ -24,6 +24,11 @@ const commentSchema = new Schema({
     ref: 'Post'
   },
 
+  photo: {
+    type: ObjectId,
+    ref: 'Photo'
+  },
+
   likes: [{
     type: ObjectId,
     ref: 'User'

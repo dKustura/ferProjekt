@@ -19,6 +19,7 @@ router.get('/photo/:photo_id', function(req, res) {
     'user',
     'likes',
     'comments',
+    'comments.likes',
     'comments.user',
     'photoAlbum.photos'
   ]);
@@ -313,7 +314,6 @@ router.post('/photo/:id/like', function(req, res) {
           res.send(photoSaveError);
           return;
         }
-
         res.redirect('back');
       });
     } else {

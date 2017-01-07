@@ -47,24 +47,23 @@
     {{/if}}
 
     <div class="photo__actions">
-        <span class="photo__likes {{#if (isLiked photo.likes currentUser)}} is-active {{/if}}"> {{photo.likes.length}} </span>
+      <span class="photo__likes {{#if (isLiked photo.likes currentUser)}} is-active {{/if}}"> {{photo.likes.length}} </span>
 
-        {{#if (isLiked photo.likes currentUser) }}
-          <form action="/photo/{{photo.id}}/unlike" method="post" class="form form--inline">
-            <input type="submit" value="Unlike" class="button photo__action"/>
-          </form>
-        {{else}}
-          <form action="/photo/{{photo.id}}/like" method="post" class="form form--inline">
-            <input type="submit" value="Like" class="button photo__action"/>
-          </form>
-        {{/if}}
+      {{#if (isLiked photo.likes currentUser) }}
+        <form action="/photo/{{photo.id}}/unlike" method="post">
+          <input type="submit" value="Unlike" class="button photo__action"/>
+        </form>
+      {{else}}
+        <form action="/photo/{{photo.id}}/like" method="post" class="form form--inline">
+          <input type="submit" value="Like" class="button photo__action"/>
+        </form>
+      {{/if}}
 
-        {{#if (eq photo.user.id currentUser.id) }}
-          <form action="/photo/{{photo.id}}/delete" method="post" class="form form--inline">
-            <input type="submit" value="Delete" class="button post__action"/>
-          </form>
-        {{/if}}
-
+      {{#if (eq photo.user.id currentUser.id) }}
+        <form action="/photo/{{photo.id}}/delete" method="post" class="form form--inline">
+          <input type="submit" value="Delete" class="button post__action"/>
+        </form>
+      {{/if}}
     </div>
 
     {{#each photo.comments}}
@@ -78,12 +77,31 @@
 
         <div class="comment__content"> {{content}} </div>
 
+        <div class="photo__actions">
+          <span class="photo__likes {{#if (isLiked likes ../currentUser)}} is-active {{/if}}"> {{likes.length}} </span>
+
+          {{#if (isLiked likes ../currentUser) }}
+            <form action="/comment/{{this.id}}/unlike" method="post">
+              <input type="submit" value="Unlike" class="button photo__action"/>
+            </form>
+          {{else}}
+            <form action="/comment/{{this.id}}/like" method="post">
+              <input type="submit" value="Like" class="button photo__action"/>
+            </form>
+          {{/if}}
+
+          {{#if (eq user.id ../currentUser.id) }}
+            <form action="/comment/{{this.id}}/delete" method="post">
+              <input type="submit" value="Delete" class="button photo__action"/>
+            </form>
+          {{/if}}
+        </div>
       </div>
     {{/each}}
 
-    <form action="/photo/{{photo.id}}/comment" method="post" class="post-form">
-      <textarea placeholder="Add a comment..." name="content" class="post-form__input"></textarea>
-      <input type="submit" value="Comment" class="post-form__submit"/>
+    <form action="/photo/{{photo.id}}/comment" method="post" class="photo-form">
+      <textarea placeholder="Add a comment..." name="content" class="photo-form__input"></textarea>
+      <input type="submit" value="Comment" class="photo-form__submit"/>
     </form>
   </div>
 </main>

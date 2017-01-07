@@ -2,6 +2,9 @@ import $ from 'jquery';
 
 $(function() {
 
+  const $chat = $('.chat');
+  $chat.get(0).scrollTop = $chat.get(0).scrollHeight;
+
   $.getJSON('/user_id', function(data) {
 
     const otherUser = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
@@ -9,7 +12,6 @@ $(function() {
     const socket = io.connect({query: `user=${currentUser}`});
     const $messageForm = $('.js-message-form');
     const $message = $('.js-message');
-    const $chat = $('.chat');
 
     $messageForm.on('submit', (e) => {
       e.preventDefault();
