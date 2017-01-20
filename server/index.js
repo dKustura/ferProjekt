@@ -68,27 +68,38 @@ const hbs = exphbs.create({
       });
     },
     hasNextPhoto(photo) {
+      let photos;
       if (photo.photoAlbum) {
-        const photos = photo.photoAlbum.photos;
-        const index = photos.findIndex((p) => {
-          return photo.id === p.id;
+        photos = photo.photoAlbum.photos;
+      } else {
+        photos = photo.user.photos.filter((photo) => {
+          return photo.photoAlbum === undefined;
         });
-        return index !== photos.length - 1;
       }
-      return false;
+      const index = photos.findIndex((p) => {
+        return photo.id === p.id;
+      });
+      return index !== photos.length - 1;
     },
     hasPrevPhoto(photo) {
+      let photos;
       if (photo.photoAlbum) {
-        const photos = photo.photoAlbum.photos;
-        const index = photos.findIndex((p) => {
-          return photo.id === p.id;
+        photos = photo.photoAlbum.photos;
+      } else {
+        photos = photo.user.photos.filter((photo) => {
+          return photo.photoAlbum === undefined;
         });
-        return index !== 0;
       }
-      return false;
+      const index = photos.findIndex((p) => {
+        return photo.id === p.id;
+      });
+      return index !== 0;
     },
     isProfilePhoto(photo, user) {
-      return photo.id.toString() === user.profilePhoto.toString();
+      if(user.profilePhoto) {
+        return photo.id.toString() === user.profilePhoto.toString();
+      }
+      return false;
     },
     hasAlbum(photo) {
       return photo.photoAlbum !== undefined;

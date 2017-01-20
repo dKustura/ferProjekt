@@ -1,6 +1,8 @@
 /* global Promise */
 
+const mongoose = require('mongoose');
 const express = require('express');
+const fs = require('fs');
 const Photo = require('../../models/photo');
 const User = require('../../models/user');
 const Album = require('../../models/album');
@@ -16,7 +18,7 @@ function areContacts(u1, u2) {
 router.get('/photo/:photo_id', function(req, res) {
   const currentUser = req.user;
   const photoPromise = Photo.findById(req.params.photo_id).deepPopulate([
-    'user',
+    'user.photos',
     'likes',
     'comments',
     'comments.likes',
@@ -39,12 +41,19 @@ router.get('/photo/:photo_id', function(req, res) {
 router.get('/photo/:photo_id/next', function(req, res) {
   const currentUser = req.user;
   Photo.findById(req.params.photo_id)
-    .deepPopulate('photoAlbum.photos')
+    .deepPopulate(['user.photos', 'photoAlbum.photos'])
     .then((photo) => {
       const url = photo.url.substr(uploadDirectory.length - 1);
       currentUser.isAllowedToView(url).then((result) => {
         if (result) {
-          const photos = photo.photoAlbum.photos;
+          let photos;
+          if (photo.photoAlbum) {
+            photos = photo.photoAlbum.photos;
+          } else {
+            photos = photo.user.photos.filter((photo) => {
+              return photo.photoAlbum === undefined;
+            });
+          }
           const index = photos.findIndex((p) => photo.id === p.id);
           if (index >= photos.length - 1) {
             res.redirect('back');
@@ -62,12 +71,19 @@ router.get('/photo/:photo_id/next', function(req, res) {
 router.get('/photo/:photo_id/prev', function(req, res) {
   const currentUser = req.user;
   Photo.findById(req.params.photo_id)
-    .deepPopulate('photoAlbum.photos')
+    .deepPopulate(['user.photos', 'photoAlbum.photos'])
     .then((photo) => {
       const url = photo.url.substr(uploadDirectory.length - 1);
       currentUser.isAllowedToView(url).then((result) => {
         if (result) {
-          const photos = photo.photoAlbum.photos;
+          let photos;
+          if (photo.photoAlbum) {
+            photos = photo.photoAlbum.photos;
+          } else {
+            photos = photo.user.photos.filter((photo) => {
+              return photo.photoAlbum === undefined;
+            });
+          }
           const index = photos.findIndex((p) => {
             return photo.id === p.id;
           });
@@ -378,6 +394,39 @@ router.post('/photo/:id/comment', function(req, res) {
         res.redirect('back');
       });
     });
+  });
+});
+
+router.post('/photo/:id/delete', function(req, res) {
+  const currentUser = req.user;
+
+  Photo.findById(req.params.id, (err, photo) => {
+    if (err) {
+      throw err;
+    }
+    if (currentUser.id.toString() === photo.user.toString()) {
+      const userIndex = currentUser.photos.indexOf(req.params.id);
+      currentUser.photos.splice(userIndex, 1);
+      currentUser.profilePhoto = undefined;
+
+      const photoComments = photo.comments.map((id) => mongoose.Types.ObjectId(id));
+
+      Comment.find({_id: {$in: photoComments}}, function(commentFindError, comments) {
+
+        const photoRemove = photo.remove();
+        const userSave = currentUser.save();
+        const commentsDelete = comments.map((comment) => comment.remove());
+
+        Promise.all([photoRemove, userSave, ...commentsDelete]).then(() => {
+          fs.unlinkSync(photo.url);
+          res.redirect(`/profile/${currentUser.id}`);
+        }).catch(() => {
+          res.status(500);
+          res.send();
+          return;
+        });
+      });
+    }
   });
 });
 
