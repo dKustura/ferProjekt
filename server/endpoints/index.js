@@ -39,5 +39,9 @@ router.use(isAuthenticated, upload);
 router.use(isAuthenticated, comment);
 router.use(isAuthenticated, edit);
 router.use(isAuthenticated, photo);
+router.use((req, res) => {
+  res.status(404);
+  res.render('errorPage');
+});
 
 module.exports = router;
