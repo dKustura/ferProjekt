@@ -19,7 +19,9 @@ $(function() {
 
       $messageForm.on('submit', (e) => {
         e.preventDefault();
-        socket.emit('send message', {content: $message.val(), sender: currentUser, receiver: otherUser});
+        if($message.val().trim()) {
+          socket.emit('send message', {content: $message.val(), sender: currentUser, receiver: otherUser});
+        }
         $message.val('');
         scrollToBottom();
       });

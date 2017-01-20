@@ -13,37 +13,47 @@ module.exports.listen = function(app){
 
       socket.on('send message', function(message) {
 
-        const sender = User.findById(message.sender);
-        const receiver = User.findById(message.receiver);
-        Promise.all([sender, receiver]).then(([sender, receiver]) => { 
-          var newMessage = new Message();
-          newMessage.content = message.content;
-          newMessage.sender = sender;
-          newMessage.receiver = receiver;
-          newMessage.save((err) => {
-            if(err) {
-              throw err;
-            }
-            sender.messages.push(newMessage);
-            sender.save();
-            receiver.messages.push(newMessage);
-            receiver.save();
-            socket.emit('new message', newMessage);
+        if(message.content.trim()) {
+          const sender = User.findById(message.sender);
+          const receiver = User.findById(message.receiver);
+          Promise.all([sender, receiver]).then(([sender, receiver]) => { 
+            var newMessage = new Message();
+            newMessage.content = message.content;
+            newMessage.sender = sender;
+            newMessage.receiver = receiver;
+            newMessage.save((err) => {
+              if(err) {
+                throw err;
+              }
+              sender.messages.push(newMessage);
+              sender.save();
+              receiver.messages.push(newMessage);
+              receiver.save();
+              socket.emit('new message', newMessage);
 
-            if(newMessage.content.trim()) {
               userSockets.filter((socket) => {
                 return socket.user === newMessage.receiver.id
               }).map((socket) => {
                 socket.emit('new message', newMessage);
               });
-            }
-          });
-        });
 
-        User.findById(message.sender, (err, sender) => {
-          User.findById(message.receiver, (err, receiver) => {
+              console.log('SENT ' + sender.id + ' ' + receiver.id);
+              Message.update({
+                receiver: sender.id,
+                sender: receiver.id,
+                isSeen: false
+              }, {
+                isSeen: true
+              }, {
+                multi: true
+              }).catch(() => {
+                res.status(500);
+                res.send();
+                return;
+              });
+            });
           });
-        });
+        }
       });
 
       socket.on('disconnect', function() {
